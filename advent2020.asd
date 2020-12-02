@@ -2,7 +2,7 @@
   :version "0.1.0"
   :author "Brit Butler"
   :license "MIT"
-  :depends-on ("alexandria")
+  :depends-on ("alexandria" "split-sequence")
   :components ((:module "src"
                 :components
                 ((:file "main")
