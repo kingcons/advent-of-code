@@ -4,9 +4,12 @@
   :license "MIT"
   :depends-on ("alexandria" "split-sequence" "arrows")
   :components ((:module "src"
+                :serial t
                 :components
                 ((:file "main")
-                 (:file "day01"))))
+                 (:file "util")
+                 (:file "day01")
+                 (:file "day02"))))
   :description ""
   :in-order-to ((test-op (test-op "advent2020/tests"))))
 
