@@ -6,13 +6,15 @@
 
 (in-package :day-03)
 
+(declaim (inline collision?))
 (defun collision? (terrain column)
-  (char= #\# (char terrain (mod column (length terrain)))))
+  (char= #\# (char terrain column)))
 
 (defun count-trees (map &key (down 1) (right 3))
   (loop
+    with line-width = (length (first map))
     for terrain on map by (alexandria:curry #'nthcdr down)
-    for column = 0 then (+ column right)
+    for column = 0 then (mod (+ column right) line-width)
     while (first terrain)
     counting (collision? (first terrain) column) into total
     finally (return total)))
