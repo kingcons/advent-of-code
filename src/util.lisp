@@ -2,11 +2,11 @@
   (:use :cl)
   (:export #:read-day-input))
 
-(defmacro read-day-input (day item-parser)
+(defmacro read-day-input (day item-parser &key (separator "\\n"))
   (let ((filename (format nil "src/day~2,'0d-input.dat" day)))
     `(arrows:->> ,filename
        (asdf:system-relative-pathname :advent2020)
        (alexandria:read-file-into-string)
-       (split-sequence:split-sequence #\Newline)
+       (cl-ppcre:split ,separator)
        (butlast)
        (mapcar ,item-parser))))
