@@ -11,10 +11,9 @@
        (mapcar (lambda (e) (coerce e 'list)))))
 
 (defun count-groups (groups combine-rows)
-  (->> groups
-       (mapcar (lambda (x) (reduce combine-rows x)))
-       (mapcar #'length)
-       (reduce #'+)))
+  (-<>> groups
+        (mapcar (lambda (x) (reduce combine-rows x)))
+        (reduce #'+ <> :key #'length)))
 
 (defun part-1 ()
   (let ((groups (read-day-input 6 #'parse-group :separator "\\n\\n")))
