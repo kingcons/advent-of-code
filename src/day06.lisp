@@ -2,16 +2,20 @@
   (:nicknames :day-06)
   (:use :cl)
   (:import-from :advent2020.util #:read-day-input)
+  (:import-from :arrows #:->> #:-<>>)
   (:export))
 
 (defun parse-group-any (group)
-  (let ((answers (remove-if-not #'alpha-char-p (remove-duplicates group))))
-    (coerce answers 'list)))
+  (-<>> group
+       (remove-duplicates)
+       (remove-if-not #'alpha-char-p)
+       (coerce <> 'list)))
 
 (defun parse-group-all (group)
-  (let* ((entries (cl-ppcre:split "\\n" group))
-         (sets (mapcar (lambda (e) (coerce e 'list)) entries)))
-    (reduce #'intersection sets)))
+  (->> group
+       (cl-ppcre:split "\\n")
+       (mapcar (lambda (e) (coerce e 'list)))
+       (reduce #'intersection)))
 
 (defun part-1 ()
   (let ((groups (read-day-input 6 #'parse-group-any :separator "\\n\\n")))
