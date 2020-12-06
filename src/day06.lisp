@@ -5,22 +5,21 @@
   (:import-from :arrows #:->> #:-<>>)
   (:export))
 
-(defun parse-group-any (group)
-  (-<>> group
-       (remove-duplicates)
-       (remove-if-not #'alpha-char-p)
-       (coerce <> 'list)))
-
-(defun parse-group-all (group)
+(defun parse-group (group)
   (->> group
        (cl-ppcre:split "\\n")
-       (mapcar (lambda (e) (coerce e 'list)))
-       (reduce #'intersection)))
+       (mapcar (lambda (e) (coerce e 'list)))))
+
+(defun count-groups (groups combine-rows)
+  (->> groups
+       (mapcar (lambda (x) (reduce combine-rows x)))
+       (mapcar #'length)
+       (reduce #'+)))
 
 (defun part-1 ()
-  (let ((groups (read-day-input 6 #'parse-group-any :separator "\\n\\n")))
-    (reduce #'+ (mapcar #'length groups))))
+  (let ((groups (read-day-input 6 #'parse-group :separator "\\n\\n")))
+    (count-groups groups #'union)))
 
 (defun part-2 ()
-  (let ((groups (read-day-input 6 #'parse-group-all :separator "\\n\\n")))
-    (reduce #'+ (mapcar #'length groups))))
+  (let ((groups (read-day-input 6 #'parse-group :separator "\\n\\n")))
+    (count-groups groups #'intersection)))
