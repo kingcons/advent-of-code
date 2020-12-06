@@ -2,7 +2,6 @@
   (:nicknames :day-05)
   (:use :cl)
   (:import-from :advent2020.util #:read-day-input)
-  (:import-from :arrows #:-<>>)
   (:export #:decode #:highest-seat-id))
 
 (in-package :day-05)
