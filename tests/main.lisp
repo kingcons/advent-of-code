@@ -78,3 +78,12 @@
 
 (deftest day04-part2
   (ok (day-04:count-valid-passports *passports*) 4))
+
+(defparameter *boarding-passes*
+  '("FBFBBFFRLR"
+    "BFFFBBFRRR"
+    "FFFBBBFRRR"
+    "BBFFBBFRLL"))
+
+(deftest day05-part1
+  (ok (day-05:highest-seat-id *boarding-passes*) 7))
