@@ -126,9 +126,22 @@
     (ok (day-07:count-containers :shiny-gold graph) 4)))
 
 (deftest day07-part2
-  (let ((graph (day-07:build-graph *rules*)))
-    (ok (day-07:count-contents :shiny-gold graph) 32)))
-
-(deftest day07-part3
   (let ((graph (day-07:build-graph *fancy-rules*)))
     (ok (day-07:count-contents :shiny-gold graph) 126)))
+
+(defparameter *code*
+  #((:nop 0)
+    (:acc 1)
+    (:jmp 4)
+    (:acc 3)
+    (:jmp -3)
+    (:acc -99)
+    (:acc 1)
+    (:jmp -4)
+    (:acc 6)))
+
+(deftest day08-part1
+  (ok (screamer:one-value (day-08:final-acc-value *code*)) 5))
+
+(deftest day08-part2
+  (ok (day-08:final-acc-value *code*) 8))
