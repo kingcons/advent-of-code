@@ -2,7 +2,7 @@
   :version "0.1.0"
   :author "Brit Butler"
   :license "MIT"
-  :depends-on ("alexandria" "arrows" "cl-ppcre")
+  :depends-on ("alexandria" "arrows" "cl-ppcre" "graph")
   :components ((:module "src"
                 :serial t
                 :components
@@ -13,7 +13,8 @@
                  (:file "day03")
                  (:file "day04")
                  (:file "day05")
-                 (:file "day06"))))
+                 (:file "day06")
+                 (:file "day07"))))
   :description ""
   :in-order-to ((test-op (test-op "advent2020/tests"))))
 

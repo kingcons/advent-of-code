@@ -87,3 +87,35 @@
 
 (deftest day05-part1
   (ok (day-05:highest-seat-id *boarding-passes*) 7))
+
+(defparameter *rules*
+  '((:light-red (:bright-white . 1) (:muted-yellow . 2))
+    (:dark-orange (:bright-white . 3) (:muted-yellow . 4))
+    (:bright-white (:shiny-gold . 1))
+    (:muted-yellow (:shiny-gold . 2) (:faded-blue . 9))
+    (:shiny-gold (:dark-olive . 3) (:vibrant-plum . 2))
+    (:dark-olive (:faded-blue . 3) (:dotted-black . 4))
+    (:vibrant-plum (:faded-blue . 5) (:dotted-black . 6))
+    (:faded-blue)
+    (:dotted-black)))
+
+(defparameter *fancy-rules*
+  '((:shiny-gold (:dark-red . 2))
+    (:dark-red (:dark-orange . 2))
+    (:dark-orange (:dark-yellow . 2))
+    (:dark-yellow (:dark-green . 2))
+    (:dark-green (:dark-blue . 2))
+    (:dark-blue (:dark-violet . 2))
+    (:dark-violet)))
+
+(deftest day07-part1
+  (let ((graph (day-07:build-graph *rules*)))
+    (ok (day-07:count-containers :shiny-gold graph) 4)))
+
+(deftest day07-part2
+  (let ((graph (day-07:build-graph *rules*)))
+    (ok (day-07:count-contents :shiny-gold graph) 32)))
+
+(deftest day07-part3
+  (let ((graph (day-07:build-graph *fancy-rules*)))
+    (ok (day-07:count-contents :shiny-gold graph) 126)))
