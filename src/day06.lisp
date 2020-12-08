@@ -3,7 +3,9 @@
   (:use :cl)
   (:import-from :advent2020.util #:read-day-input)
   (:import-from :arrows #:->> #:-<>>)
-  (:export))
+  (:export #:parse-group #:count-groups))
+
+(in-package :day-06)
 
 (defun parse-group (group)
   (->> group

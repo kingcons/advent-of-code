@@ -88,6 +88,19 @@
 (deftest day05-part1
   (ok (day-05:highest-seat-id *boarding-passes*) 7))
 
+(defparameter *groups*
+  '(((#\a #\b #\c))
+    ((#\a) (#\b) (#\c))
+    ((#\a #\b) (#\a #\c))
+    ((#\a) (#\a) (#\a) (#\a))
+    ((#\b))))
+
+(deftest day06-part1
+  (ok (day-06:count-groups *groups* #'union) 3))
+
+(deftest day06-part2
+  (ok (day-06:count-groups *groups* #'intersection) 0))
+
 (defparameter *rules*
   '((:light-red (:bright-white . 1) (:muted-yellow . 2))
     (:dark-orange (:bright-white . 3) (:muted-yellow . 4))
