@@ -140,8 +140,38 @@
     (:jmp -4)
     (:acc 6)))
 
-(deftest day08-part1
-  (ok (screamer:one-value (day-08:final-acc-value *code*)) 5))
+;; (deftest day08-part1
+;;   (ok (screamer:one-value (day-08:exit-value (day-08:final-acc-value *code*))) 5))
 
-(deftest day08-part2
-  (ok (day-08:final-acc-value *code*) 8))
+;; (deftest day08-part2
+;;   (ok (day-08:final-acc-value *code*) 8))
+
+(defparameter *xmas*
+  '(35
+    20
+    15
+    25
+    47
+    40
+    62
+    55
+    65
+    95
+    102
+    117
+    150
+    182
+    127
+    219
+    299
+    277
+    309
+    576))
+
+(deftest day09-part1
+  (let ((day-09:*width* 5))
+    (ok (day-09:find-invalid-number *xmas*) 127)))
+
+(deftest day09-part2
+  (let ((day-09:*width* 5))
+    (ok (day-09:find-invalid-range *xmas*) 62)))
