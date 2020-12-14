@@ -147,7 +147,7 @@
 ;;   (ok (day-08:final-acc-value *code*) 8))
 
 (defparameter *xmas*
-  '(35
+  #(35
     20
     15
     25
@@ -174,4 +174,4 @@
 
 (deftest day09-part2
   (let ((day-09:*width* 5))
-    (ok (day-09:find-invalid-range *xmas*) 62)))
+    (ok (day-09:find-invalid-slice *xmas*) 62)))
