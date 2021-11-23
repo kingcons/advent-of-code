@@ -1,11 +1,10 @@
-(defpackage :advent2020.day-06
-  (:nicknames :day-06)
-  (:use :cl)
-  (:import-from :advent2020.util #:read-day-input)
+(defpackage :aoc.2020.06
+  (:nicknames :2020.06)
+  (:use :cl :aoc.util)
   (:import-from :arrows #:->> #:-<>>)
   (:export #:parse-group #:count-groups))
 
-(in-package :day-06)
+(in-package :2020.06)
 
 (defun parse-group (group)
   (->> group
@@ -18,9 +17,9 @@
         (reduce #'+ <> :key #'length)))
 
 (defun part-1 ()
-  (let ((groups (read-day-input 6 #'parse-group :separator "\\n\\n")))
+  (let ((groups (read-day-input #'parse-group :separator "\\n\\n")))
     (count-groups groups #'union)))
 
 (defun part-2 ()
-  (let ((groups (read-day-input 6 #'parse-group :separator "\\n\\n")))
+  (let ((groups (read-day-input #'parse-group :separator "\\n\\n")))
     (count-groups groups #'intersection)))

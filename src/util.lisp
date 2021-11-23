@@ -1,13 +1,14 @@
-(defpackage :advent2020.util
+(defpackage :aoc.util
   (:use :cl)
   (:export #:read-day-input))
 
-(in-package :advent2020.util)
+(in-package :aoc.util)
 
-(defmacro read-day-input (day item-parser &key (separator "\\n"))
-  (let ((filename (format nil "src/day~2,'0d-input.dat" day)))
+(defmacro read-day-input (item-parser &key (separator "\\n"))
+  (let* ((base-pathname (or *load-pathname* *compile-file-pathname*))
+         (filename (make-pathname :defaults base-pathname :type "dat")))
     `(arrows:->> ,filename
-       (asdf:system-relative-pathname :advent2020)
-       (alexandria:read-file-into-string)
-       (cl-ppcre:split ,separator)
-       (mapcar ,item-parser))))
+                 (asdf:system-relative-pathname :advent)
+                 (alexandria:read-file-into-string)
+                 (cl-ppcre:split ,separator)
+                 (mapcar ,item-parser))))

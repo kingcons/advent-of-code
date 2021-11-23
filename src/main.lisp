@@ -1,5 +1,5 @@
-(defpackage advent2020
+(defpackage aoc
   (:use :cl))
-(in-package :advent2020)
+(in-package :aoc)
 
 ;; blah blah blah.

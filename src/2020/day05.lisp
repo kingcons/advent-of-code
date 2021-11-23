@@ -1,10 +1,9 @@
-(defpackage :advent2020.day-05
-  (:nicknames :day-05)
-  (:use :cl)
-  (:import-from :advent2020.util #:read-day-input)
+(defpackage :aoc.2020.05
+  (:nicknames :2020.05)
+  (:use :cl :aoc.util)
   (:export #:decode #:highest-seat-id))
 
-(in-package :day-05)
+(in-package :2020.05)
 
 (defun decode-bits (string &key (ones #\B))
   (loop with sum = 0
@@ -38,9 +37,9 @@
             do (return-from find-open-seat seat-id))))
 
 (defun part-1 ()
-  (let ((passes (read-day-input 5 #'identity)))
+  (let ((passes (read-day-input #'identity)))
     (highest-seat-id passes)))
 
 (defun part-2 ()
-  (let ((passes (read-day-input 5 #'identity)))
+  (let ((passes (read-day-input #'identity)))
     (find-open-seat passes)))

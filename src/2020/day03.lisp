@@ -1,10 +1,9 @@
-(defpackage :advent2020.day-03
-  (:nicknames :day-03)
-  (:use :cl)
-  (:import-from :advent2020.util #:read-day-input)
+(defpackage :aoc.2020.03
+  (:nicknames :2020.03)
+  (:use :cl :aoc.util)
   (:export #:count-trees #:count-collisions))
 
-(in-package :day-03)
+(in-package :2020.03)
 
 (defun collision? (terrain column)
   (char= #\# (char terrain (mod column (length terrain)))))
@@ -24,9 +23,9 @@
     finally (return (reduce #'* counts))))
 
 (defun part-1 ()
-  (let ((map (read-day-input 3 #'identity)))
+  (let ((map (read-day-input #'identity)))
     (count-trees map)))
 
 (defun part-2 ()
-  (let ((map (read-day-input 3 #'identity)))
+  (let ((map (read-day-input #'identity)))
     (count-collisions map)))

@@ -1,11 +1,10 @@
-(defpackage :advent2020.day-04
-  (:nicknames :day-04)
-  (:use :cl)
-  (:import-from :advent2020.util #:read-day-input)
+(defpackage :aoc.2020.04
+  (:nicknames :2020.04)
+  (:use :cl :aoc.util)
   (:import-from :cl-ppcre #:regex-replace-all #:split)
   (:export #:count-non-polar-ids #:count-valid-passports))
 
-(in-package :day-04)
+(in-package :2020.04)
 
 (defparameter *required-fields*
   '("byr" "iyr" "eyr" "hgt" "hcl" "ecl" "pid"))
@@ -74,9 +73,9 @@
   (loop for id in ids counting (valid-passport? id)))
 
 (defun part-1 ()
-  (let ((data (read-day-input 4 #'parse-identification :separator "\\n\\n")))
+  (let ((data (read-day-input #'parse-identification :separator "\\n\\n")))
     (count-non-polar-ids data)))
 
 (defun part-2 ()
-  (let ((data (read-day-input 4 #'parse-identification :separator "\\n\\n")))
+  (let ((data (read-day-input #'parse-identification :separator "\\n\\n")))
     (count-valid-passports data)))

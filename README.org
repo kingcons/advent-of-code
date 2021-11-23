@@ -1,4 +1,4 @@
-* Advent2020 
+* Advent of Code
 
 ** Usage
 
@@ -10,7 +10,7 @@
 
 ** Copyright
 
-Copyright (c) 2020 Brit Butler (brit@kingcons.io)
+Copyright (c) 2021 Brit Butler (brit@kingcons.io)
 
 ** License
 

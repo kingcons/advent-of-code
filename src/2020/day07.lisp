@@ -1,12 +1,11 @@
-(defpackage :advent2020.day-07
-  (:nicknames :day-07)
-  (:use :cl)
-  (:import-from :advent2020.util #:read-day-input)
+(defpackage :aoc.2020.07
+  (:nicknames :2020.07)
+  (:use :cl :aoc.util)
   (:import-from :alexandria #:make-keyword)
   (:import-from :graph #:digraph #:add-edge)
   (:export #:build-graph #:count-containers #:count-contents))
 
-(in-package :day-07)
+(in-package :2020.07)
 
 (defun parse-rule (rule)
   (flet ((build-node (item)
@@ -49,9 +48,9 @@
               summing (+ weight (* weight (count-contents node graph)))))))
 
 (defun part-1 ()
-  (let ((rules (read-day-input 7 #'parse-rule)))
+  (let ((rules (read-day-input #'parse-rule)))
     (count-containers :shiny-gold (build-graph rules))))
 
 (defun part-2 ()
-  (let ((rules (read-day-input 7 #'parse-rule)))
+  (let ((rules (read-day-input #'parse-rule)))
     (count-contents :shiny-gold (build-graph rules))))

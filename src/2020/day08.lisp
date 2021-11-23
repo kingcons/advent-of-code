@@ -1,12 +1,11 @@
-(defpackage :advent2020.day-08
-  (:nicknames :day-08)
-  (:use :cl)
-  (:import-from :advent2020.util #:read-day-input)
+(defpackage :aoc.2020.08
+  (:nicknames :2020.08)
+  (:use :cl :aoc.util)
   (:import-from :alexandria #:make-keyword)
   (:import-from :screamer #:make-variable)
   (:export #:final-acc-value))
 
-(in-package :day-08)
+(in-package :2020.08)
 
 (defvar *mutate* nil)
 (defvar *mutations* (make-variable))
@@ -62,11 +61,11 @@
     patched))
 
 (defun part-1 ()
-  (let ((code (coerce (read-day-input 8 #'parse-instruction) 'vector)))
+  (let ((code (coerce (read-day-input #'parse-instruction) 'vector)))
     (screamer:one-value (final-acc-value code))))
 
 (defun part-2 ()
-  (loop with code = (coerce (read-day-input 8 #'parse-instruction) 'vector)
+  (loop with code = (coerce (read-day-input #'parse-instruction) 'vector)
         for i = 0 then (1+ i)
         for patched = (apply-patch code i)
         unless (eql patched :skip)

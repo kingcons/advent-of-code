@@ -1,29 +1,36 @@
-(defpackage advent2020/tests/main
-  (:use :cl
-        :rove))
-(in-package :advent2020/tests/main)
+(defpackage aoc.tests.2020
+  (:use :cl :rove)
+  (:nicknames :tests.2020))
 
-;; NOTE: To run this test file, execute `(asdf:test-system :advent2020)' in your Lisp.
+(in-package :tests.2020)
+
+;; NOTE: To run this test file, execute `(asdf:test-system :advent)' in your Lisp.
+
+;;;; Day 01
 
 (deftest day01-part1
   (let ((items '(1721 979 366 299 675 1456)))
-    (ok (day-01:find-pair items) 514579)))
+    (ok (2020.01:find-pair items) 514579)))
 
 (deftest day01-part2
   (let ((items '(1 2 3 4 5 6 7 8 9 20 979 366 675)))
-    (ok (day-01:find-triple items) 241861950)))
+    (ok (2020.01:find-triple items) 241861950)))
+
+;;;; Day 02
 
 (deftest day02-part1
   (let ((items '((1 3 #\a "abcde")
                  (1 3 #\b "cdefg")
                  (2 9 #\c "ccccccccc"))))
-    (ok (day-02:count-valid items) 2)))
+    (ok (2020.02:count-valid items) 2)))
 
 (deftest day02-part2
   (let ((items '((1 3 #\a "abcde")
                  (1 3 #\b "cdefg")
                  (2 9 #\c "ccccccccc"))))
-    (ok (day-02:count-xor-valid items) 1)))
+    (ok (2020.02:count-xor-valid items) 1)))
+
+;;;; Day 03
 
 (defparameter *map*
   '("..##......."
@@ -39,10 +46,12 @@
     ".#..#...#.#"))
 
 (deftest day03-part1
-  (ok (day-03:count-trees *map*) 7))
+  (ok (2020.03:count-trees *map*) 7))
 
 (deftest day03-part2
-  (ok (day-03:count-collisions *map*) 336))
+  (ok (2020.03:count-collisions *map*) 336))
+
+;;;; Day 04
 
 (defparameter *passports*
   '((("ecl" "gry") ("pid" "860033327") ("eyr" "2020") ("hcl" "#fffffd")
@@ -74,10 +83,12 @@
      ("eyr" "2021") ("pid" "093154719"))))
 
 (deftest day04-part1
-  (ok (day-04:count-non-polar-ids *passports*) 2))
+  (ok (2020.04:count-non-polar-ids *passports*) 2))
 
 (deftest day04-part2
-  (ok (day-04:count-valid-passports *passports*) 4))
+  (ok (2020.04:count-valid-passports *passports*) 4))
+
+;;;; Day 05
 
 (defparameter *boarding-passes*
   '("FBFBBFFRLR"
@@ -86,7 +97,9 @@
     "BBFFBBFRLL"))
 
 (deftest day05-part1
-  (ok (day-05:highest-seat-id *boarding-passes*) 7))
+  (ok (2020.05:highest-seat-id *boarding-passes*) 7))
+
+;;;; Day 06
 
 (defparameter *groups*
   '(((#\a #\b #\c))
@@ -96,10 +109,12 @@
     ((#\b))))
 
 (deftest day06-part1
-  (ok (day-06:count-groups *groups* #'union) 3))
+  (ok (2020.06:count-groups *groups* #'union) 3))
 
 (deftest day06-part2
-  (ok (day-06:count-groups *groups* #'intersection) 0))
+  (ok (2020.06:count-groups *groups* #'intersection) 0))
+
+;;;; Day 07
 
 (defparameter *rules*
   '((:light-red (:bright-white . 1) (:muted-yellow . 2))
@@ -122,12 +137,14 @@
     (:dark-violet)))
 
 (deftest day07-part1
-  (let ((graph (day-07:build-graph *rules*)))
-    (ok (day-07:count-containers :shiny-gold graph) 4)))
+  (let ((graph (2020.07:build-graph *rules*)))
+    (ok (2020.07:count-containers :shiny-gold graph) 4)))
 
 (deftest day07-part2
-  (let ((graph (day-07:build-graph *fancy-rules*)))
-    (ok (day-07:count-contents :shiny-gold graph) 126)))
+  (let ((graph (2020.07:build-graph *fancy-rules*)))
+    (ok (2020.07:count-contents :shiny-gold graph) 126)))
+
+;;;; Day 08
 
 (defparameter *code*
   #((:nop 0)
@@ -141,10 +158,12 @@
     (:acc 6)))
 
 ;; (deftest day08-part1
-;;   (ok (screamer:one-value (day-08:exit-value (day-08:final-acc-value *code*))) 5))
+;;   (ok (screamer:one-value (2020.08:exit-value (2020.08:final-acc-value *code*))) 5))
 
 ;; (deftest day08-part2
-;;   (ok (day-08:final-acc-value *code*) 8))
+;;   (ok (2020.08:final-acc-value *code*) 8))
+
+;;;; Day 09
 
 (defparameter *xmas*
   #(35
@@ -169,9 +188,9 @@
     576))
 
 (deftest day09-part1
-  (let ((day-09:*width* 5))
-    (ok (day-09:find-invalid-number *xmas*) 127)))
+  (let ((2020.09:*width* 5))
+    (ok (2020.09:find-invalid-number *xmas*) 127)))
 
 (deftest day09-part2
-  (let ((day-09:*width* 5))
-    (ok (day-09:find-invalid-slice *xmas*) 62)))
+  (let ((2020.09:*width* 5))
+    (ok (2020.09:find-invalid-slice *xmas*) 62)))

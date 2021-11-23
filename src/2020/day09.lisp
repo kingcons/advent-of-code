@@ -1,11 +1,10 @@
-(defpackage :advent2020.day-09
-  (:nicknames :day-09)
-  (:use :cl)
-  (:import-from :advent2020.util #:read-day-input)
+(defpackage :aoc.2020.09
+  (:nicknames :2020.09)
+  (:use :cl :aoc.util)
   (:import-from :screamer #:/=v #:=v #:+v #:>v #:andv)
   (:export #:find-invalid-number #:find-invalid-slice #:*width*))
 
-(in-package :day-09)
+(in-package :2020.09)
 
 (defvar *width* 25)
 
@@ -26,7 +25,7 @@
         finally (return (values (aref data i) i))))
 
 (defun part-1 ()
-  (let ((data (coerce (read-day-input 9 #'parse-integer) 'vector)))
+  (let ((data (coerce (read-day-input #'parse-integer) 'vector)))
     (find-invalid-number data)))
 
 (defun find-weakness (data target index)
@@ -47,5 +46,5 @@
     (find-weakness data target index)))
 
 (defun part-2 ()
-  (let ((data (coerce (read-day-input 9 #'parse-integer) 'vector)))
+  (let ((data (coerce (read-day-input #'parse-integer) 'vector)))
     (find-invalid-slice data)))

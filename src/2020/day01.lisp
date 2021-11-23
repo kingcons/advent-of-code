@@ -1,11 +1,10 @@
-(defpackage :advent2020.day-01
-  (:nicknames :day-01)
-  (:use :cl)
-  (:import-from :advent2020.util #:read-day-input)
+(defpackage :aoc.2020.01
+  (:nicknames :2020.01)
+  (:use :cl :aoc.util)
   (:import-from :alexandria #:when-let)
   (:export #:find-pair #:find-triple))
 
-(in-package :day-01)
+(in-package :2020.01)
 
 (defun find-pair (items)
   (dolist (item-1 items)
@@ -22,9 +21,9 @@
         (return-from find-triple (* item-1 item-2 item-3))))))
 
 (defun part-1 ()
-  (let ((items (read-day-input 1 #'parse-integer)))
+  (let ((items (read-day-input #'parse-integer)))
     (find-pair items)))
 
 (defun part-2 ()
-  (let ((items (read-day-input 1 #'parse-integer)))
+  (let ((items (read-day-input #'parse-integer)))
     (find-triple items)))
