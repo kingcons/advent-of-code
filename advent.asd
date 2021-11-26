@@ -2,7 +2,7 @@
   :version "0.1.0"
   :author "Brit Butler"
   :license "MIT"
-  :depends-on ("alexandria" "arrows" "cl-ppcre" "graph" "screamer")
+  :depends-on ("alexandria" "arrows" "cl-ppcre" "graph" "screamer" "mgl-pax")
   :components ((:module "src"
                 :components
                 ((:file "main")
@@ -22,7 +22,11 @@
                    (:file "day06")
                    (:file "day07")
                    (:file "day08")
-                   (:file "day09"))))))
+                   (:file "day09")))
+                 (:module "2019"
+                  :pathname "2019"
+                  :components
+                  ((:file "day01"))))))
   :description "Advent of Code solutions"
   :in-order-to ((test-op (test-op "advent/tests"))))
 
@@ -34,6 +38,7 @@
   :components ((:module "tests"
                 :components
                 ((:file "2021")
-                 (:file "2020"))))
+                 (:file "2020")
+                 (:file "2019"))))
   :description "Test system for advent"
   :perform (test-op (op c) (symbol-call :rove :run c)))
