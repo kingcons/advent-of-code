@@ -5,14 +5,16 @@
   :depends-on ("alexandria" "arrows" "cl-ppcre" "graph" "screamer" "mgl-pax")
   :components ((:module "src"
                 :components
-                ((:file "main")
+                ((:file "main" :depends-on ("2019" "2020" "2021"))
                  (:file "util")
                  (:module "2021"
                   :pathname "2021"
+                  :depends-on ("util")
                   :components
                   ((:file "day01")))
                  (:module "2020"
                   :pathname "2020"
+                  :depends-on ("util")
                   :components
                   ((:file "day01")
                    (:file "day02")
@@ -25,6 +27,7 @@
                    (:file "day09")))
                  (:module "2019"
                   :pathname "2019"
+                  :depends-on ("util")
                   :components
                   ((:file "day01"))))))
   :description "Advent of Code solutions"
