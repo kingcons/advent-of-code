@@ -37,6 +37,11 @@ the DOLIST version and 371 bytes for the functional version.
 ;;   0 bytes consed
 ```")
 
+(defun fuel-for (mass)
+  (declare (optimize speed)
+           (type fixnum mass))
+  (- (truncate mass 3) 2))
+
 (defun fuel-requirements-1 (masses)
   "Compute the fuel requirements for the list of MASSES.
 
@@ -45,18 +50,17 @@ the DOLIST version and 371 bytes for the functional version.
   (2019.01:fuel-requirements-1 masses))
 => 34241
 ```"
-  (flet ((fuel-for (x) (- (floor x 3) 2)))
-    (reduce #'+ (mapcar #'fuel-for masses))))
+  (reduce #'+ (mapcar #'fuel-for masses)))
 
 (defun fuel-requirements-2 (masses)
   (let ((sum 0))
     (dolist (mass masses)
-      (incf sum (- (floor mass 3) 2)))
+      (incf sum (fuel-for mass)))
     sum))
 
 (defun fuel-requirements-3 (masses)
-  (loop for mass of-type fixnum in masses
-        summing (- (floor mass 3) 2)))
+  (loop for mass in masses
+        sum (fuel-for mass)))
 
 (defsection @total-fuel (:title "Part 2")
   "To extend the problem, we'll compute a fixed point for the fuel.
@@ -66,6 +70,11 @@ and the final was a monolithic LOOP. I was a bit surprised to see the
 monolithic LOOP consistently outperform the other two approaches.
 The macroexpansion for the nested loops is a lot bulkier and I suspect at
 the end of the day SBCL's optimizer just can't eliminate all the cruft.
+
+Two final interesting notes:
+- SBCL seems to generate tighter assembly for `truncate` than `floor` in many cases.
+- Factoring out fuel-for as a separate helper and adding type and optimize declarations there
+  keeps the rest of the code clean and gets us the speed benefits of typing in LOOP, etc.
 
 ```common-lisp
 (let ((data (read-day-input #'parse-integer)))
@@ -88,27 +97,23 @@ the end of the day SBCL's optimizer just can't eliminate all the cruft.
 => 51316
 ```"
   (labels ((fixed-point (x &optional (acc 0))
-             (let ((fuel (- (floor x 3) 2)))
+             (let ((fuel (fuel-for x)))
                (if (plusp fuel)
                    (fixed-point fuel (+ acc fuel))
                    acc))))
     (reduce #'+ (mapcar #'fixed-point masses))))
 
 (defun total-fuel-needed-2 (masses)
-  (flet ((fuel-for (initial-mass)
-           (- (floor initial-mass 3) 2)))
-    (loop for mass in masses
-          summing (loop for fuel = (fuel-for mass) then (fuel-for fuel)
-                        while (plusp fuel)
-                        sum fuel))))
+  (loop for mass in masses
+        sum (loop for fuel = (fuel-for mass) then (fuel-for fuel)
+                  while (plusp fuel)
+                  sum fuel)))
 
 (defun total-fuel-needed-3 (masses)
-  (flet ((fuel-for (initial-mass)
-           (- (floor initial-mass 3) 2)))
-    (loop with total = 0
-          for mass in masses
-          for fuel = (fuel-for mass)
-          while (plusp fuel)
-          do (setf total (+ total fuel)
-                   fuel (fuel-for fuel))
-          finally (return total))))
+  (loop with total = 0
+        for mass in masses
+        for fuel = (fuel-for mass)
+        while (plusp fuel)
+        do (setf total (+ total fuel)
+                 fuel (fuel-for fuel))
+        finally (return total)))
