@@ -72,6 +72,7 @@ The macroexpansion for the nested loops is a lot bulkier and I suspect at
 the end of the day SBCL's optimizer just can't eliminate all the cruft.
 
 Two final interesting notes:
+
 - SBCL seems to generate tighter assembly for `truncate` than `floor` in many cases.
 - Factoring out fuel-for as a separate helper and adding type and optimize declarations there
   keeps the rest of the code clean and gets us the speed benefits of typing in LOOP, etc.
