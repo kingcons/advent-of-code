@@ -4,17 +4,16 @@
 
 (in-package :2019.01)
 
-(defsection @2019.01 (:title "Day 1 - Fuel Requirements")
-  (@fuel-requirements section)
+(defsection @2019.01 (:title "The Tyranny of the Rocket Equation")
+  (@part-1 section)
   (fuel-requirements-1 function)
   (fuel-requirements-2 function)
   (fuel-requirements-3 function)
-  (@total-fuel section)
+  (@part-2 section)
   (total-fuel-needed-1 function)
-  (total-fuel-needed-2 function)
-  (total-fuel-needed-3 function))
+  (total-fuel-needed-2 function))
 
-(defsection @fuel-requirements (:title "Part 1")
+(defsection @part-1 (:title "Fuel for Modules")
   "Part 1 is just a simple summation problem.
 We need to compute the total fuel requirements based on a list of
 masses provided. To make things a little interesting I wrote three
@@ -62,16 +61,16 @@ the DOLIST version and 371 bytes for the functional version.
   (loop for mass in masses
         sum (fuel-for mass)))
 
-(defsection @total-fuel (:title "Part 2")
+(defun part-1 ()
+  (let ((data (read-day-input #'parse-integer)))
+    (summarize (fuel-requirements-3 data))))
+
+(defsection @part-2 (:title "Fuel for Fuel")
   "To extend the problem, we'll compute a fixed point for the fuel.
 Similar to the first part, I wrote a few different variations on this problem.
-The first was a classic tail recursive approach, the second used nested LOOPs,
-and the final was a monolithic LOOP. I was a bit surprised to see the
-monolithic LOOP consistently outperform the other two approaches.
-The macroexpansion for the nested loops is a lot bulkier and I suspect at
-the end of the day SBCL's optimizer just can't eliminate all the cruft.
+The first was a classic tail recursive approach and the second used nested LOOPs,
 
-Two final interesting notes:
+Two interesting notes:
 
 - SBCL seems to generate tighter assembly for `truncate` than `floor` in many cases.
 - Factoring out fuel-for as a separate helper and adding type and optimize declarations there
@@ -79,13 +78,13 @@ Two final interesting notes:
 
 ```common-lisp
 (let ((data (read-day-input #'parse-integer)))
-  (time (total-fuel-needed-3 data)))
+  (time (total-fuel-needed-2 data)))
 
 ;; Evaluation took:
 ;;   0.000 seconds of real time
-;;   0.000008 seconds of total run time (0.000007 user, 0.000001 system)
+;;   0.000018 seconds of total run time (0.000017 user, 0.000001 system)
 ;;   100.00% CPU
-;;   16,976 processor cycles
+;;   42,426 processor cycles
 ;;   0 bytes consed
 ```")
 
@@ -110,11 +109,6 @@ Two final interesting notes:
                   while (plusp fuel)
                   sum fuel)))
 
-(defun total-fuel-needed-3 (masses)
-  (loop with total = 0
-        for mass in masses
-        for fuel = (fuel-for mass)
-        while (plusp fuel)
-        do (setf total (+ total fuel)
-                 fuel (fuel-for fuel))
-        finally (return total)))
+(defun part-2 ()
+  (let ((data (read-day-input #'parse-integer)))
+    (summarize (total-fuel-needed-2 data))))
