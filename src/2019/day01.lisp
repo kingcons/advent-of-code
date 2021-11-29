@@ -42,13 +42,6 @@ the DOLIST version and 371 bytes for the functional version.
   (- (truncate mass 3) 2))
 
 (defun fuel-requirements-1 (masses)
-  "Compute the fuel requirements for the list of MASSES.
-
-```cl-transcript
-(let ((masses '(12 14 1969 100756)))
-  (2019.01:fuel-requirements-1 masses))
-=> 34241
-```"
   (reduce #'+ (mapcar #'fuel-for masses)))
 
 (defun fuel-requirements-2 (masses)
@@ -68,7 +61,7 @@ the DOLIST version and 371 bytes for the functional version.
 (defsection @part-2 (:title "Fuel for Fuel")
   "To extend the problem, we'll compute a fixed point for the fuel.
 Similar to the first part, I wrote a few different variations on this problem.
-The first was a classic tail recursive approach and the second used nested LOOPs,
+The first was a classic tail recursive approach and the second used nested LOOPs.
 
 Two interesting notes:
 
@@ -89,13 +82,6 @@ Two interesting notes:
 ```")
 
 (defun total-fuel-needed-1 (masses)
-  "Compute the total fuel needed for MASSES.
-
-```cl-transcript
-(let ((masses '(12 14 1969 100756)))
-  (2019.01:total-fuel-needed-1 masses))
-=> 51316
-```"
   (labels ((fixed-point (x &optional (acc 0))
              (let ((fuel (fuel-for x)))
                (if (plusp fuel)

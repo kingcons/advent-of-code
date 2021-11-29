@@ -1,32 +1,41 @@
-(defpackage :aoc.2020.02
+(mgl-pax:define-package :aoc.2020.02
   (:nicknames :2020.02)
-  (:use :cl :aoc.util)
-  (:export #:count-valid #:count-xor-valid))
+  (:use :cl :aoc.util :mgl-pax))
 
 (in-package :2020.02)
+
+(defsection @2020.02 (:title "Password Philosophy")
+  (@part-1 section)
+  (count-valid function)
+  (@part-2 section)
+  (count-xor-valid function))
+
+(defsection @part-1 (:title "Count valid passwords"))
 
 (defun parse-password (row)
   (cl-ppcre:register-groups-bind ((#'parse-integer min max) letter password)
       ("(\\d+)-(\\d+) (\\w): (\\w+)" row)
     (list min max letter password)))
 
-(defun xor-match? (min max letter password)
-  (alexandria:xor (string= letter password :start2 (1- min) :end2 min)
-                  (string= letter password :start2 (1- max) :end2 max)))
-
 (defun count-valid (items)
   (loop for (min max letter password) in items
         counting (let ((count (count letter password :test #'string=)))
                    (<= min count max))))
 
+(defun part-1 ()
+  (let ((items (read-day-input #'parse-password)))
+    (summarize (count-valid items))))
+
+(defsection @part-2 (:title "Count using XOR"))
+
+(defun xor-match? (min max letter password)
+  (alexandria:xor (string= letter password :start2 (1- min) :end2 min)
+                  (string= letter password :start2 (1- max) :end2 max)))
+
 (defun count-xor-valid (items)
   (loop for (min max letter password) in items
         counting (xor-match? min max letter password)))
 
-(defun part-1 ()
-  (let ((items (read-day-input #'parse-password)))
-    (count-valid items)))
-
 (defun part-2 ()
   (let ((items (read-day-input #'parse-password)))
-    (count-xor-valid items)))
+    (summarize (count-xor-valid items))))

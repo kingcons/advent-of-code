@@ -188,9 +188,9 @@
     576))
 
 (deftest day09-part1
-  (let ((2020.09:*width* 5))
+  (let ((2020.09::*width* 5))
     (ok (2020.09:find-invalid-number *xmas*) 127)))
 
 (deftest day09-part2
-  (let ((2020.09:*width* 5))
+  (let ((2020.09::*width* 5))
     (ok (2020.09:find-invalid-slice *xmas*) 62)))

@@ -1,11 +1,18 @@
-(defpackage :aoc.2020.07
+(mgl-pax:define-package :aoc.2020.07
   (:nicknames :2020.07)
-  (:use :cl :aoc.util)
+  (:use :cl :aoc.util :mgl-pax)
   (:import-from :alexandria #:make-keyword)
-  (:import-from :graph #:digraph #:add-edge)
-  (:export #:build-graph #:count-containers #:count-contents))
+  (:import-from :graph #:digraph #:add-edge))
 
 (in-package :2020.07)
+
+(defsection @2020.07 (:title "Handy Haversacks")
+  (@part-1 section)
+  (count-containers function)
+  (@part-2 section)
+  (count-contents function))
+
+(defsection @part-1 (:title "How many bags can contain a shiny gold bag?"))
 
 (defun parse-rule (rule)
   (flet ((build-node (item)
@@ -31,7 +38,13 @@
              (setf options (append precedents options)
                    to-process (append precedents to-process)))
         until (null to-process)
-        finally (return (remove-duplicates options))))
+        finally (return (length (remove-duplicates options)))))
+
+(defun part-1 ()
+  (let ((rules (read-day-input #'parse-rule)))
+    (summarize (count-containers :shiny-gold (build-graph rules)))))
+
+(defsection @part-2 (:title "How many bags does a shiny gold bag hold?"))
 
 (defgeneric descendents (digraph node)
   (:documentation "Return all nodes succeeding NODE in an edge of DIGRAPH.")
@@ -47,10 +60,6 @@
         (loop for (node weight) in descendents
               summing (+ weight (* weight (count-contents node graph)))))))
 
-(defun part-1 ()
-  (let ((rules (read-day-input #'parse-rule)))
-    (count-containers :shiny-gold (build-graph rules))))
-
 (defun part-2 ()
   (let ((rules (read-day-input #'parse-rule)))
-    (count-contents :shiny-gold (build-graph rules))))
+    (summarize (count-contents :shiny-gold (build-graph rules)))))

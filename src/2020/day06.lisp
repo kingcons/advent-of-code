@@ -1,10 +1,17 @@
-(defpackage :aoc.2020.06
+(mgl-pax:define-package :aoc.2020.06
   (:nicknames :2020.06)
-  (:use :cl :aoc.util)
-  (:import-from :arrows #:->> #:-<>>)
-  (:export #:parse-group #:count-groups))
+  (:use :cl :aoc.util :mgl-pax)
+  (:import-from :arrows #:->> #:-<>>))
 
 (in-package :2020.06)
+
+(defsection @2020.06 (:title "Custom Customs")
+  (@part-1 section)
+  (parse-group function)
+  (@part-2 section)
+  (count-groups function))
+
+(defsection @part-1 (:title "Count any yes answers"))
 
 (defun parse-group (group)
   (->> group
@@ -16,10 +23,12 @@
         (mapcar (lambda (x) (reduce combine-rows x)))
         (reduce #'+ <> :key #'length)))
 
+(defsection @part-2 (:title "Count all yes answers"))
+
 (defun part-1 ()
   (let ((groups (read-day-input #'parse-group :separator "\\n\\n")))
-    (count-groups groups #'union)))
+    (summarize (count-groups groups #'union))))
 
 (defun part-2 ()
   (let ((groups (read-day-input #'parse-group :separator "\\n\\n")))
-    (count-groups groups #'intersection)))
+    (summarize (count-groups groups #'intersection))))

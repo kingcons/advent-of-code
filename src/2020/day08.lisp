@@ -1,11 +1,18 @@
-(defpackage :aoc.2020.08
+(mgl-pax:define-package :aoc.2020.08
   (:nicknames :2020.08)
-  (:use :cl :aoc.util)
+  (:use :cl :aoc.util :mgl-pax)
   (:import-from :alexandria #:make-keyword)
-  (:import-from :screamer #:make-variable)
-  (:export #:final-acc-value))
+  (:import-from :screamer #:make-variable))
 
 (in-package :2020.08)
+
+(defsection @2020.08 (:title "Handheld Halt")
+  (@part-1 section)
+  (final-acc-value function)
+  (@part-2 section)
+  (apply-patch function))
+
+(defsection @part-1 (:title "Find the bootloader error"))
 
 (defvar *mutate* nil)
 (defvar *mutations* (make-variable))
@@ -52,6 +59,12 @@
         do (step-cpu cpu opcode arg)
         finally (return (values (cpu-acc cpu) pc))))
 
+(defun part-1 ()
+  (let ((code (coerce (read-day-input #'parse-instruction) 'vector)))
+    (summarize (screamer:one-value (final-acc-value code)))))
+
+(defsection @part-2 (:title "Fix the bootloader error"))
+
 (defun apply-patch (code address)
   (let ((patched (map 'vector #'copy-list code)))
     (symbol-macrolet ((patch-point (first (aref patched address))))
@@ -60,21 +73,12 @@
       (setf patch-point (if (eql patch-point :nop) :jmp :nop)))
     patched))
 
-(defun part-1 ()
-  (let ((code (coerce (read-day-input #'parse-instruction) 'vector)))
-    (screamer:one-value (final-acc-value code))))
-
 (defun part-2 ()
-  (loop with code = (coerce (read-day-input #'parse-instruction) 'vector)
-        for i = 0 then (1+ i)
-        for patched = (apply-patch code i)
-        unless (eql patched :skip)
-          do (multiple-value-bind (acc pc)
-                 (screamer:one-value (final-acc-value patched))
-               (when (= pc (length code))
-                 (return-from part-2 acc)))))
-
-;; (defun part-2 ()
-;;   (let ((code (coerce (read-day-input 8 #'parse-instruction) 'vector))
-;;         (*mutate* t))
-;;     (screamer:all-values (exit-value (final-acc-value code)))))
+  (let ((code (coerce (read-day-input #'parse-instruction) 'vector)))
+    (summarize (loop for i = 0 then (1+ i)
+                     for patched = (apply-patch code i)
+                     unless (eql patched :skip)
+                       do (multiple-value-bind (acc pc)
+                              (screamer:one-value (final-acc-value patched))
+                            (when (= pc (length code))
+                              (return acc)))))))

@@ -1,10 +1,17 @@
-(defpackage :aoc.2020.09
+(mgl-pax:define-package :aoc.2020.09
   (:nicknames :2020.09)
-  (:use :cl :aoc.util)
-  (:import-from :screamer #:/=v #:=v #:+v #:>v #:andv)
-  (:export #:find-invalid-number #:find-invalid-slice #:*width*))
+  (:use :cl :aoc.util :mgl-pax)
+  (:import-from :screamer #:/=v #:=v #:+v #:>v #:andv))
 
 (in-package :2020.09)
+
+(defsection @2020.09 (:title "Encoding Error")
+  (@part-1 section)
+  (find-invalid-number function)
+  (@part-2 section)
+  (find-invalid-slice function))
+
+(defsection @part-1 (:title "Find vulnerable number"))
 
 (defvar *width* 25)
 
@@ -26,7 +33,9 @@
 
 (defun part-1 ()
   (let ((data (coerce (read-day-input #'parse-integer) 'vector)))
-    (find-invalid-number data)))
+    (summarize (find-invalid-number data))))
+
+(defsection @part-2 (:title "Break the encryption"))
 
 (defun find-weakness (data target index)
   "Find a range of numbers below INDEX in DATA that sum to TARGET.
@@ -47,4 +56,4 @@
 
 (defun part-2 ()
   (let ((data (coerce (read-day-input #'parse-integer) 'vector)))
-    (find-invalid-slice data)))
+    (summarize (find-invalid-slice data))))

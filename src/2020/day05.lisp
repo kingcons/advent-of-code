@@ -1,9 +1,17 @@
-(defpackage :aoc.2020.05
+(mgl-pax:define-package :aoc.2020.05
   (:nicknames :2020.05)
-  (:use :cl :aoc.util)
+  (:use :cl :aoc.util :mgl-pax)
   (:export #:decode #:highest-seat-id))
 
 (in-package :2020.05)
+
+(defsection @2020.05 (:title "Binary Boarding")
+  (@part-1 section)
+  (highest-seat-id function)
+  (@part-2 section)
+  (find-open-seat function))
+
+(defsection @part-1 (:title "Binary Seat Encoding"))
 
 (defun decode-bits (string &key (ones #\B))
   (loop with sum = 0
@@ -25,6 +33,12 @@
 (defun highest-seat-id (passes)
   (loop for pass in passes maximizing (seat-id pass)))
 
+(defun part-1 ()
+  (let ((passes (read-day-input #'identity)))
+    (summarize (highest-seat-id passes))))
+
+(defsection @part-2 (:title "Find the unoccupied seat"))
+
 (defun find-open-seat (passes)
   (let ((table (make-hash-table)))
     (dolist (pass passes)
@@ -36,10 +50,6 @@
                     (gethash (1+ seat-id) table))
             do (return-from find-open-seat seat-id))))
 
-(defun part-1 ()
-  (let ((passes (read-day-input #'identity)))
-    (highest-seat-id passes)))
-
 (defun part-2 ()
   (let ((passes (read-day-input #'identity)))
-    (find-open-seat passes)))
+    (summarize (find-open-seat passes))))
