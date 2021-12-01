@@ -31,7 +31,8 @@
 (defmacro generate-overview ()
   (let* ((days-attempted '(:2019.01
                            :2020.01 :2020.02 :2020.03 :2020.04 :2020.05
-                           :2020.06 :2020.07 :2020.08 :2020.09))
+                           :2020.06 :2020.07 :2020.08 :2020.09
+                           :2021.01))
          (formatted-overview
            (apply 'concatenate 'string
                   (mapcar #'format-day days-attempted))))

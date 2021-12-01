@@ -6,6 +6,10 @@
 
 ;;;; Day 01
 
-;; (deftest day01-part1
-;;   (let ((items '(1721 979 366 299 675 1456)))
-;;     (ok (2020.01:find-pair items) 514579)))
+(deftest day01-part1
+  (let ((items '(199 200 208 210 200 207 240 269 260 263)))
+    (ok (2021.01::count-depths items) 7)))
+
+(deftest day01-part2
+  (let ((items '(199 200 208 210 200 207 240 269 260 263)))
+    (ok (2021.01::count-depths-sliding items) 5)))
