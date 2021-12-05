@@ -10,37 +10,31 @@
 
 (defsection @part-1 (:title "Check the Power Consumption"))
 
-(defun construct-ones (nums)
-  (let ((ones (make-array 12 :element-type 'fixnum)))
-    (dolist (num nums)
-      (loop for digit across num
-            for i = 0 then (1+ i)
-            when (char= digit #\1) do (incf (aref ones i))))
-    ones))
+(defun bits-to-int (bits)
+  (parse-integer (coerce bits 'string) :radix 2))
 
-(defun construct-gamma (ones threshold)
-  (loop for i below 12
-        collect (let ((count (aref ones i)))
-                  (if (>= count threshold) #\1 #\0))))
+(defun char-at (position)
+  (lambda (string)
+    (char string position)))
 
-(defun construct-epsilon (gamma)
-  (loop for i in gamma
-        collect (if (char= i #\0) #\1 #\0)))
+(defun count-ones-at (nums position)
+  (flet ((is-one? (char) (char= #\1 char)))
+    (count-if #'is-one? nums :key (char-at position))))
 
-(defun compute-readings (nums)
-  (let* ((ones (construct-ones nums))
-         (threshold (/ (length nums) 2))
-         (gamma (construct-gamma ones threshold))
-         (epsilon (construct-epsilon gamma)))
-    (list gamma epsilon)))
+(defun gamma-rate (nums)
+  (let ((target (/ (length nums) 2))
+        (size (length (first nums))))
+    (loop for i below size
+          for count = (count-ones-at nums i)
+          collect (if (> count target) #\1 #\0))))
 
-(defun compute-answer (gamma epsilon)
-  (* (parse-integer (coerce gamma 'string) :radix 2)
-     (parse-integer (coerce epsilon 'string) :radix 2)))
+(defun epsilon-rate (gamma)
+  (loop for c in gamma collect (if (char= c #\1) #\0 #\1)))
 
 (defun get-power-consumption (nums)
-  (destructuring-bind (gamma epsilon) (compute-readings nums)
-    (compute-answer gamma epsilon)))
+  (let* ((gamma (gamma-rate nums))
+         (epsilon (epsilon-rate gamma)))
+    (* (bits-to-int gamma) (bits-to-int epsilon))))
 
 (defun part-1 ()
   (let ((data (read-day-input #'identity)))
@@ -48,29 +42,24 @@
 
 (defsection @part-2 (:title "Verify Life Support"))
 
-(defun count-ones (nums position)
-  (flet ((bit-at (string)
-           (char= #\1 (aref string position))))
-    (let ((ones (count-if #'bit-at nums)))
-      (if (>= ones (/ (length nums) 2)) #\1 #\0))))
+(defun correct-bit? (test ones target)
+  (lambda (char)
+    (char= char (if (funcall test ones target) #\1 #\0))))
 
-(defun find-match (ratings)
-  (let ((nums (copy-list ratings)))
-    (loop for i = 0 then (1+ i)
-          until (= (length nums) 1)
-          for target = (count-ones nums i)
-          do (setf nums (remove-if-not (lambda (string) (char= target (aref string i))) nums))
-          finally (return (first nums)))))
-
-(defun find-ratings (nums)
-  (let* ((oxygen (find-match nums))
-         (carbon (find-match nums)))
-    (list oxygen carbon)))
+(defun find-rating (nums test)
+  (let ((report (copy-list nums)))
+    (loop until (= 1 (length report))
+          for i = 0 then (1+ i)
+          for target = (/ (length report) 2)
+          for ones = (count-ones-at report i)
+          do (setf report (delete-if-not (correct-bit? test ones target) report :key (char-at i)))
+          finally (return (first report)))))
 
 (defun get-life-support (nums)
-  (destructuring-bind (oxygen-rating carbon-rating) (find-ratings nums)
-    (compute-answer oxygen-rating carbon-rating)))
+  (let ((oxygen (find-rating nums #'>=))
+        (carbon (find-rating nums #'<)))
+    (* (bits-to-int oxygen) (bits-to-int carbon))))
 
 (defun part-2 ()
   (let ((data (read-day-input #'identity)))
-    (get-life-support data)))
+    (summarize (get-life-support data))))
