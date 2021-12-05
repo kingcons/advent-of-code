@@ -52,7 +52,7 @@
   (let* ((data (read-day-input #'identity :separator "\\n\\n"))
          (order (parse-nums-by "," (first data)))
          (boards (mapcar (lambda (board) (parse-nums-by "\\s+" board)) (rest data))))
-    (play-bingo order boards)))
+    (summarize (play-bingo order boards))))
 
 (defun filter-boards (order boards)
   (loop with chosen = '()
@@ -76,4 +76,4 @@
   (let* ((data (read-day-input #'identity :separator "\\n\\n"))
          (order (parse-nums-by "," (first data)))
          (boards (mapcar (lambda (board) (parse-nums-by "\\s+" board)) (rest data))))
-    (play-bingo-final order boards)))
+    (summarize (play-bingo-final order boards))))

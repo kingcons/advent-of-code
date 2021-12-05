@@ -53,10 +53,10 @@
 
 (defun part-1 ()
   (let ((segments (read-day-input #'parse-point)))
-    (time (find-overlapping-vents segments))))
+    (summarize (find-overlapping-vents segments))))
 
 (defsection @part-2 (:title "Diagonal Overlap"))
 
 (defun part-2 ()
   (let ((segments (read-day-input #'parse-point)))
-    (time (find-overlapping-vents segments :skip-diagonal nil))))
+    (summarize (find-overlapping-vents segments :skip-diagonal nil))))

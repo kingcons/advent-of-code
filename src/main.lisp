@@ -74,7 +74,11 @@ have an overview of what code has been written and how it performs so I will add
 (defsection @aoc.2020 (:title "Advent 2020"))
 
 (defsection @aoc.2021 (:title "Advent 2021")
-  (2021.01:@2021.01 section))
+  (2021.01:@2021.01 section)
+  (2021.02:@2021.02 section)
+  (2021.03:@2021.03 section)
+  (2021.04:@2021.04 section)
+  (2021.05:@2021.05 section))
 
 (defun build-site ()
   (let ((*document-normalize-packages* nil))
