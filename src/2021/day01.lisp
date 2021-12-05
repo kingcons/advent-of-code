@@ -24,7 +24,7 @@ is increasing from the previous measurement. Pretty straightforward.")
   (let ((data (read-day-input #'parse-integer)))
     (summarize (count-depths data))))
 
-(defsection @part-2 (:title "Average the Depths")
+(defsection @part-2 (:title "De-noising the Depths")
   "Part 2 extends our initial solution by averaging the depth readings
 in a sliding window three at a time. I'm still using a straightforward
 loop but the partitioning of the list is ugly. Two options for improvement are:
@@ -65,7 +65,11 @@ specializing makes in this case.")
     (loop for (previous current) on sums
           while current count (> current previous))))
 
+(deftype ub32 ()
+  '(unsigned-byte 32))
+
 (defun count-shifting-depths (readings)
+  (declare (optimize speed))
   (loop with (x y z) of-type ub32
         with count of-type fixnum = 0 and previous of-type fixnum = 0
         for depth in readings

@@ -6,9 +6,13 @@
 
 (defsection @2021.02 (:title "Dive!")
   (@part-1 section)
-  (@part-2 section))
+  (parse-navigation function)
+  (plot-course function)
+  (@part-2 section)
+  (plot-course-aim function))
 
-(defsection @part-1 (:title ""))
+(defsection @part-1 (:title "Plotting the Course")
+  "")
 
 (defun parse-navigation (line)
   (destructuring-bind (direction amount) (cl-ppcre:split " " line)
@@ -28,7 +32,7 @@
   (let ((data (read-day-input #'parse-navigation)))
     (summarize (plot-course data))))
 
-(defsection @part-2 (:title ""))
+(defsection @part-2 (:title "One Does Not Simply Dive"))
 
 (defun plot-course-aim (plan)
   (loop with depth = 0 and aim = 0 and position = 0
@@ -42,5 +46,5 @@
         finally (return (* depth position))))
 
 (defun part-2 ()
-  (let ((data (read-day-input #'parse-navigation)))
+  (let ((data (time (read-day-input #'parse-navigation))))
     (summarize (plot-course-aim data))))
