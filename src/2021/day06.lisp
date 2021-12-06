@@ -10,29 +10,24 @@
 
 (defsection @part-1 (:title "That's a big school"))
 
-(defstruct school
-  (days 0)
-  (counts (make-array 9 :element-type 'fixnum)))
-
-(defun parse-school (fishlist)
+(defun parse-counts (fishlist)
   (let ((counts (make-array 9 :element-type 'fixnum))
         (timers (mapcar #'parse-integer (cl-ppcre:split "," fishlist))))
     (dolist (timer timers)
       (incf (aref counts timer)))
-    (make-school :counts counts)))
+    counts))
 
-(defun tick (school)
-  (with-slots (counts) school
-    (declare (type (simple-array fixnum) counts))
-    (alexandria:rotate counts -1)
-    (let ((newborns (aref counts 8))
-          (old-gen (aref counts 6)))
-      (setf (aref counts 6) (+ old-gen newborns)))))
+(defun tick (counts)
+  (declare (type (simple-array fixnum) counts))
+  (alexandria:rotate counts -1)
+  (let ((newborns (aref counts 8))
+        (old-gen (aref counts 6)))
+    (setf (aref counts 6) (+ old-gen newborns))))
 
-(defun estimate-population (school days)
+(defun estimate-population (counts days)
   (dotimes (i days)
-    (tick school))
-  (reduce #'+ (school-counts school)))
+    (tick counts))
+  (reduce #'+ counts))
 
 (defun part-1 ()
   (let ((data (first (read-day-input #'parse-school))))
