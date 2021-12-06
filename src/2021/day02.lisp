@@ -6,7 +6,6 @@
 
 (defsection @2021.02 (:title "Dive!")
   (@part-1 section)
-  (parse-navigation function)
   (plot-course function)
   (@part-2 section)
   (plot-course-aim function))

@@ -6,6 +6,7 @@
 
 (defsection @2021.05 (:title "Hydrothermal Venture")
   (@part-1 section)
+  (find-overlapping-vents function)
   (@part-2 section))
 
 (defsection @part-1 (:title "Overlapping Vents"))
@@ -36,13 +37,15 @@
               (build-range x1 x2 length)
               (build-range y1 y2 length)))))
 
-(defun find-overlapping-vents (segments &optional (count 0) (grid (make-hash-table :test #'equal)))
-  (loop for segment in segments
-        do (dolist (point (list-points segment))
-             (let ((seen (incf (gethash point grid 0))))
-               (when (= seen 2)
-                 (incf count))))
-        finally (return (values count grid))))
+(defun find-overlapping-vents (segments)
+  (let ((grid (make-hash-table :test #'equal))
+        (overlaps 0))
+    (loop for segment in segments
+          do (dolist (point (list-points segment))
+               (let ((seen (incf (gethash point grid 0))))
+                 (when (= seen 2)
+                   (incf overlaps))))
+          finally (return (values overlaps grid)))))
 
 (defun part-1 ()
   (let ((segments (read-day-input #'parse-segment)))

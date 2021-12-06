@@ -6,7 +6,9 @@
 
 (defsection @2021.04 (:title "Giant Squid")
   (@part-1 section)
-  (@part-2 section))
+  (play-bingo function)
+  (@part-2 section)
+  (play-bingo-final function))
 
 (defsection @part-1 (:title "Bingo Subsystem"))
 

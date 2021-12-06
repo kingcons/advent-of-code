@@ -6,7 +6,9 @@
 
 (defsection @2021.03 (:title "Binary Diagnostic")
   (@part-1 section)
-  (@part-2 section))
+  (get-power-consumption function)
+  (@part-2 section)
+  (get-life-support function))
 
 (defsection @part-1 (:title "Check the Power Consumption"))
 
