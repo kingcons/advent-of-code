@@ -18,12 +18,17 @@ the file based on the value of SEPARATOR and processing each string with ITEM-PA
 (defmacro summarize (form)
   "Measure the real time to execute FORM and return a string showing the result
 and the wall clock execution time."
-  (let ((seconds (gensym))
+  (let ((old-bytes (gensym))
+        (new-bytes (gensym))
+        (useconds (gensym))
         (result (gensym))
         (start (gensym))
 	(end (gensym)))
-    `(let* ((,start (get-internal-real-time))
+    `(let* ((,old-bytes (sb-ext:get-bytes-consed))
+            (,start (get-internal-real-time))
             (,result ,form)
             (,end (get-internal-real-time))
-            (,seconds (/ (- ,end ,start) internal-time-units-per-second)))
-       (format nil "> Time: ~7,3fms  Answer: ~10T~a~%" (* 1000 ,seconds) ,result))))
+            (,new-bytes (sb-ext:get-bytes-consed))
+            (,useconds (/ (- ,end ,start) internal-time-units-per-second)))
+       (format nil "> Time: ~7,3fms  Memory: ~7:dkb  Answer: ~10T~a~%"
+               (* 1000 ,useconds) (floor (- ,new-bytes ,old-bytes) 1024) ,result))))
