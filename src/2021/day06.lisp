@@ -23,8 +23,11 @@
 
 (defun tick (school)
   (with-slots (counts) school
+    (declare (type (simple-array fixnum) counts))
     (alexandria:rotate counts -1)
-    (setf (aref counts 6) (+ (aref counts 6) (aref counts 8)))))
+    (let ((newborns (aref counts 8))
+          (old-gen (aref counts 6)))
+      (setf (aref counts 6) (+ old-gen newborns)))))
 
 (defun estimate-population (school days)
   (dotimes (i days)
