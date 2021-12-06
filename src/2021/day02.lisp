@@ -46,5 +46,5 @@
         finally (return (* depth position))))
 
 (defun part-2 ()
-  (let ((data (time (read-day-input #'parse-navigation))))
+  (let ((data (read-day-input #'parse-navigation)))
     (summarize (plot-course-aim data))))
