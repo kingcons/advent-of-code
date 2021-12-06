@@ -29,14 +29,17 @@
 ;;; expect it to go against its design intent since perf measurements will change run to run.
 
 (defmacro generate-overview ()
-  (let* ((days-attempted '(:2019.01
-                           :2020.01 :2020.02 :2020.03 :2020.04 :2020.05
-                           :2020.06 :2020.07 :2020.08 :2020.09
-                           :2021.01 :2021.02 :2021.03 :2021.04 :2021.05))
-         (formatted-overview
-           (apply 'concatenate 'string
-                  (mapcar #'format-day days-attempted))))
-    `(defsection @overview (:title "Overview")
-       ,formatted-overview)))
+  (flet ((build-package-name (pathname)
+           (cl-ppcre:register-groups-bind (year day)
+               ("(\\d+)/day(\\d+).lisp" (namestring pathname))
+             (intern (concatenate 'string year "." day) :keyword))))
+    (let* ((src-dir (asdf:system-relative-pathname :advent "src/"))
+           (lisp-files (uiop:directory-files src-dir "*/*.lisp"))
+           (days-attempted (mapcar #'build-package-name lisp-files))
+           (formatted-overview
+             (apply 'concatenate 'string
+                    (mapcar #'format-day days-attempted))))
+      `(defsection @overview (:title "Overview")
+         ,formatted-overview))))
 
 (generate-overview)
