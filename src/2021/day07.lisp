@@ -8,28 +8,19 @@
   (@part-1 section)
   (@part-2 section))
 
-(defsection @prt-1 (:title "Do the Crab Claw"))
+(defsection @part-1 (:title "Do the Crab Claw"))
 
 (defun parse-csv (input)
   (sort (coerce (mapcar #'parse-integer (cl-ppcre:split "," input)) 'vector) #'<))
 
-(defun build-costs (positions cost-function)
-  (let ((length (length positions)))
-    (loop with costs = (make-hash-table)
-          for i from (aref positions 0) upto (aref positions (1- length))
-          do (setf (gethash i costs)
-                   (loop for position across positions
-                         sum (funcall cost-function position i)))
-          finally (return costs))))
-
-(defun align-crabs (positions cost-function)
-  (let ((costs (build-costs positions cost-function)))
-    (loop for key being the hash-keys in costs
-          minimizing (gethash key costs))))
+(defun align-crabs (positions cost-function target-function)
+  (loop with target = (floor (funcall target-function positions))
+        for position across positions
+        sum (funcall cost-function position target)))
 
 (defun part-1 ()
   (let ((data (first (read-day-input #'parse-csv))))
-    (summarize (align-crabs data #'min-distance))))
+    (summarize (align-crabs data #'min-distance #'alexandria:median))))
 
 (defsection @part-2 (:title "Crabs Engineer Different"))
 
@@ -44,4 +35,4 @@
 
 (defun part-2 ()
   (let ((data (first (read-day-input #'parse-csv))))
-    (summarize (align-crabs data #'min-distance-gauss))))
+    (summarize (align-crabs data #'min-distance-gauss #'alexandria:mean))))
