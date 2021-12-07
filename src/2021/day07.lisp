@@ -13,14 +13,14 @@
 (defun parse-csv (input)
   (sort (coerce (mapcar #'parse-integer (cl-ppcre:split "," input)) 'vector) #'<))
 
-(defun align-crabs (positions cost-function target-function)
-  (loop with target = (floor (funcall target-function positions))
-        for position across positions
+(defun align-crabs (positions cost-function target)
+  (loop for position across positions
         sum (funcall cost-function position target)))
 
 (defun part-1 ()
-  (let ((data (first (read-day-input #'parse-csv))))
-    (summarize (align-crabs data #'min-distance #'alexandria:median))))
+  (let* ((data (first (read-day-input #'parse-csv)))
+         (median (aref data (floor (length data) 2))))
+    (summarize (align-crabs data #'min-distance median))))
 
 (defsection @part-2 (:title "Crabs Engineer Different"))
 
@@ -34,5 +34,6 @@
   (gauss-sum (min-distance position i)))
 
 (defun part-2 ()
-  (let ((data (first (read-day-input #'parse-csv))))
-    (summarize (align-crabs data #'min-distance-gauss #'alexandria:mean))))
+  (let* ((data (first (read-day-input #'parse-csv)))
+         (mean (floor (reduce #'+ data) (length data))))
+    (summarize (align-crabs data #'min-distance-gauss mean))))
