@@ -17,7 +17,8 @@
                    (:file "day03")
                    (:file "day04")
                    (:file "day05")
-                   (:file "day06")))
+                   (:file "day06")
+                   (:file "day07")))
                  (:module "2020"
                   :pathname "2020"
                   :depends-on ("util")
