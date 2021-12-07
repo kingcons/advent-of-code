@@ -6,8 +6,9 @@
 
 (defsection @2021.05 (:title "Hydrothermal Venture")
   (@part-1 section)
-  (find-overlapping-vents function)
-  (@part-2 section))
+  (coordinate-match? function)
+  (@part-2 section)
+  (find-overlapping-vents function))
 
 (defsection @part-1 (:title "Overlapping Vents"))
 

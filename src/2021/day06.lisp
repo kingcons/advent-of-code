@@ -6,7 +6,9 @@
 
 (defsection @2021.06 (:title "Lanternfish")
   (@part-1 section)
-  (@part-2 section))
+  (tick function)
+  (@part-2 section)
+  (estimate-population function))
 
 (defsection @part-1 (:title "That's a big school"))
 

@@ -6,7 +6,9 @@
 
 (defsection @2021.07 (:title "The Treachery of Whales")
   (@part-1 section)
-  (@part-2 section))
+  (align-crabs function)
+  (@part-2 section)
+  (min-distance-gauss function))
 
 (defsection @part-1 (:title "Do the Crab Claw"))
 
