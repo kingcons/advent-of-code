@@ -30,11 +30,11 @@
   (reduce #'+ counts))
 
 (defun part-1 ()
-  (let ((data (first (read-day-input #'parse-school))))
+  (let ((data (first (read-day-input #'parse-counts))))
     (summarize (estimate-population data 80))))
 
 (defsection @part-2 (:title "Uh Oh"))
 
 (defun part-2 ()
-  (let ((data (first (read-day-input #'parse-school))))
+  (let ((data (first (read-day-input #'parse-counts))))
     (summarize (estimate-population data 256))))
