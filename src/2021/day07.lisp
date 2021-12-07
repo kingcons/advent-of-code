@@ -8,19 +8,15 @@
   (@part-1 section)
   (@part-2 section))
 
+(defsection @prt-1 (:title "Do the Crab Claw"))
+
 (defun parse-csv (input)
   (sort (coerce (mapcar #'parse-integer (cl-ppcre:split "," input)) 'vector) #'<))
 
-(defun find-bounds (positions)
-  (list (aref positions 0) (aref positions (1- (length positions)))))
-
-(defun gauss-sum (n)
-  (/ (* n (1+ n)) 2))
-
 (defun build-costs (positions cost-function)
-  (let ((bounds (find-bounds positions)))
+  (let ((length (length positions)))
     (loop with costs = (make-hash-table)
-          for i from (first bounds) upto (second bounds)
+          for i from (aref positions 0) upto (aref positions (1- length))
           do (setf (gethash i costs)
                    (loop for position across positions
                          sum (funcall cost-function position i)))
@@ -28,20 +24,24 @@
 
 (defun align-crabs (positions cost-function)
   (let ((costs (build-costs positions cost-function)))
-    (loop with best = most-positive-fixnum
-          with result = -1
-          for key being the hash-keys in costs
-          do (let ((cost (gethash key costs)))
-               (when (< cost best)
-                 (format t "~D:  ~D cheaper than ~D~%" key cost best)
-                 (setf best cost
-                       result key)))
-          finally (return best))))
+    (loop for key being the hash-keys in costs
+          minimizing (gethash key costs))))
 
 (defun part-1 ()
   (let ((data (first (read-day-input #'parse-csv))))
-    (align-crabs data (lambda (position i) (abs (- position i))))))
+    (summarize (align-crabs data #'min-distance))))
+
+(defsection @part-2 (:title "Crabs Engineer Different"))
+
+(defun gauss-sum (n)
+  (/ (* n (1+ n)) 2))
+
+(defun min-distance (position i)
+  (abs (- position i)))
+
+(defun min-distance-gauss (position i)
+  (gauss-sum (min-distance position i)))
 
 (defun part-2 ()
   (let ((data (first (read-day-input #'parse-csv))))
-    (align-crabs data (lambda (position i) (gauss-sum (abs (- position i)))))))
+    (summarize (align-crabs data #'min-distance-gauss))))
