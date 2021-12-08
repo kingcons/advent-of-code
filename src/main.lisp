@@ -80,7 +80,8 @@ have an overview of what code has been written and how it performs so I will add
   (2021.04:@2021.04 section)
   (2021.05:@2021.05 section)
   (2021.06:@2021.06 section)
-  (2021.07:@2021.07 section))
+  (2021.07:@2021.07 section)
+  (2021.08:@2021.08 section))
 
 (defun build-site ()
   (let ((*document-normalize-packages* nil))
