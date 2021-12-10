@@ -78,7 +78,7 @@
 (defun score-corrections (input)
   (let* ((eligible (remove-if #'score-error input))
          (results (mapcar #'score-incomplete eligible)))
-    (sort results #'<)))
+    (nth (floor (length results) 2) (sort results #'>))))
 
 (defun part-2 ()
   (let ((data (read-day-input #'identity)))
