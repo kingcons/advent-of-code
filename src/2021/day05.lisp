@@ -32,11 +32,11 @@
 
 (defun list-points (segment)
   (with-slots (x1 y1 x2 y2) segment
-    (let ((length (max (abs (- x1 x2))
-                       (abs (- y1 y2)))))
-      (mapcar #'list
-              (build-range x1 x2 length)
-              (build-range y1 y2 length)))))
+    (let* ((length (max (abs (- x1 x2))
+                        (abs (- y1 y2))))
+           (xs (build-range x1 x2 length))
+           (ys (build-range y1 y2 length)))
+      (mapcar #'list xs ys))))
 
 (defun find-overlapping-vents (segments)
   (let ((grid (make-hash-table :test #'equal))
