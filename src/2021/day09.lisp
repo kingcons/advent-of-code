@@ -81,7 +81,7 @@ If COORDS is non-nil, collect the (ROW COL) position instead of the value."
                  (remove-if #'completed? neighbors))))
       (loop while to-visit
             do (let ((current (pop to-visit)))
-                 (setf to-visit (append to-visit (unexplored current))
+                 (setf to-visit (nconc to-visit (unexplored current))
                        (gethash current visited) t))))
     (hash-table-count visited)))
 
