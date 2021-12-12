@@ -14,9 +14,9 @@ If WHOLE is non-nil, after splitting pass to ITEM-PARSER directly instead of map
                  (asdf:system-relative-pathname :advent)
                  (alexandria:read-file-into-string)
                  (cl-ppcre:split ,separator)
-                 ,@(if whole
-                       `((funcall ,item-parser))
-                       `((mapcar ,item-parser))))))
+                 ,(if whole
+                      `(funcall ,item-parser)
+                      `(mapcar ,item-parser)))))
 
 (defmacro summarize (form)
   "Measure the real time to execute FORM and return a string showing the result
