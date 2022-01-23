@@ -10,13 +10,13 @@ the file based on the value of SEPARATOR and processing each string with ITEM-PA
 If WHOLE is non-nil, after splitting pass to ITEM-PARSER directly instead of mapping."
   (cl-ppcre:register-groups-bind (year day)
       ("(\\d{4})\.(\\d{2})" (package-name *package*))
-    `(arrows:->> (format nil "src/~d/day~d.dat" ,year ,day)
-                 (asdf:system-relative-pathname :advent)
-                 (alexandria:read-file-into-string)
-                 (cl-ppcre:split ,separator)
-                 ,(if whole
-                      `(funcall ,item-parser)
-                      `(mapcar ,item-parser)))))
+    `(serapeum:~>> (format nil "src/~d/day~d.dat" ,year ,day)
+                   (asdf:system-relative-pathname :advent)
+                   (alexandria:read-file-into-string)
+                   (cl-ppcre:split ,separator)
+                   ,(if whole
+                        `(funcall ,item-parser)
+                        `(mapcar ,item-parser)))))
 
 (defmacro summarize (form)
   "Measure the real time to execute FORM and return a string showing the result

@@ -1,7 +1,7 @@
 (mgl-pax:define-package :aoc.2020.06
   (:nicknames :2020.06)
   (:use :cl :aoc.util :mgl-pax)
-  (:import-from :arrows #:->> #:-<>>))
+  (:import-from :serapeum :~>>))
 
 (in-package :2020.06)
 
@@ -14,14 +14,14 @@
 (defsection @part-1 (:title "Count any yes answers"))
 
 (defun parse-group (group)
-  (->> group
+  (~>> group
        (cl-ppcre:split "\\n")
        (mapcar (lambda (e) (coerce e 'list)))))
 
 (defun count-groups (groups combine-rows)
-  (-<>> groups
-        (mapcar (lambda (x) (reduce combine-rows x)))
-        (reduce #'+ <> :key #'length)))
+  (~>> groups
+       (mapcar (lambda (x) (reduce combine-rows x)))
+       (reduce #'+ _ :key #'length)))
 
 (defsection @part-2 (:title "Count all yes answers"))
 
