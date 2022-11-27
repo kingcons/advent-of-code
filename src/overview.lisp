@@ -9,9 +9,10 @@
     (let* ((package (find-package day))
            (main-section (symbol-value (find-symbol (format nil "@~A" day) package)))
            (section-1 (symbol-value (find-symbol "@PART-1" package)))
-           (section-2 (symbol-value (find-symbol "@PART-2" package)))
-           (summary-1 (funcall (find-symbol "PART-1" package)))
-           (summary-2 (funcall (find-symbol "PART-2" package))))
+           (section-2 (symbol-value (find-symbol "@PART-2" package))))
+      (unless (and (find-symbol "PART-1" package)
+                   (find-symbol "PART-2" package))
+        (return-from format-day nil))
       (format nil "##### ~A Day ~A: ~A
   * Part 1: ~A~%~A
   * Part 2: ~A~%~A"
@@ -19,9 +20,9 @@
               (subseq (symbol-name day) 5)
               (section-title main-section)
               (section-title section-1)
-              summary-1
+              (funcall (find-symbol "PART-1" package))
               (section-title section-2)
-              summary-2))))
+              (funcall (find-symbol "PART-2" package))))))
 
 ;;; The purpose of the below code snippet is to allow easily generating markdown for inclusion
 ;;; in the @overview section using emacs' sly-eval-print-last-expression. There may be a way

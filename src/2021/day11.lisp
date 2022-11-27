@@ -12,7 +12,8 @@
 (defsection @part-1 (:title ""))
 
 (define-constant +adjacents+
-  '((0 1) (0 -1) (1 0) (-1 0) (1 1) (-1 -1) (1 -1) (-1 1)))
+  '((0 1) (0 -1) (1 0) (-1 0) (1 1) (-1 -1) (1 -1) (-1 1))
+  :test #'equal)
 
 (defun parse-grid (data)
   (flet ((ascii-digit-to-int (x)

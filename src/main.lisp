@@ -7,10 +7,10 @@
 (defsection @advent (:title "Advent of Code")
   (@links section)
   (@background section)
-  (@summary section)
-  (@aoc.2019 section)
+  (@aoc.2021 section)
   (@aoc.2020 section)
-  (@aoc.2021 section))
+  (@aoc.2019 section)
+  (@results section))
 
 (defsection @links (:title "Links")
   "Here is the [github repo][repo] and
@@ -62,10 +62,10 @@ compassion for myself and you, dear reader.
 [ll]: https://blog.kingcons.io/posts/For-Posterity.html
 [dp]: https://www.cs.virginia.edu/~evans/cs655/readings/smalltalk.html")
 
-(defsection @summary (:title "Current Progress")
+(defsection @results (:title "Results")
   "I do not hold myself to completing every exercise and oscillate between striving
 for a concise or clever implementation versus an optimized one. Still, it's useful to
-have an overview of what code has been written and how it performs so I will add that here."
+have an overview of what code has been written and how it performs. That lives here."
   (aoc.overview:@overview section))
 
 (defsection @aoc.2019 (:title "Advent 2019")
@@ -85,6 +85,9 @@ have an overview of what code has been written and how it performs so I will add
   (2021.09:@2021.09 section)
   (2021.10:@2021.10 section)
   (2021.11:@2021.11 section))
+
+(defsection @aoc.2022 (:title "Advent 2022")
+  (2022.01:@2022.01 section))
 
 (defun build-site ()
   (let ((*document-normalize-packages* nil))

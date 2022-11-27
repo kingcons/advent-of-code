@@ -6,8 +6,13 @@
   :components ((:module "src"
                 :components
                 ((:file "main" :depends-on ("2019" "2020" "2021" "overview"))
-                 (:file "overview" :depends-on ("2019" "2020" "2021"))
+                 (:file "overview" :depends-on ("2019" "2020" "2021" "2022"))
                  (:file "util")
+                 (:module "2022"
+                  :pathname "2022"
+                  :depends-on ("util")
+                  :components
+                  ((:file "day01")))
                  (:module "2021"
                   :pathname "2021"
                   :depends-on ("util")
@@ -48,11 +53,14 @@
   :author "Brit Butler"
   :license "MIT"
   :depends-on ("advent"
-               "rove")
+               "try")
   :components ((:module "tests"
+                :serial t
                 :components
-                ((:file "2021")
+                ((:file "2022")
+                 (:file "2021")
                  (:file "2020")
-                 (:file "2019"))))
+                 (:file "2019")
+                 (:file "tests"))))
   :description "Test system for advent"
-  :perform (test-op (op c) (symbol-call :rove :run c)))
+  :perform (test-op (op c) (uiop:symbol-call '#:advent.tests '#:test)))
