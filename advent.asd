@@ -63,4 +63,4 @@
                  (:file "2019")
                  (:file "tests"))))
   :description "Test system for advent"
-  :perform (test-op (op c) (uiop:symbol-call '#:advent.tests '#:test)))
+  :perform (test-op (op c) (uiop:symbol-call '#:advent.tests '#:test-all)))
