@@ -2,6 +2,24 @@
 
 ** Usage
 
+I wouldn't recommend it. Generally though...
+
+##### Yearly
+
+0. Log back into advent of code and set the `*aoc-session*` in your lisp image.
+1. Add a new module to the `advent.asd` system for the current year.
+2. Add a new section to the `main.lisp` file for the current year and wire it up.
+3. Start a new test file for the year and wire it into `tests.lisp` and the ASDF system.
+
+##### Daily
+
+1. Add a new file component to the system definition in `advent.asd`.
+2. At the repl, `(scaffold 2022 02)` or whatever the date is.
+3. Add an entry for the new day in the respective year's section in `main.lisp`.
+4. Open the tests file for the respective year.
+
+That's it. Get hacking!
+
 ** Installation
 
 ** Author
@@ -10,7 +28,7 @@
 
 ** Copyright
 
-Copyright (c) 2021 Brit Butler (brit@kingcons.io)
+Copyright (c) 2022 Brit Butler (brit@kingcons.io)
 
 ** License
 

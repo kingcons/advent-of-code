@@ -1,20 +1,64 @@
-(defpackage :aoc.util
+(mgl-pax:define-package :aoc.util
   (:use :cl :mgl-pax)
+  (:import-from :asdf #:system-relative-pathname)
   (:import-from :alexandria #:read-file-into-string)
-  (:import-from :cl-ppcre #:split)
-  (:import-from :serapeum #:~>>))
+  (:import-from :cl-ppcre #:split
+                          #:regex-replace-all)
+  (:import-from :serapeum #:~>>
+                          #:fmt))
 
 (in-package :aoc.util)
 
 (defsection @aoc.util (:title "Useful Utilities")
+  (*aoc-session* variable)
   (read-day-input macro)
+  (scaffold function)
   (summarize macro))
+
+(defvar *aoc-session* nil
+  "A token for the user's Advent of Code session. This must be supplied
+for SCAFFOLD to automatically fetch puzzle input for a given day.")
+
+(defun make-advent-uri (year day)
+  (fmt "https://adventofcode.com/~d/day/~d/input" year day))
+
+(defun make-aoc-cookie ()
+  (let ((cookie (make-instance 'drakma:cookie
+                               :name "session"
+                               :domain ".adventofcode.com"
+                               :value *aoc-session*)))
+    (make-instance 'drakma:cookie-jar :cookies (list cookie))))
+
+(defun scaffold-input (year day)
+  (let ((dat-file (day-file year day)))
+    (with-open-file (out dat-file :direction :output :if-does-not-exist :create)
+      (~>> (drakma:http-request (make-advent-uri year day) :cookie-jar (make-aoc-cookie))
+           (format out)))))
+
+(defun scaffold-code (year day)
+  (let ((template (system-relative-pathname :advent "src/day.tmpl"))
+        (lisp-file (day-file year day :extension "lisp")))
+    (with-open-file (out lisp-file :direction :output :if-does-not-exist :create)
+      (~>> (read-file-into-string template)
+           (regex-replace-all "~4d" _ (fmt "~d" year))
+           (regex-replace-all "~2d" _ (fmt "~2,'0d" day))
+           (format out)))))
+
+(defun scaffold (year day)
+  "Create a new lisp file for YEAR and DAY based on the `day.tmpl` template.
+An error will be thrown if a directory matching YEAR does not exist."
+  (scaffold-code year day)
+  (unless (null *aoc-session*)
+    (scaffold-input year day)))
+
+(defun day-file (year day &key (extension "dat"))
+  (let ((filename (fmt "src/~d/day~2,'0d.~a" year day extension)))
+    (system-relative-pathname :advent filename)))
 
 (defun read-dat-file-for-package ()
   (cl-ppcre:register-groups-bind (year day)
       ("(\\d{4})\.(\\d{2})" (package-name *package*))
-    (let ((pathname (format nil "src/~d/day~d.dat" year day)))
-      (read-file-into-string (asdf:system-relative-pathname :advent pathname)))))
+    (read-file-into-string (day-file year day))))
 
 (defmacro read-day-input (item-parser &key (separator "\\n") (whole nil) (input nil))
   "Load the input data for the current day based on the name of *PACKAGE*, splitting
@@ -42,5 +86,5 @@ If WHOLE is non-nil, after splitting pass to ITEM-PARSER directly instead of map
             (,end (get-internal-real-time))
             (,new-bytes (sb-ext:get-bytes-consed))
             (,useconds (/ (- ,end ,start) internal-time-units-per-second)))
-       (format nil "> Time: ~7,3fms  Memory: ~7:dkb  Answer: ~10T~a~%"
-               (* 1000 ,useconds) (floor (- ,new-bytes ,old-bytes) 1024) ,result))))
+       (fmt "> Time: ~7,3fms  Memory: ~7:dkb  Answer: ~10T~a~%"
+            (* 1000 ,useconds) (floor (- ,new-bytes ,old-bytes) 1024) ,result))))
