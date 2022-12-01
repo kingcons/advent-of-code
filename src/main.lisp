@@ -11,7 +11,8 @@
   (@aoc.2021 section)
   (@aoc.2020 section)
   (@aoc.2019 section)
-  (@results section))
+  (@results section)
+  (aoc.util:@aoc.util section))
 
 (defsection @links (:title "Links")
   "Here is the [github repo][repo] and

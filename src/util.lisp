@@ -1,11 +1,14 @@
 (defpackage :aoc.util
-  (:use :cl)
+  (:use :cl :mgl-pax)
   (:import-from :alexandria #:read-file-into-string)
   (:import-from :cl-ppcre #:split)
-  (:import-from :serapeum #:~>>)
-  (:export #:read-day-input #:summarize))
+  (:import-from :serapeum #:~>>))
 
 (in-package :aoc.util)
+
+(defsection @aoc.util (:title "Useful Utilities")
+  (read-day-input macro)
+  (summarize macro))
 
 (defun read-dat-file-for-package ()
   (cl-ppcre:register-groups-bind (year day)
@@ -25,8 +28,8 @@ If WHOLE is non-nil, after splitting pass to ITEM-PARSER directly instead of map
                `(mapcar ,item-parser)))))
 
 (defmacro summarize (form)
-  "Measure the real time to execute FORM and return a string showing the result
-and the wall clock execution time."
+  "Measure the real time to execute FORM and return a formatted string
+ showing the result and the wall clock execution time."
   (let ((old-bytes (gensym))
         (new-bytes (gensym))
         (useconds (gensym))
