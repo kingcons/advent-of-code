@@ -40,7 +40,7 @@ Part 2 requires a little additional work to sort and sum the top 3 elves which i
 
 (defun part-1 ()
   (let ((snacks (read-day-input #'parse-inventory :separator "\\n\\n")))
-    (apply 'max snacks)))
+    (summarize (apply 'max snacks))))
 
 (defsection @part-2 (:title "Backup Snack Strategy")
   (total-snacks function)
@@ -56,4 +56,4 @@ Part 2 requires a little additional work to sort and sum the top 3 elves which i
 
 (defun part-2 ()
   (let ((snacks (read-day-input #'parse-inventory :separator "\\n\\n")))
-    (total-snacks snacks)))
+    (summarize (total-snacks snacks))))
