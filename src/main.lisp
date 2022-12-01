@@ -7,6 +7,7 @@
 (defsection @advent (:title "Advent of Code")
   (@links section)
   (@background section)
+  (@aoc.2022 section)
   (@aoc.2021 section)
   (@aoc.2020 section)
   (@aoc.2019 section)

@@ -12,7 +12,8 @@
   (@part-1 section)
   (@part-2 section))
 
-(defsection @part-1 (:title "Who got snacks?"))
+(defsection @part-1 (:title "Who got snacks?")
+  (parse-inventory function))
 
 (defun parse-inventory (inventory)
   (~>> (split "\\n" inventory)
@@ -23,7 +24,8 @@
   (let ((snacks (read-day-input #'parse-inventory :separator "\\n\\n")))
     (apply 'max snacks)))
 
-(defsection @part-2 (:title "Backup Snack Strategy"))
+(defsection @part-2 (:title "Backup Snack Strategy")
+  (total-snacks function))
 
 (defun total-snacks (snacks)
   (~>> (sort snacks #'>)
