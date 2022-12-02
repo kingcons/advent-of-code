@@ -9,16 +9,9 @@
 (defsection @2022.02 (:title "Rock Paper Scissors")
   "Requirements: [Day 02](https://adventofcode.com/2022/day/02)"
 
-  "**Part 1** - "
-
-  "**Part 2** - ")
-
-(defvar *strategy*
-  '((:a . :y)
-    (:b . :x)
-    (:c . :z))
-  "A mapping from opponent inputs (:a for rock, :b for paper, :c for scissors)
-to shapes to play (:x for rock, :y for paper, :z for scissors).")
+  "**Part 1** - Pick my move"
+  (total-score function)
+  "**Part 2** - Pick my objective")
 
 (defvar *outcome*
   '(((:a :x) . :draw)
@@ -55,9 +48,12 @@ to shapes to play (:x for rock, :y for paper, :z for scissors).")
     (+ shape-score
        outcome-score)))
 
+(defun total-score (games)
+  (reduce #'+ (mapcar #'score-game games)))
+
 (defun part-1 ()
   (let ((data (read-day-input #'parse-game)))
-    (summarize (reduce #'+ (mapcar #'score-game data)))))
+    (summarize (total-score data))))
 
 (defvar *secret-strategy*
   '(((:a :x) . :z)
@@ -78,4 +74,4 @@ to shapes to play (:x for rock, :y for paper, :z for scissors).")
 
 (defun part-2 ()
   (let ((data (read-day-input #'secret-strategy)))
-    (summarize (reduce #'+ (mapcar #'score-game data)))))
+    (summarize (total-score data))))
