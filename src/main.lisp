@@ -80,21 +80,17 @@ compassion for myself and you, dear reader.
 
   (defun format-day (day)
     (let* ((package (find-package day))
-           (main-section (symbol-value (find-symbol (fmt "@~A" day) package)))
-           (section-1 (symbol-value (find-symbol "@PART-1" package)))
-           (section-2 (symbol-value (find-symbol "@PART-2" package))))
+           (main-section (symbol-value (find-symbol (fmt "@~A" day) package))))
       (unless (and (find-symbol "PART-1" package)
                    (find-symbol "PART-2" package))
         (return-from format-day nil))
       (format nil "##### ~A Day ~A: ~A
-  * Part 1: ~A~%~A
-  * Part 2: ~A~%~A"
+  * Part 1:~%~A
+  * Part 2:~%~A"
               (subseq day 0 4)
               (subseq day 5)
               (section-title main-section)
-              (section-title section-1)
               (funcall (find-symbol "PART-1" package))
-              (section-title section-2)
               (funcall (find-symbol "PART-2" package))))))
 
 (defmacro generate-years ()

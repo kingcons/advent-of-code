@@ -5,12 +5,12 @@
 (in-package :aoc.2021.06)
 
 (defsection @2021.06 (:title "Lanternfish")
-  (@part-1 section)
-  (tick function)
-  (@part-2 section)
-  (estimate-population function))
+  "Requirements: [Day 06](https://adventofcode.com/2021/day/6)"
 
-(defsection @part-1 (:title "That's a big school"))
+  "**Part 1** - That's a big school"
+  (tick function)
+  "**Part 2** - Uh oh"
+  (estimate-population function))
 
 (defun parse-counts (fishlist)
   (let ((counts (make-array 9 :element-type 'fixnum))
@@ -34,8 +34,6 @@
 (defun part-1 ()
   (let ((data (first (read-day-input #'parse-counts))))
     (summarize (estimate-population data 80))))
-
-(defsection @part-2 (:title "Uh Oh"))
 
 (defun part-2 ()
   (let ((data (first (read-day-input #'parse-counts))))

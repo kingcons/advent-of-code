@@ -5,12 +5,12 @@
 (in-package :2020.02)
 
 (defsection @2020.02 (:title "Password Philosophy")
-  (@part-1 section)
-  (count-valid function)
-  (@part-2 section)
-  (count-xor-valid function))
+  "Requirements: [Day 02](https://adventofcode.com/2020/day/2)"
 
-(defsection @part-1 (:title "Count valid passwords"))
+  "**Part 1** - Count valid passwords"
+  (count-valid function)
+  "**Part 2** - Count using XOR"
+  (count-xor-valid function))
 
 (defun parse-password (row)
   (cl-ppcre:register-groups-bind ((#'parse-integer min max) letter password)
@@ -25,8 +25,6 @@
 (defun part-1 ()
   (let ((items (read-day-input #'parse-password)))
     (summarize (count-valid items))))
-
-(defsection @part-2 (:title "Count using XOR"))
 
 (defun xor-match? (min max letter password)
   (alexandria:xor (string= letter password :start2 (1- min) :end2 min)

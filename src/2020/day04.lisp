@@ -6,12 +6,12 @@
 (in-package :2020.04)
 
 (defsection @2020.04 (:title "Passport Processing")
-  (@part-1 section)
-  (count-non-polar-ids function)
-  (@part-2 section)
-  (count-valid-passports function))
+  "Requirements: [Day 04](https://adventofcode.com/2020/day/4)"
 
-(defsection @part-1 (:title "Check required fields"))
+  "**Part 1** - Check required fields"
+  (count-non-polar-ids function)
+  "**Part 2** - Validate fields"
+  (count-valid-passports function))
 
 (defparameter *required-fields*
   '("byr" "iyr" "eyr" "hgt" "hcl" "ecl" "pid"))
@@ -26,8 +26,6 @@
 (defun part-1 ()
   (let ((data (read-day-input #'parse-identification :separator "\\n\\n")))
     (summarize (count-non-polar-ids data))))
-
-(defsection @part-2 (:title "Validate fields"))
 
 (defun valid-byr? (id)
   (let ((value (cadr (assoc "byr" id :test #'string=))))

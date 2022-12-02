@@ -7,12 +7,12 @@
 (in-package :2020.08)
 
 (defsection @2020.08 (:title "Handheld Halt")
-  (@part-1 section)
-  (final-acc-value function)
-  (@part-2 section)
-  (apply-patch function))
+  "Requirements: [Day 08](https://adventofcode.com/2020/day/8)"
 
-(defsection @part-1 (:title "Find the bootloader error"))
+  "**Part 1** - Find the bootloader error"
+  (final-acc-value function)
+  "**Part 2** - Fix the bootloader error"
+  (apply-patch function))
 
 (defvar *mutate* nil)
 (defvar *mutations* (make-variable))
@@ -62,8 +62,6 @@
 (defun part-1 ()
   (let ((code (coerce (read-day-input #'parse-instruction) 'vector)))
     (summarize (screamer:one-value (final-acc-value code)))))
-
-(defsection @part-2 (:title "Fix the bootloader error"))
 
 (defun apply-patch (code address)
   (let ((patched (map 'vector #'copy-list code)))

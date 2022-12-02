@@ -5,12 +5,12 @@
 (in-package :2021.05)
 
 (defsection @2021.05 (:title "Hydrothermal Venture")
-  (@part-1 section)
-  (coordinate-match? function)
-  (@part-2 section)
-  (find-overlapping-vents function))
+  "Requirements: [Day 05](https://adventofcode.com/2021/day/5)"
 
-(defsection @part-1 (:title "Overlapping Vents"))
+  "**Part 1** - Overlapping Vents"
+  (coordinate-match? function)
+  "**Part 2** - Diagonal Overlap"
+  (find-overlapping-vents function))
 
 (defstruct segment
   x1 y1 x2 y2)
@@ -51,8 +51,6 @@
 (defun part-1 ()
   (let ((segments (read-day-input #'parse-segment)))
     (summarize (find-overlapping-vents (remove-if-not #'coordinate-match? segments)))))
-
-(defsection @part-2 (:title "Diagonal Overlap"))
 
 (defun part-2 ()
   (let ((segments (read-day-input #'parse-segment)))

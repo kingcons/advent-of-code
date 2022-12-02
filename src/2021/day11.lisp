@@ -6,10 +6,7 @@
 (in-package :2021.11)
 
 (defsection @2021.11 (:title "Dumbo Octopuses")
-  (@part-1 section)
-  (@part-2 section))
-
-(defsection @part-1 (:title ""))
+  "Requirements: [Day 11](https://adventofcode.com/2021/day/11)")
 
 (define-constant +adjacents+
   '((0 1) (0 -1) (1 0) (-1 0) (1 1) (-1 -1) (1 -1) (-1 1))
@@ -56,8 +53,6 @@
 (defun part-1 ()
   (let ((data (read-day-input #'parse-grid :whole t)))
     (summarize (count-flashes data 100))))
-
-(defsection @part-2 (:title ""))
 
 (defun step-until-n-flashes (grid n)
   (loop for i = 1 then (1+ i)

@@ -6,12 +6,12 @@
 (in-package :2020.09)
 
 (defsection @2020.09 (:title "Encoding Error")
-  (@part-1 section)
-  (find-invalid-number function)
-  (@part-2 section)
-  (find-invalid-slice function))
+  "Requirements: [Day 09](https://adventofcode.com/2020/day/9)"
 
-(defsection @part-1 (:title "Find vulnerable number"))
+  "**Part 1** - Find vulnerable number"
+  (find-invalid-number function)
+  "**Part 2** - Break the encryption"
+  (find-invalid-slice function))
 
 (defvar *width* 25)
 
@@ -34,8 +34,6 @@
 (defun part-1 ()
   (let ((data (coerce (read-day-input #'parse-integer) 'vector)))
     (summarize (find-invalid-number data))))
-
-(defsection @part-2 (:title "Break the encryption"))
 
 (defun find-weakness (data target index)
   "Find a range of numbers below INDEX in DATA that sum to TARGET.

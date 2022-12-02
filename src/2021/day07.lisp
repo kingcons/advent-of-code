@@ -5,12 +5,12 @@
 (in-package :2021.07)
 
 (defsection @2021.07 (:title "The Treachery of Whales")
-  (@part-1 section)
-  (align-crabs function)
-  (@part-2 section)
-  (min-distance-gauss function))
+  "Requirements: [Day 07](https://adventofcode.com/2021/day/7)"
 
-(defsection @part-1 (:title "Do the Crab Claw"))
+  "**Part 1** - Do the Crab Claw"
+  (align-crabs function)
+  "**Part 2** - Crabs Engineer Different"
+  (min-distance-gauss function))
 
 (defun parse-csv (input)
   (sort (coerce (mapcar #'parse-integer (cl-ppcre:split "," input)) 'vector) #'<))
@@ -23,8 +23,6 @@
   (let* ((data (first (read-day-input #'parse-csv)))
          (median (aref data (floor (length data) 2))))
     (summarize (align-crabs data #'min-distance median))))
-
-(defsection @part-2 (:title "Crabs Engineer Different"))
 
 (defun gauss-sum (n)
   (/ (* n (1+ n)) 2))

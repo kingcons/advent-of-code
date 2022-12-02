@@ -6,12 +6,12 @@
 (in-package :2020.06)
 
 (defsection @2020.06 (:title "Custom Customs")
-  (@part-1 section)
-  (parse-group function)
-  (@part-2 section)
-  (count-groups function))
+  "Requirements: [Day 06](https://adventofcode.com/2020/day/6)"
 
-(defsection @part-1 (:title "Count any yes answers"))
+  "**Part 1** - Count any yes answers"
+  (parse-group function)
+  "**Part 2** - Count all yes answers"
+  (count-groups function))
 
 (defun parse-group (group)
   (~>> group
@@ -22,8 +22,6 @@
   (~>> groups
        (mapcar (lambda (x) (reduce combine-rows x)))
        (reduce #'+ _ :key #'length)))
-
-(defsection @part-2 (:title "Count all yes answers"))
 
 (defun part-1 ()
   (let ((groups (read-day-input #'parse-group :separator "\\n\\n")))

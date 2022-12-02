@@ -5,13 +5,12 @@
 (in-package :2021.02)
 
 (defsection @2021.02 (:title "Dive!")
-  (@part-1 section)
-  (plot-course function)
-  (@part-2 section)
-  (plot-course-aim function))
+  "Requirements: [Day 02](https://adventofcode.com/2021/day/2)"
 
-(defsection @part-1 (:title "Plotting the Course")
-  "")
+  "**Part 1** - Plotting the Course"
+  (plot-course function)
+  "**Part 2** - One Does Not Simply Dive"
+  (plot-course-aim function))
 
 (defun parse-navigation (line)
   (destructuring-bind (direction amount) (cl-ppcre:split " " line)
@@ -30,8 +29,6 @@
 (defun part-1 ()
   (let ((data (read-day-input #'parse-navigation)))
     (summarize (plot-course data))))
-
-(defsection @part-2 (:title "One Does Not Simply Dive"))
 
 (defun plot-course-aim (plan)
   (loop with depth = 0 and aim = 0 and position = 0

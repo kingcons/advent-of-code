@@ -5,12 +5,12 @@
 (in-package :2021.04)
 
 (defsection @2021.04 (:title "Giant Squid")
-  (@part-1 section)
-  (play-bingo function)
-  (@part-2 section)
-  (play-bingo-final function))
+  "Requirements: [Day 04](https://adventofcode.com/2021/day/4)"
 
-(defsection @part-1 (:title "Bingo Subsystem"))
+  "**Part 1** - Bingo Subsystem"
+  (play-bingo function)
+  "**Part 2** - Let the Squid Win"
+  (play-bingo-final function))
 
 (defun parse-nums-by (regex string)
    (map 'vector #'parse-integer (remove "" (cl-ppcre:split regex string) :test #'string=)))
@@ -47,8 +47,6 @@
         until winner
         do (push number chosen)
         finally (return (score-for chosen winner))))
-
-(defsection @part-2 (:title "Let the Squid Win"))
 
 (defun part-1 ()
   (let* ((data (read-day-input #'identity :separator "\\n\\n"))

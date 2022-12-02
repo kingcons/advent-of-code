@@ -6,12 +6,12 @@
 (in-package :2021.09)
 
 (defsection @2021.09 (:title "Smoke Basin")
-  (@part-1 section)
+  "Requirements: [Day 09](https://adventofcode.com/2021/day/9)"
+  
+  "**Part 1** - Follow the Smoke"
   (sum-risk-levels function)
-  (@part-2 section)
+  "**Part 2** - Dodge the Basins"
   (find-largest-basins function))
-
-(defsection @part-1 (:title "Follow the Smoke"))
 
 (defun get-bounds (grid)
   (etypecase grid
@@ -67,8 +67,6 @@ If COORDS is non-nil, collect the (ROW COL) position instead of the value."
 (defun part-1 ()
   (let ((data (read-day-input #'parse-grid :whole t)))
     (summarize (sum-risk-levels data))))
-
-(defsection @part-2 (:title "Dodge the Basins"))
 
 (defun find-basin-size (grid row col)
   (let ((visited (make-hash-table :test #'equal))

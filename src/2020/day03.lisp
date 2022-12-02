@@ -5,12 +5,12 @@
 (in-package :2020.03)
 
 (defsection @2020.03 (:title "Toboggan Trajectory")
-  (@part-1 section)
-  (count-trees function)
-  (@part-2 section)
-  (count-collisions function))
+  "Requirements: [Day 03](https://adventofcode.com/2020/day/3)"
 
-(defsection @part-1 (:title "Count tree collisions"))
+  "**Part 1** - Count tree collisions"
+  (count-trees function)
+  "**Part 2** - Count multiple slopes"
+  (count-collisions function))
 
 (defun count-trees (map &key (down 1) (right 3))
   (loop
@@ -23,8 +23,6 @@
 (defun part-1 ()
   (let ((map (read-day-input #'identity)))
     (summarize (count-trees map))))
-
-(defsection @part-2 (:title "Count multiple slopes"))
 
 (defun collision? (terrain column)
   (char= #\# (char terrain (mod column (length terrain)))))

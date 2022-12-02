@@ -5,12 +5,12 @@
 (in-package :2021.03)
 
 (defsection @2021.03 (:title "Binary Diagnostic")
-  (@part-1 section)
-  (get-power-consumption function)
-  (@part-2 section)
-  (get-life-support function))
+  "Requirements: [Day 03](https://adventofcode.com/2021/day/3)"
 
-(defsection @part-1 (:title "Check the Power Consumption"))
+  "**Part 1** - Check the Power Consumption"
+  (get-power-consumption function)
+  "**Part 2** - Verify Life Support"
+  (get-life-support function))
 
 (defun bits-to-int (bits)
   (parse-integer (coerce bits 'string) :radix 2))
@@ -41,8 +41,6 @@
 (defun part-1 ()
   (let ((data (read-day-input #'identity)))
     (summarize (get-power-consumption data))))
-
-(defsection @part-2 (:title "Verify Life Support"))
 
 (defun correct-bit? (test ones target)
   (lambda (char)

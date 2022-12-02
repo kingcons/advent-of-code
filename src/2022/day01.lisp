@@ -19,18 +19,19 @@ I have a few tools that make this task easier:
  splits the string based on a separator and maps over the results with a supplied parsing function
 
 Part 1 asks us to determine who has the most snacks among the elves.
-Part 2 asks us to figure out the total snacks among the top 3 snack-holders.
-
 Part 1 is easy enough to solve. We simply apply MAX after parsing the input.
-Part 2 requires a little additional work to sort and sum the top 3 elves which is handled by TOTAL-SNACKS."
 
-  (@part-1 section)
-  (@part-2 section))
+Part 2 asks us to figure out the total snacks among the top 3 snack-holders.
+This adds a little effort to sort and sum the snacks which is handled by TOTAL-SNACKS."
 
-(defsection @part-1 (:title "Who got snacks?")
+  "**Part 1** - Who got snacks?"
   (parse-inventory function)
-  (source (include (:start (parse-inventory function) :end (part-1 function))
-                   :header-nl "```common-lisp" :footer-nl "```")))
+  (part-1-source (include (:start (parse-inventory function) :end (part-1 function))
+                          :header-nl "```common-lisp" :footer-nl "```"))
+  "**Part 2** - Backup snack strategy"
+  (total-snacks function)
+  (part-2-source (include (:start (total-snacks function) :end (part-2 function))
+                          :header-nl "```common-lisp" :footer-nl "```")))
 
 (defun parse-inventory (inventory)
   "Given a string, INVENTORY, convert each line to an integer and sum them."
@@ -41,11 +42,6 @@ Part 2 requires a little additional work to sort and sum the top 3 elves which i
 (defun part-1 ()
   (let ((snacks (read-day-input #'parse-inventory :separator "\\n\\n")))
     (summarize (apply 'max snacks))))
-
-(defsection @part-2 (:title "Backup Snack Strategy")
-  (total-snacks function)
-  (source (include (:start (total-snacks function) :end (part-2 function))
-                   :header-nl "```common-lisp" :footer-nl "```")))
 
 (defun total-snacks (snacks)
   "Sort the supplied list of integers, SNACKS, in descending order,
