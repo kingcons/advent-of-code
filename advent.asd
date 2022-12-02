@@ -5,8 +5,7 @@
   :depends-on ("alexandria" "serapeum" "cl-ppcre" "graph" "screamer" "mgl-pax" "drakma")
   :components ((:module "src"
                 :components
-                ((:file "main" :depends-on ("2019" "2020" "2021" "overview"))
-                 (:file "overview" :depends-on ("2019" "2020" "2021" "2022"))
+                ((:file "main" :depends-on ("2019" "2020" "2021" "2022" "util"))
                  (:file "util")
                  (:module "2022"
                   :pathname "2022"

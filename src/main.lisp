@@ -1,18 +1,14 @@
 (defpackage aoc
   (:use :cl :mgl-pax)
+  (:import-from :aoc.util #:build-section-from-pathname
+                          #:build-package-name-from-pathname
+                          #:@aoc.util)
+  (:import-from :alexandria #:lastcar
+                            #:symbolicate)
+  (:import-from :serapeum #:fmt)
   (:export :@advent))
 
 (in-package :aoc)
-
-(defsection @advent (:title "Advent of Code")
-  (@links section)
-  (@background section)
-  (@aoc.2022 section)
-  (@aoc.2021 section)
-  (@aoc.2020 section)
-  (@aoc.2019 section)
-  (@results section)
-  (aoc.util:@aoc.util section))
 
 (defsection @links (:title "Links")
   "Here is the [github repo][repo] and
@@ -64,32 +60,76 @@ compassion for myself and you, dear reader.
 [ll]: https://blog.kingcons.io/posts/For-Posterity.html
 [dp]: https://www.cs.virginia.edu/~evans/cs655/readings/smalltalk.html")
 
-(defsection @results (:title "Results")
-  "I do not hold myself to completing every exercise and oscillate between striving
+;;; NOTE: The following code exists to allow autogenerating both an exhaustive
+;;; performance and results summary for all completed exercises as well as the
+;;; rollup sections for each individual year of Advent of Code. While the
+;;; metaprogramming is a bit gross and overreaching, the ability to just add
+;;; a new day to the ASDF system and start hacking without linking to sections
+;;; in 3 different places is considered worth the suffering. This code should
+;;; only very rarely be modified. Note the years are still hardcoded in @ADVENT.
+
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (defun generate-year-section (year-dir)
+    (let ((year (parse-integer (lastcar (pathname-directory year-dir))))
+          (lisp-files (uiop:directory-files year-dir "*.lisp")))
+      (flet ((build-year-section-name (year)
+               (symbolicate "@AOC." (write-to-string year))))
+        `(defsection ,(build-year-section-name year) (:title ,(fmt "Advent ~d" year))
+           ,@(loop for file in lisp-files
+                   collecting (build-section-from-pathname file))))))
+
+  (defun format-day (day)
+    (let* ((package (find-package day))
+           (main-section (symbol-value (find-symbol (fmt "@~A" day) package)))
+           (section-1 (symbol-value (find-symbol "@PART-1" package)))
+           (section-2 (symbol-value (find-symbol "@PART-2" package))))
+      (unless (and (find-symbol "PART-1" package)
+                   (find-symbol "PART-2" package))
+        (return-from format-day nil))
+      (format nil "##### ~A Day ~A: ~A
+  * Part 1: ~A~%~A
+  * Part 2: ~A~%~A"
+              (subseq day 0 4)
+              (subseq day 5)
+              (section-title main-section)
+              (section-title section-1)
+              (funcall (find-symbol "PART-1" package))
+              (section-title section-2)
+              (funcall (find-symbol "PART-2" package))))))
+
+(defmacro generate-years ()
+  (let* ((src-dir (asdf:system-relative-pathname :advent "src/"))
+         (subdirs (uiop:subdirectories src-dir)))
+    `(progn
+       ,@(loop for subdir in subdirs
+               collecting (generate-year-section subdir)))))
+
+(defmacro generate-overview ()
+  (let* ((src-dir (asdf:system-relative-pathname :advent "src/"))
+         (lisp-files (uiop:directory-files src-dir "*/*.lisp"))
+         (days-attempted (mapcar #'build-package-name-from-pathname lisp-files))
+         (formatted-overview
+           (apply 'concatenate 'string
+                  (mapcar #'format-day days-attempted))))
+    `(defsection @overview (:title "Overview")
+       "I do not hold myself to completing every exercise and oscillate between striving
 for a concise or clever implementation versus an optimized one. Still, it's useful to
 have an overview of what code has been written and how it performs. That lives here."
-  (aoc.overview:@overview section))
+       ,formatted-overview)))
 
-(defsection @aoc.2019 (:title "Advent 2019")
-  (2019.01:@2019.01 section))
+(generate-years)
 
-(defsection @aoc.2020 (:title "Advent 2020"))
+(generate-overview)
 
-(defsection @aoc.2021 (:title "Advent 2021")
-  (2021.01:@2021.01 section)
-  (2021.02:@2021.02 section)
-  (2021.03:@2021.03 section)
-  (2021.04:@2021.04 section)
-  (2021.05:@2021.05 section)
-  (2021.06:@2021.06 section)
-  (2021.07:@2021.07 section)
-  (2021.08:@2021.08 section)
-  (2021.09:@2021.09 section)
-  (2021.10:@2021.10 section)
-  (2021.11:@2021.11 section))
-
-(defsection @aoc.2022 (:title "Advent 2022")
-  (2022.01:@2022.01 section))
+(defsection @advent (:title "Advent of Code")
+  (@links section)
+  (@background section)
+  (@aoc.2022 section)
+  (@aoc.2021 section)
+  (@aoc.2020 section)
+  (@aoc.2019 section)
+  (@overview section)
+  (@aoc.util section))
 
 (defun build-site ()
   (let ((*document-normalize-packages* nil))

@@ -11,9 +11,31 @@
 
 (defsection @aoc.util (:title "Useful Utilities")
   (*aoc-session* variable)
+  (build-package-name-from-pathname function)
+  (build-section-from-pathname function)
   (read-day-input macro)
   (scaffold function)
   (summarize macro))
+
+(defmacro extract-date-from-string (string &body body)
+  "Bind YEAR and DAY to values extracted from STRING by the regex
+`(\\d{4}).*(\\d{2})` and run BODY in the scope of those bindings."
+  `(cl-ppcre:register-groups-bind (year day)
+       ("(\\d{4}).*(\\d{2})" ,string)
+     ,@body))
+
+(defun build-package-name-from-pathname (pathname)
+  "Given a PATHNAME, build a package designator appropriate for that path."
+  (extract-date-from-string (namestring pathname)
+    (fmt "~d.~d" year day)))
+
+(defun build-section-from-pathname (pathname)
+  "Given a PATHNAME, build a section locative appropriate for that path."
+  (extract-date-from-string (namestring pathname)
+    (let ((section-name (fmt "@~d.~d" year day))
+          (package-name (fmt "~d.~d" year day)))
+      (list (find-symbol section-name package-name)
+            'section))))
 
 (defvar *aoc-session* nil
   "A token for the user's Advent of Code session. This must be supplied
@@ -56,8 +78,7 @@ An error will be thrown if a directory matching YEAR does not exist."
     (system-relative-pathname :advent filename)))
 
 (defun read-dat-file-for-package ()
-  (cl-ppcre:register-groups-bind (year day)
-      ("(\\d{4})\.(\\d{2})" (package-name *package*))
+  (extract-date-from-string (package-name *package*)
     (read-file-into-string (day-file year day))))
 
 (defmacro read-day-input (item-parser &key (separator "\\n") (whole nil) (input nil))
