@@ -2,7 +2,8 @@
   (:nicknames :2022.02)
   (:use :cl :aoc.util :mgl-pax)
   (:import-from :alexandria #:lastcar
-                            #:make-keyword))
+                            #:make-keyword)
+  (:import-from :serapeum #:op))
 
 (in-package :2022.02)
 
@@ -26,33 +27,29 @@
   "A list of all possible 1-round games of Rock, Paper, Scissors.
 In the format: (opponent-move player-move result score)")
 
-(defun parse-input (input)
+(defun parse-move (input)
   (list (make-keyword (char input 0))
         (make-keyword (char input 2))))
 
-(defun choose-move (input game)
-  (and (eql (first input) (first game))
-       (eql (second input) (second game))))
-
-(defun play (input strategy-fn)
+(defun play (input)
   (flet ((match? (game)
-           (funcall strategy-fn input game)))
+           (every (op (member _ game)) input)))
     (declare (dynamic-extent #'match?))
     (lastcar (find-if #'match? *games*))))
 
-(defun total-score (games &key strategy-fn)
-  (reduce #'+ (mapcar (lambda (x) (play x strategy-fn)) games)))
+(defun total-score (games)
+  (reduce #'+ (mapcar #'play games)))
 
 (defun part-1 ()
-  (let ((games (read-day-input #'parse-game)))
-    (summarize (total-score games :strategy-fn #'choose-move))))
+  (let ((games (read-day-input #'parse-move)))
+    (summarize (total-score games))))
 
-(defun choose-result (input game)
-  (let* ((input-map '(:x :lose :y :draw :z :win))
-         (result (getf input-map (second input))))
-    (and (eql (first input) (first game))
-         (eql result (third game)))))
+(defun parse-result (input)
+  (let* ((outcome (make-keyword (char input 2)))
+         (outcome-map '(:x :lose :y :draw :z :win)))
+    (list (make-keyword (char input 0))
+          (getf outcome-map outcome))))
 
 (defun part-2 ()
-  (let ((games (read-day-input #'parse-game)))
-    (summarize (total-score games :strategy-fn #'choose-result))))
+  (let ((games (read-day-input #'parse-result)))
+    (summarize (total-score games))))
