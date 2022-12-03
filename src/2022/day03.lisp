@@ -11,13 +11,15 @@
 
   "**Part 1** - Misplaced Items"
   (locate-duplicate function)
-  (source (include (:start (locate-duplicate function) :end (*priorities* variable))
-                   :header-nl "```common-lisp" :footer-nl "```"))
+  (locate-duplicate-source
+   (include (:start (locate-duplicate function) :end (*priorities* variable))
+            :header-nl "```common-lisp" :footer-nl "```"))
 
   "**Part 2** - Unauthenticated Badges"
   (locate-badge function)
-  (source (include (:start (locate-badge function) :end (part-2 function))
-                   :header-nl "```common-lisp" :footer-nl "```")))
+  (locate-badge-source
+   (include (:start (locate-badge function) :end (part-2 function))
+            :header-nl "```common-lisp" :footer-nl "```")))
 
 (defun locate-duplicate (rucksack)
   (let ((chars (coerce rucksack 'list)))

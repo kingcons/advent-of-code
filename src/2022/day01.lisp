@@ -26,12 +26,14 @@ This adds a little effort to sort and sum the snacks which is handled by TOTAL-S
 
   "**Part 1** - Who got snacks?"
   (parse-inventory function)
-  (part-1-source (include (:start (parse-inventory function) :end (part-1 function))
-                          :header-nl "```common-lisp" :footer-nl "```"))
+  (part-1-source
+   (include (:start (parse-inventory function) :end (part-1 function))
+            :header-nl "```common-lisp" :footer-nl "```"))
   "**Part 2** - Backup snack strategy"
   (total-snacks function)
-  (part-2-source (include (:start (total-snacks function) :end (part-2 function))
-                          :header-nl "```common-lisp" :footer-nl "```")))
+  (part-2-source
+   (include (:start (total-snacks function) :end (part-2 function))
+            :header-nl "```common-lisp" :footer-nl "```")))
 
 (defun parse-inventory (inventory)
   "Given a string, INVENTORY, convert each line to an integer and sum them."
