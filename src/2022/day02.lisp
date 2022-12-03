@@ -1,7 +1,7 @@
 (mgl-pax:define-package :aoc.2022.02
   (:nicknames :2022.02)
   (:use :cl :aoc.util :mgl-pax)
-  (:import-from :alexandria #:assoc-value
+  (:import-from :alexandria #:lastcar
                             #:make-keyword))
 
 (in-package :2022.02)
@@ -13,65 +13,46 @@
   (total-score function)
   "**Part 2** - Pick my objective")
 
-(defvar *outcome*
-  '(((:a :x) . :draw)
-    ((:a :y) . :win)
-    ((:a :z) . :lose)
-    ((:b :x) . :lose)
-    ((:b :y) . :draw)
-    ((:b :z) . :win)
-    ((:c :x) . :win)
-    ((:c :y) . :lose)
-    ((:c :z) . :draw))
-  "A mapping from game states to outcome scores.")
+(defvar *games*
+  '((:a :x :draw 4)
+    (:a :y :win  8)
+    (:a :z :lose 3)
+    (:b :x :lose 1)
+    (:b :y :draw 5)
+    (:b :z :win  9)
+    (:c :x :win  7)
+    (:c :y :lose 2)
+    (:c :z :draw 6))
+  "A list of all possible 1-round games of Rock, Paper, Scissors.
+In the format: (opponent-move player-move result score)")
 
-(defvar *shape-score*
-  '((:x . 1)
-    (:y . 2)
-    (:z . 3))
-  "A mapping from shapes to scores.")
+(defun parse-input (input)
+  (list (make-keyword (char input 0))
+        (make-keyword (char input 2))))
 
-(defvar *outcome-score*
-  '((:lose . 0)
-    (:draw . 3)
-    (:win . 6))
-  "A mapping from outcomes to scores.")
+(defun choose-move (input game)
+  (and (eql (first input) (first game))
+       (eql (second input) (second game))))
 
-(defun parse-game (game)
-  (list (make-keyword (char game 0))
-        (make-keyword (char game 2))))
+(defun play (input strategy-fn)
+  (flet ((match? (game)
+           (funcall strategy-fn input game)))
+    (declare (dynamic-extent #'match?))
+    (lastcar (find-if #'match? *games*))))
 
-(defun score-game (game)
-  (let* ((shape-score (assoc-value *shape-score* (second game)))
-         (outcome (assoc-value *outcome* game :test #'equal))
-         (outcome-score (assoc-value *outcome-score* outcome)))
-    (+ shape-score
-       outcome-score)))
-
-(defun total-score (games)
-  (reduce #'+ (mapcar #'score-game games)))
+(defun total-score (games &key strategy-fn)
+  (reduce #'+ (mapcar (lambda (x) (play x strategy-fn)) games)))
 
 (defun part-1 ()
-  (let ((data (read-day-input #'parse-game)))
-    (summarize (total-score data))))
+  (let ((games (read-day-input #'parse-game)))
+    (summarize (total-score games :strategy-fn #'choose-move))))
 
-(defvar *secret-strategy*
-  '(((:a :x) . :z)
-    ((:a :y) . :x)
-    ((:a :z) . :y)
-    ((:b :x) . :x)
-    ((:b :y) . :y)
-    ((:b :z) . :z)
-    ((:c :x) . :y)
-    ((:c :y) . :z)
-    ((:c :z) . :x))
-  "A mapping from the game state to what to actually throw.")
-
-(defun secret-strategy (input)
-  (let* ((game (parse-game input))
-         (shape (assoc-value *secret-strategy* game :test #'equal)))
-    (list (first game) shape)))
+(defun choose-result (input game)
+  (let* ((input-map '(:x :lose :y :draw :z :win))
+         (result (getf input-map (second input))))
+    (and (eql (first input) (first game))
+         (eql result (third game)))))
 
 (defun part-2 ()
-  (let ((data (read-day-input #'secret-strategy)))
-    (summarize (total-score data))))
+  (let ((games (read-day-input #'parse-game)))
+    (summarize (total-score games :strategy-fn #'choose-result))))
