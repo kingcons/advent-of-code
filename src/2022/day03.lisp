@@ -2,7 +2,8 @@
   (:nicknames :2022.03)
   (:use :cl :aoc.util :mgl-pax)
   (:import-from :serapeum #:~>>
-                          #:halves))
+                          #:halves
+                          #:op))
 
 (in-package :2022.03)
 
@@ -34,19 +35,15 @@
           do (setf (gethash (code-char code) table) (- code 96)))
     table))
 
-(defun priority-of (item)
-  (gethash item *priorities*))
-
 (defun total-priority (items)
-  (reduce #'+ (mapcar #'priority-of items)))
+  (reduce #'+ items :key (op (gethash _ *priorities*))))
 
 (defun part-1 ()
   (let ((items (read-day-input #'locate-duplicate)))
     (summarize (total-priority items))))
 
 (defun locate-badge (group)
-  (let ((chars (mapcar (lambda (x) (coerce x 'list)) group)))
-    (first (reduce #'intersection chars))))
+  (first (reduce #'intersection group :key (op (coerce _ 'list)))))
 
 (defun part-2 ()
   (let ((items (read-day-input #'locate-badge :batches-of 3)))

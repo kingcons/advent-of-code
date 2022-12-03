@@ -38,7 +38,7 @@ In the format: (opponent-move player-move result score)")
     (lastcar (find-if #'match? *games*))))
 
 (defun total-score (games)
-  (reduce #'+ (mapcar #'play games)))
+  (reduce #'+ games :key #'play))
 
 (defun part-1 ()
   (let ((games (read-day-input #'parse-move)))
