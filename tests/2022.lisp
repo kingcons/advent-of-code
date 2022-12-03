@@ -44,11 +44,11 @@ B X
 C Z")
 
 (deftest day02-part1 ()
-  (let ((data (read-day-input #'2022.02::parse-game :input *day02-input*)))
+  (let ((data (read-day-input #'2022.02::parse-move :input *day02-input*)))
     (is (= (2022.02:total-score data) 15))))
 
 (deftest day02-part2 ()
-  (let ((data (read-day-input #'2022.02::secret-strategy :input *day02-input*)))
+  (let ((data (read-day-input #'2022.02::parse-result :input *day02-input*)))
     (is (= (2022.02:total-score data) 12))))
 
 ;;;; Day 03
