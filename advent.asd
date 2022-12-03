@@ -12,7 +12,8 @@
                   :depends-on ("util")
                   :components
                   ((:file "day01")
-                   (:file "day02")))
+                   (:file "day02")
+                   (:file "day03")))
                  (:module "2021"
                   :pathname "2021"
                   :depends-on ("util")

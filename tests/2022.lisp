@@ -45,13 +45,29 @@ C Z")
 
 (deftest day02-part1 ()
   (let ((data (read-day-input #'2022.02::parse-game :input *day02-input*)))
-    (is (= (2022.02:total-score data)
-           15))))
+    (is (= (2022.02:total-score data) 15))))
 
 (deftest day02-part2 ()
   (let ((data (read-day-input #'2022.02::secret-strategy :input *day02-input*)))
-    (is (= (2022.02:total-score data)
-           12))))
+    (is (= (2022.02:total-score data) 12))))
+
+;;;; Day 03
+
+(defvar *day03-input*
+  "vJrwpWtwJgWrhcsFMMfFFhFp
+jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL
+PmmdzqPrVvPwwTWBwg
+wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn
+ttgJtRGJQctTZtZT
+CrZsJsPPZsGzwwsLwLmpwMDw")
+
+(deftest day03-part1 ()
+  (let ((data (read-day-input #'2022.03:locate-duplicate :input *day03-input*)))
+    (is (= (2022.03::total-priority data) 157))))
+
+(deftest day03-part2 ()
+  (let ((data (read-day-input #'2022.03:locate-badge :input *day03-input* :batches-of 3)))
+    (is (= (2022.03::total-priority data) 70))))
 
 ;;;; Summary
 
@@ -59,7 +75,9 @@ C Z")
   (day01-part1)
   (day01-part2)
   (day02-part1)
-  (day02-part2))
+  (day02-part2)
+  (day03-part1)
+  (day03-part2))
 
 #+nil
 (test-2022)
