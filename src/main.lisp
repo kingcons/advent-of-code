@@ -1,7 +1,6 @@
 (defpackage aoc
   (:use :cl :mgl-pax)
-  (:import-from :aoc.util #:build-section-from-pathname
-                          #:build-package-name-from-pathname
+  (:import-from :aoc.util #:extract-date-from-string
                           #:@aoc.util)
   (:import-from :alexandria #:lastcar
                             #:symbolicate)
@@ -73,7 +72,12 @@ compassion for myself and you, dear reader.
     (let ((year (parse-integer (lastcar (pathname-directory year-dir))))
           (lisp-files (uiop:directory-files year-dir "*.lisp")))
       (flet ((build-year-section-name (year)
-               (symbolicate "@AOC." (write-to-string year))))
+               (symbolicate "@AOC." (write-to-string year)))
+             (build-section-from-pathname (pathname)
+               (extract-date-from-string (namestring pathname)
+                 (let ((section-name (fmt "@~d.~d" year day))
+                       (package-name (fmt "~d.~d" year day)))
+                   (list (find-symbol section-name package-name) 'section)))))
         `(defsection ,(build-year-section-name year) (:title ,(fmt "Advent ~d" year))
            ,@(loop for file in lisp-files
                    collecting (build-section-from-pathname file)))))))
