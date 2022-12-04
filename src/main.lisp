@@ -76,22 +76,7 @@ compassion for myself and you, dear reader.
                (symbolicate "@AOC." (write-to-string year))))
         `(defsection ,(build-year-section-name year) (:title ,(fmt "Advent ~d" year))
            ,@(loop for file in lisp-files
-                   collecting (build-section-from-pathname file))))))
-
-  (defun format-day (day)
-    (let* ((package (find-package day))
-           (main-section (symbol-value (find-symbol (fmt "@~A" day) package))))
-      (unless (and (find-symbol "PART-1" package)
-                   (find-symbol "PART-2" package))
-        (return-from format-day nil))
-      (format nil "##### ~A Day ~A: ~A
-  * Part 1:~%~A
-  * Part 2:~%~A"
-              (subseq day 0 4)
-              (subseq day 5)
-              (section-title main-section)
-              (funcall (find-symbol "PART-1" package))
-              (funcall (find-symbol "PART-2" package))))))
+                   collecting (build-section-from-pathname file)))))))
 
 (defmacro generate-years ()
   (let* ((src-dir (asdf:system-relative-pathname :advent "src/"))
@@ -100,22 +85,7 @@ compassion for myself and you, dear reader.
        ,@(loop for subdir in subdirs
                collecting (generate-year-section subdir)))))
 
-(defmacro generate-overview ()
-  (let* ((src-dir (asdf:system-relative-pathname :advent "src/"))
-         (lisp-files (uiop:directory-files src-dir "*/*.lisp"))
-         (days-attempted (mapcar #'build-package-name-from-pathname lisp-files))
-         (formatted-overview
-           (apply 'concatenate 'string
-                  (mapcar #'format-day days-attempted))))
-    `(defsection @overview (:title "Overview")
-       "I do not hold myself to completing every exercise and oscillate between striving
-for a concise or clever implementation versus an optimized one. Still, it's useful to
-have an overview of what code has been written and how it performs. That lives here."
-       ,formatted-overview)))
-
 (generate-years)
-
-(generate-overview)
 
 (defsection @advent (:title "Advent of Code")
   (@links section)
@@ -124,7 +94,6 @@ have an overview of what code has been written and how it performs. That lives h
   (@aoc.2021 section)
   (@aoc.2020 section)
   (@aoc.2019 section)
-  (@overview section)
   (@aoc.util section))
 
 (defun build-site ()

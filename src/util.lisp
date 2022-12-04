@@ -1,7 +1,8 @@
 (mgl-pax:define-package :aoc.util
   (:use :cl :mgl-pax)
   (:import-from :asdf #:system-relative-pathname)
-  (:import-from :alexandria #:read-file-into-string)
+  (:import-from :alexandria #:read-file-into-string
+                            #:with-unique-names)
   (:import-from :cl-ppcre #:split
                           #:regex-replace-all)
   (:import-from :serapeum #:~>>
@@ -14,6 +15,7 @@
   (*aoc-session* variable)
   (build-package-name-from-pathname function)
   (build-section-from-pathname function)
+  (defsummary macro)
   (read-day-input macro)
   (scaffold function)
   (summarize macro))
@@ -97,15 +99,18 @@ If INPUT is supplied, use that instead of loading the DAT file matching the *PAC
                `(funcall ,item-parser)
                `(mapcar ,item-parser)))))
 
+(defmacro defsummary (year day)
+  (let* ((advent-url (fmt "https://adventofcode.com/~d/day/~d" year day))
+         (part1-output (summarize (funcall (find-symbol "PART-1"))))
+         (part2-output (summarize (funcall (find-symbol "PART-2")))))
+    `(defsection ,(intern "@SUMMARY") (:title "Summary")
+       ,(fmt "**Requirements:** [Day ~2,'0d](~a)~%" day advent-url)
+       ,(fmt "**Part 1:**~%~A~%**Part 2:**~%~A~%" part1-output part2-output))))
+
 (defmacro summarize (form)
   "Measure the real time to execute FORM and return a formatted string
  showing the result and the wall clock execution time."
-  (let ((old-bytes (gensym))
-        (new-bytes (gensym))
-        (useconds (gensym))
-        (result (gensym))
-        (start (gensym))
-	(end (gensym)))
+  (with-unique-names (old-bytes new-bytes useconds result start end)
     `(let* ((,old-bytes (sb-ext:get-bytes-consed))
             (,start (get-internal-real-time))
             (,result ,form)
