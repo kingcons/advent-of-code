@@ -1,15 +1,9 @@
-* DONE - Automate away the tedious editing of individual year defsections in main.lisp
-  similar to how I automated away the same editing in overview.lisp.
-  This would make it so a new day only touches: advent.asd, dayNN.lisp, dayNN.dat
-  The primary problem I can think of is that since these are directly referenced
-  as separate sections in the top-level @advent there may not be a good way to
-  include them short of grouping all the years under another section called "Years" or something.
-  On the bright side, that may prevent us nesting down to the level of Part 1, Part 2.
-  Probably worth it to me.
-* TODO - Move the compile-time helpers from main to utils. Or maybe a separate file?
-** Seems like in most scenarios the separate file gets you out of the eval-when headaches
-and there isn't sufficient benefit to keeping the helper right next to the macro. Could be wrong.
+* DONE - Automate away the tedious editing of individual year defsections in main.lisp  similar to how I automated away the same editing in overview.lisp. This would make it so a new day only touches: advent.asd, dayNN.lisp, dayNN.dat. The primary problem I can think of is that since these are directly referenced as separate sections in the top-level @advent there may not be a good way to include them short of grouping all the years under another section called "Years" or something. On the bright side, that may prevent us nesting down to the level of Part 1, Part 2. Probably worth it to me.
+* DONE - Move the compile-time helpers from main to utils. Or maybe a separate file?
+** Seems like in most scenarios the separate file gets you out of the eval-when headaches and there isn't sufficient benefit to keeping the helper right next to the macro. Could be wrong.
 * TODO - Redistribute the performance summaries throughout the problems.
-** Having a big overview block seems like a nice idea but I rarely look at that so why would anyone else?
-It probably makes more sense to have them in each individual defsection ... somehow. May want to autogenerate
-summaries with a defsummary macro or something in aoc.util. We'll see...
+** Having a big overview block seems like a nice idea but I rarely look at that so why would anyone else? It probably makes more sense to have them in each individual defsection ... somehow. May want to autogenerate summaries with a defsummary macro or something in aoc.util. We'll see...
+* TODO - Refactor the callsites of READ-DAY-UTIL :WHOLE to use :BATCHES-OF if possible.
+** It would be nice to rip the WHOLE option out altogether. Aside from simplifying the interface to READ-DAY-UTIL this enables moving off READ-FILE-FROM-STRING.
+** Seems like the real problem here is two "grid" problems from 2021, days 9 and 11. We really do need the whole input so this would strictly increase the accidental complexity of those problems if we removed the option. :-/
+
