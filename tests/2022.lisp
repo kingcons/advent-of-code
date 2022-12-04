@@ -69,6 +69,24 @@ CrZsJsPPZsGzwwsLwLmpwMDw")
   (let ((data (read-day-input #'2022.03:locate-badge :input *day03-input* :batches-of 3)))
     (is (= (2022.03::total-priority data) 70))))
 
+;;;; Day 04
+
+(defvar *day04-input*
+  "2-4,6-8
+2-3,4-5
+5-7,7-9
+2-8,3-7
+6-6,4-6
+2-6,4-8")
+
+(deftest day04-part1 ()
+  (let ((data (read-day-input #'2022.04::parse-assignment :input *day04-input*)))
+    (is (= (count-if #'2022.04::subset? data) 2))))
+
+(deftest day04-part2 ()
+  (let ((data (read-day-input #'2022.04::parse-assignment :input *day04-input*)))
+    (is (= (count-if #'2022.04::overlap? data) 4))))
+
 ;;;; Summary
 
 (deftest test-2022 ()
@@ -77,7 +95,9 @@ CrZsJsPPZsGzwwsLwLmpwMDw")
   (day02-part1)
   (day02-part2)
   (day03-part1)
-  (day03-part2))
+  (day03-part2)
+  (day04-part1)
+  (day04-part2))
 
 #+nil
 (test-2022)

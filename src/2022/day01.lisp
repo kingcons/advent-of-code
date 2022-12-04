@@ -6,10 +6,10 @@
 
 (in-package :2022.01)
 
-(defsummary 2022 01)
+(defsection @2022.01 (:title "Calorie Counting")
+  "Requirements: [Day 01](https://adventofcode.com/2022/day/01)
 
-(defsection @reflection (:title "Reflection")
-  "As usual, the first day is a straightforward warmup problem.
+As usual, the first day is a straightforward warmup problem.
 A lot of the actual work is simply parsing the supplied data.
 I have a few tools that make this task easier:
 
@@ -34,10 +34,6 @@ This adds a little effort to sort and sum the snacks which is handled by TOTAL-S
   (part-2-source
    (include (:start (total-snacks function) :end (part-2 function))
             :header-nl "```common-lisp" :footer-nl "```")))
-
-(defsection @2022.01 (:title "Calorie Counting")
-  (@summary section)
-  (@reflection section))
 
 (defun parse-inventory (inventory)
   "Given a string, INVENTORY, convert each line to an integer and sum them."
