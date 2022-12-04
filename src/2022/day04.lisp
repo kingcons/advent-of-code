@@ -1,8 +1,7 @@
 (mgl-pax:define-package :aoc.2022.04
   (:nicknames :2022.04)
   (:use :cl :aoc.util :mgl-pax)
-  (:import-from :cl-ppcre #:register-groups-bind)
-  (:import-from :serapeum #:~>>))
+  (:import-from :cl-ppcre #:register-groups-bind))
 
 (in-package :2022.04)
 
