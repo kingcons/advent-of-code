@@ -5,8 +5,7 @@
 
 (in-package :2021.10)
 
-(defsection @2021.10 (:title "Syntax Scoring")
-  "Requirements: [Day 10](https://adventofcode.com/2021/day/10)")
+(defsummary (:title "Syntax Scoring"))
 
 (define-constant +error-points+
     '((#\) 3)
@@ -40,7 +39,7 @@
 
 (defun part-1 ()
   (let ((data (read-day-input #'identity)))
-    (summarize (score-syntax data))))
+    (score-syntax data)))
 
 (define-constant +autocomplete-points+
     '((#\) 1)
@@ -77,4 +76,4 @@
 
 (defun part-2 ()
   (let ((data (read-day-input #'identity)))
-    (summarize (score-corrections data))))
+    (score-corrections data)))

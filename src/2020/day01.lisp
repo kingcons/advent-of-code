@@ -5,9 +5,7 @@
 
 (in-package :2020.01)
 
-(defsection @2020.01 (:title "Report Repair")
-  "Requirements: [Day 01](https://adventofcode.com/2020/day/1)"
-
+(defsummary (:title "Report Repair")
   "**Part 1** - Fix the Expense Report"
   (find-pair function)
   "**Part 2** - Now in triplicate"
@@ -21,7 +19,7 @@
 
 (defun part-1 ()
   (let ((items (read-day-input #'parse-integer)))
-    (summarize (find-pair items))))
+    (find-pair items)))
 
 (defun find-triple (items &aux (hash (make-hash-table)))
   (dolist (item items)
@@ -33,4 +31,4 @@
 
 (defun part-2 ()
   (let ((items (read-day-input #'parse-integer)))
-    (summarize (find-triple items))))
+    (find-triple items)))

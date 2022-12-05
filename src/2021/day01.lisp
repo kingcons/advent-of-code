@@ -4,9 +4,7 @@
 
 (in-package :2021.01)
 
-(defsection @2021.01 (:title "Sonar Sweep")
-  "Requirements: [Day 01](https://adventofcode.com/2021/day/1)"
-
+(defsummary (:title "Sonar Sweep")
   "**Part 1** - Into the Depths
 
 For part 1, we'll just be checking how often a depth reading
@@ -57,7 +55,7 @@ specializing makes in this case."
 
 (defun part-1 ()
   (let ((data (read-day-input #'parse-integer)))
-    (summarize (count-depths data))))
+    (count-depths data)))
 
 (defun count-average-depths (sonar-readings)
   (let ((sums (loop for (first second third) on sonar-readings
@@ -113,4 +111,4 @@ specializing makes in this case."
   (let* ((data (read-day-input #'parse-integer))
          (nums (coerce data 'vector)))
     (declare (ignore nums))
-    (summarize (count-shifting-depths data))))
+    (count-shifting-depths data)))

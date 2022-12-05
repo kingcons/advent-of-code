@@ -6,10 +6,8 @@
 
 (in-package :2022.01)
 
-(defsection @2022.01 (:title "Calorie Counting")
-  "Requirements: [Day 01](https://adventofcode.com/2022/day/01)
-
-As usual, the first day is a straightforward warmup problem.
+(defsummary (:title "Calorie Counting")
+  "As usual, the first day is a straightforward warmup problem.
 A lot of the actual work is simply parsing the supplied data.
 I have a few tools that make this task easier:
 

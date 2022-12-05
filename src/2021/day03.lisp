@@ -4,9 +4,7 @@
 
 (in-package :2021.03)
 
-(defsection @2021.03 (:title "Binary Diagnostic")
-  "Requirements: [Day 03](https://adventofcode.com/2021/day/3)"
-
+(defsummary (:title "Binary Diagnostic")
   "**Part 1** - Check the Power Consumption"
   (get-power-consumption function)
   "**Part 2** - Verify Life Support"
@@ -40,7 +38,7 @@
 
 (defun part-1 ()
   (let ((data (read-day-input #'identity)))
-    (summarize (get-power-consumption data))))
+    (get-power-consumption data)))
 
 (defun correct-bit? (test ones target)
   (lambda (char)
@@ -62,4 +60,4 @@
 
 (defun part-2 ()
   (let ((data (read-day-input #'identity)))
-    (summarize (get-life-support data))))
+    (get-life-support data)))

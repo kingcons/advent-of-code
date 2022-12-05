@@ -4,9 +4,7 @@
 
 (in-package :2019.01)
 
-(defsection @2019.01 (:title "The Tyranny of the Rocket Equation")
-  "Requirements: [Day 01](https://adventofcode.com/2019/day/1)"
-
+(defsummary (:title "The Tyranny of the Rocket Equation")
   "**Part 1** - Fuel for Modules
 
 Part 1 is just a simple summation problem.
@@ -80,7 +78,7 @@ Two interesting notes:
 
 (defun part-1 ()
   (let ((data (read-day-input #'parse-integer)))
-    (summarize (fuel-requirements-3 data))))
+    (fuel-requirements-3 data)))
 
 (defun total-fuel-needed-1 (masses)
   (labels ((fixed-point (x &optional (acc 0))
@@ -98,4 +96,4 @@ Two interesting notes:
 
 (defun part-2 ()
   (let ((data (read-day-input #'parse-integer)))
-    (summarize (total-fuel-needed-2 data))))
+    (total-fuel-needed-2 data)))

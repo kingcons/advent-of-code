@@ -5,9 +5,7 @@
 
 (in-package :2020.06)
 
-(defsection @2020.06 (:title "Custom Customs")
-  "Requirements: [Day 06](https://adventofcode.com/2020/day/6)"
-
+(defsummary (:title "Custom Customs")
   "**Part 1** - Count any yes answers"
   (parse-group function)
   "**Part 2** - Count all yes answers"
@@ -25,8 +23,8 @@
 
 (defun part-1 ()
   (let ((groups (read-day-input #'parse-group :separator "\\n\\n")))
-    (summarize (count-groups groups #'union))))
+    (count-groups groups #'union)))
 
 (defun part-2 ()
   (let ((groups (read-day-input #'parse-group :separator "\\n\\n")))
-    (summarize (count-groups groups #'intersection))))
+    (count-groups groups #'intersection)))

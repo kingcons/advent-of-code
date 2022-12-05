@@ -4,9 +4,7 @@
 
 (in-package :aoc.2021.06)
 
-(defsection @2021.06 (:title "Lanternfish")
-  "Requirements: [Day 06](https://adventofcode.com/2021/day/6)"
-
+(defsummary (:title "Lanternfish")
   "**Part 1** - That's a big school"
   (tick function)
   "**Part 2** - Uh oh"
@@ -33,8 +31,8 @@
 
 (defun part-1 ()
   (let ((data (first (read-day-input #'parse-counts))))
-    (summarize (estimate-population data 80))))
+    (estimate-population data 80)))
 
 (defun part-2 ()
   (let ((data (first (read-day-input #'parse-counts))))
-    (summarize (estimate-population data 256))))
+    (estimate-population data 256)))

@@ -4,9 +4,7 @@
 
 (in-package :2020.03)
 
-(defsection @2020.03 (:title "Toboggan Trajectory")
-  "Requirements: [Day 03](https://adventofcode.com/2020/day/3)"
-
+(defsummary (:title "Toboggan Trajectory")
   "**Part 1** - Count tree collisions"
   (count-trees function)
   "**Part 2** - Count multiple slopes"
@@ -22,7 +20,7 @@
 
 (defun part-1 ()
   (let ((map (read-day-input #'identity)))
-    (summarize (count-trees map))))
+    (count-trees map)))
 
 (defun collision? (terrain column)
   (char= #\# (char terrain (mod column (length terrain)))))
@@ -35,4 +33,4 @@
 
 (defun part-2 ()
   (let ((map (read-day-input #'identity)))
-    (summarize (count-collisions map))))
+    (count-collisions map)))

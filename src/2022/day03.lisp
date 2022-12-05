@@ -7,9 +7,7 @@
 
 (in-package :2022.03)
 
-(defsection @2022.03 (:title "Rucksack Reorganization")
-  "Requirements: [Day 03](https://adventofcode.com/2022/day/03)"
-
+(defsummary (:title "Rucksack Reorganization")
   "**Part 1** - Misplaced Items"
   (locate-duplicate function)
   (locate-duplicate-source
@@ -40,11 +38,11 @@
 
 (defun part-1 ()
   (let ((items (read-day-input #'locate-duplicate)))
-    (summarize (total-priority items))))
+    (total-priority items)))
 
 (defun locate-badge (group)
   (first (reduce #'intersection group :key (op (coerce _ 'list)))))
 
 (defun part-2 ()
   (let ((items (read-day-input #'locate-badge :batches-of 3)))
-    (summarize (total-priority items))))
+    (total-priority items)))

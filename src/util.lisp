@@ -2,6 +2,7 @@
   (:use :cl :mgl-pax)
   (:import-from :asdf #:system-relative-pathname)
   (:import-from :alexandria #:read-file-into-string
+                            #:symbolicate
                             #:with-unique-names)
   (:import-from :cl-ppcre #:split
                           #:regex-replace-all)
@@ -19,13 +20,6 @@
   (scaffold function)
   (summarize macro))
 
-(defmacro extract-date-from-string (string &body body)
-  "Bind YEAR and DAY to values extracted from STRING by the regex
-`(\\d{4}).*(\\d{2})` and run BODY in the scope of those bindings."
-  `(cl-ppcre:register-groups-bind (,(intern "YEAR") ,(intern "DAY"))
-       ("(\\d{4}).*(\\d{2})" ,string)
-     ,@body))
-
 (defvar *aoc-session* nil
   "A token for the user's Advent of Code session. This must be supplied
 for SCAFFOLD to automatically fetch puzzle input for a given day.")
@@ -39,6 +33,10 @@ for SCAFFOLD to automatically fetch puzzle input for a given day.")
                                :domain ".adventofcode.com"
                                :value *aoc-session*)))
     (make-instance 'drakma:cookie-jar :cookies (list cookie))))
+
+(defun day-file (year day &key (extension "dat"))
+  (let ((filename (fmt "src/~d/day~2,'0d.~a" year day extension)))
+    (system-relative-pathname :advent filename)))
 
 (defun scaffold-input (year day)
   (let ((dat-file (day-file year day)))
@@ -62,9 +60,12 @@ An error will be thrown if a directory matching YEAR does not exist."
   (unless (null *aoc-session*)
     (scaffold-input year day)))
 
-(defun day-file (year day &key (extension "dat"))
-  (let ((filename (fmt "src/~d/day~2,'0d.~a" year day extension)))
-    (system-relative-pathname :advent filename)))
+(defmacro extract-date-from-string (string &body body)
+  "Bind YEAR and DAY to values extracted from STRING by the regex
+`(\\d{4}).*(\\d{2})` and run BODY in the scope of those bindings."
+  `(cl-ppcre:register-groups-bind (,(intern "YEAR") ,(intern "DAY"))
+       ("(\\d{4}).*(\\d{2})" ,string)
+     ,@body))
 
 (defun read-dat-file-for-package ()
   (extract-date-from-string (package-name *package*)
@@ -85,13 +86,21 @@ If INPUT is supplied, use that instead of loading the DAT file matching the *PAC
                `(funcall ,item-parser)
                `(mapcar ,item-parser)))))
 
-(defmacro defsummary (year day)
-  (let* ((advent-url (fmt "https://adventofcode.com/~d/day/~d" year day))
-         (part1-output (summarize (funcall (find-symbol "PART-1"))))
-         (part2-output (summarize (funcall (find-symbol "PART-2")))))
-    `(defsection ,(intern "@SUMMARY") (:title "Summary")
-       ,(fmt "**Requirements:** [Day ~2,'0d](~a)~%" day advent-url)
-       ,(fmt "**Part 1:**~%~A~%**Part 2:**~%~A~%" part1-output part2-output))))
+(defmacro defsummary ((&key title) &body body)
+  (extract-date-from-string (package-name *package*)
+    (let* ((advent-url (fmt "https://adventofcode.com/~d/day/~d" year day))
+           (requirements (fmt "**Requirements:** [Day ~2,'0d](~a)~%" day advent-url))
+           (part1-output (summarize (funcall (find-symbol "PART-1"))))
+           (part2-output (summarize (funcall (find-symbol "PART-2"))))
+           (header (fmt "~a~%**Part 1:**~%~a~%**Part 2:**~%~a~%~%"
+                        requirements part1-output part2-output)))
+      `(defsection ,(symbolicate "@" year "." day) (:title ,title)
+         "---"
+         ,header
+         "   "
+         "---"
+         "##### *Reflections*"
+         ,@body))))
 
 (defmacro summarize (form)
   "Measure the real time to execute FORM and return a formatted string

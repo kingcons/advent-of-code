@@ -5,9 +5,7 @@
 
 (in-package :2021.08)
 
-(defsection @2021.08 (:title "Seven Segment Search")
-  "Requirements: [Day 08](https://adventofcode.com/2021/day/8)"
-  
+(defsummary (:title "Seven Segment Search")
   "**Part 1** - Count the Easy Ones"
   (count-unique-digits function)
   "**Part 2** - Decode the Outputs"
@@ -30,7 +28,7 @@
 
 (defun part-1 ()
   (let ((data (read-day-input #'parse-segment)))
-    (summarize (count-unique-digits data))))
+    (count-unique-digits data)))
 
 (defun compute-mapping (signals)
   (let* ((mapping (make-hash-table :test #'equal))
@@ -72,4 +70,4 @@
 
 (defun part-2 ()
   (let ((data (read-day-input #'parse-segment)))
-    (summarize (sum-outputs data))))
+    (sum-outputs data)))

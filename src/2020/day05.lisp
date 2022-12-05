@@ -5,9 +5,7 @@
 
 (in-package :2020.05)
 
-(defsection @2020.05 (:title "Binary Boarding")
-  "Requirements: [Day 05](https://adventofcode.com/2020/day/5)"
-
+(defsummary (:title "Binary Boarding")
   "**Part 1** - Binary Seat Encoding"
   (highest-seat-id function)
   "**Part 2** - Find the unoccupied seat"
@@ -35,7 +33,7 @@
 
 (defun part-1 ()
   (let ((passes (read-day-input #'identity)))
-    (summarize (highest-seat-id passes))))
+    (highest-seat-id passes)))
 
 (defun find-open-seat (passes)
   (let ((table (make-hash-table)))
@@ -50,4 +48,4 @@
 
 (defun part-2 ()
   (let ((passes (read-day-input #'identity)))
-    (summarize (find-open-seat passes))))
+    (find-open-seat passes)))

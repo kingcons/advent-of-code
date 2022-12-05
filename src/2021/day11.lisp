@@ -5,8 +5,7 @@
 
 (in-package :2021.11)
 
-(defsection @2021.11 (:title "Dumbo Octopuses")
-  "Requirements: [Day 11](https://adventofcode.com/2021/day/11)")
+(defsummary (:title "Dumbo Octopuses"))
 
 (define-constant +adjacents+
   '((0 1) (0 -1) (1 0) (-1 0) (1 1) (-1 -1) (1 -1) (-1 1))
@@ -52,7 +51,7 @@
 
 (defun part-1 ()
   (let ((data (read-day-input #'parse-grid :whole t)))
-    (summarize (count-flashes data 100))))
+    (count-flashes data 100)))
 
 (defun step-until-n-flashes (grid n)
   (loop for i = 1 then (1+ i)
@@ -62,4 +61,4 @@
 
 (defun part-2 ()
   (let ((data (read-day-input #'parse-grid :whole t)))
-    (summarize (step-until-n-flashes data 100))))
+    (step-until-n-flashes data 100)))

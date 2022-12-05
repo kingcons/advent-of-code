@@ -4,9 +4,7 @@
 
 (in-package :2021.05)
 
-(defsection @2021.05 (:title "Hydrothermal Venture")
-  "Requirements: [Day 05](https://adventofcode.com/2021/day/5)"
-
+(defsummary (:title "Hydrothermal Venture")
   "**Part 1** - Overlapping Vents"
   (coordinate-match? function)
   "**Part 2** - Diagonal Overlap"
@@ -50,8 +48,8 @@
 
 (defun part-1 ()
   (let ((segments (read-day-input #'parse-segment)))
-    (summarize (find-overlapping-vents (remove-if-not #'coordinate-match? segments)))))
+    (find-overlapping-vents (remove-if-not #'coordinate-match? segments))))
 
 (defun part-2 ()
   (let ((segments (read-day-input #'parse-segment)))
-    (summarize (find-overlapping-vents segments))))
+    (find-overlapping-vents segments)))

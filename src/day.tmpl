@@ -4,14 +4,15 @@
 
 (in-package :~4d.~2d)
 
-(defsummary ~4d ~2d)
-
-(defsection @~4d.~2d (:title "")
-  (@summary section)
+(defsummary (:title "")
   "**Part 1** - "
 
   "**Part 2** - ")
 
-(defun part-1 ())
+(defun part-1 ()
+  (let ((data (read-day-input #'foo)))
+    (bar)))
 
-(defun part-2 ())
+(defun part-2 ()
+  (let ((data (read-day-input #'baz)))
+    (quux)))

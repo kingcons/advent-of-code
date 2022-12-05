@@ -6,9 +6,7 @@
 
 (in-package :2020.07)
 
-(defsection @2020.07 (:title "Handy Haversacks")
-  "Requirements: [Day 07](https://adventofcode.com/2020/day/7)"
-
+(defsummary (:title "Handy Haversacks")
   "**Part 1** - How many bags can contain a shiny gold bag?"
   (count-containers function)
   "**Part 2** - How many bags does a shiny gold bag hold?"
@@ -42,7 +40,7 @@
 
 (defun part-1 ()
   (let ((rules (read-day-input #'parse-rule)))
-    (summarize (count-containers :shiny-gold (build-graph rules)))))
+    (count-containers :shiny-gold (build-graph rules))))
 
 (defgeneric descendents (digraph node)
   (:documentation "Return all nodes succeeding NODE in an edge of DIGRAPH.")
@@ -60,4 +58,4 @@
 
 (defun part-2 ()
   (let ((rules (read-day-input #'parse-rule)))
-    (summarize (count-contents :shiny-gold (build-graph rules)))))
+    (count-contents :shiny-gold (build-graph rules))))

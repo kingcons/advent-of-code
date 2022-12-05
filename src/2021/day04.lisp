@@ -4,9 +4,7 @@
 
 (in-package :2021.04)
 
-(defsection @2021.04 (:title "Giant Squid")
-  "Requirements: [Day 04](https://adventofcode.com/2021/day/4)"
-
+(defsummary (:title "Giant Squid")
   "**Part 1** - Bingo Subsystem"
   (play-bingo function)
   "**Part 2** - Let the Squid Win"
@@ -52,7 +50,7 @@
   (let* ((data (read-day-input #'identity :separator "\\n\\n"))
          (order (parse-nums-by "," (first data)))
          (boards (mapcar (lambda (board) (parse-nums-by "\\s+" board)) (rest data))))
-    (summarize (play-bingo order boards))))
+    (play-bingo order boards)))
 
 (defun filter-boards (order boards)
   (loop with chosen = '()
@@ -76,4 +74,4 @@
   (let* ((data (read-day-input #'identity :separator "\\n\\n"))
          (order (parse-nums-by "," (first data)))
          (boards (mapcar (lambda (board) (parse-nums-by "\\s+" board)) (rest data))))
-    (summarize (play-bingo-final order boards))))
+    (play-bingo-final order boards)))

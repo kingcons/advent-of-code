@@ -4,9 +4,7 @@
 
 (in-package :2020.02)
 
-(defsection @2020.02 (:title "Password Philosophy")
-  "Requirements: [Day 02](https://adventofcode.com/2020/day/2)"
-
+(defsummary (:title "Password Philosophy")
   "**Part 1** - Count valid passwords"
   (count-valid function)
   "**Part 2** - Count using XOR"
@@ -24,7 +22,7 @@
 
 (defun part-1 ()
   (let ((items (read-day-input #'parse-password)))
-    (summarize (count-valid items))))
+    (count-valid items)))
 
 (defun xor-match? (min max letter password)
   (alexandria:xor (string= letter password :start2 (1- min) :end2 min)
@@ -36,4 +34,4 @@
 
 (defun part-2 ()
   (let ((items (read-day-input #'parse-password)))
-    (summarize (count-xor-valid items))))
+    (count-xor-valid items)))

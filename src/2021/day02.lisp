@@ -4,9 +4,7 @@
 
 (in-package :2021.02)
 
-(defsection @2021.02 (:title "Dive!")
-  "Requirements: [Day 02](https://adventofcode.com/2021/day/2)"
-
+(defsummary (:title "Dive!")
   "**Part 1** - Plotting the Course"
   (plot-course function)
   "**Part 2** - One Does Not Simply Dive"
@@ -28,7 +26,7 @@
 
 (defun part-1 ()
   (let ((data (read-day-input #'parse-navigation)))
-    (summarize (plot-course data))))
+    (plot-course data)))
 
 (defun plot-course-aim (plan)
   (loop with depth = 0 and aim = 0 and position = 0
@@ -43,4 +41,4 @@
 
 (defun part-2 ()
   (let ((data (read-day-input #'parse-navigation)))
-    (summarize (plot-course-aim data))))
+    (plot-course-aim data)))

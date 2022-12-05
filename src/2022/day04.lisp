@@ -5,9 +5,7 @@
 
 (in-package :2022.04)
 
-(defsection @2022.04 (:title "Camp Cleanup")
-  "Requirements: [Day 04](https://adventofcode.com/2022/day/4)"
-
+(defsummary (:title "Camp Cleanup")
   "**Part 1** - "
 
   "**Part 2** - ")

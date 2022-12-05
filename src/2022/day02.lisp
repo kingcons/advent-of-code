@@ -7,9 +7,7 @@
 
 (in-package :2022.02)
 
-(defsection @2022.02 (:title "Rock Paper Scissors")
-  "Requirements: [Day 02](https://adventofcode.com/2022/day/02)"
-
+(defsummary (:title "Rock Paper Scissors")
   "**Part 1** - Pick my move"
   (total-score function)
   "**Part 2** - Pick my objective")
@@ -42,7 +40,7 @@ In the format: (opponent-move player-move result score)")
 
 (defun part-1 ()
   (let ((games (read-day-input #'parse-move)))
-    (summarize (total-score games))))
+    (total-score games)))
 
 (defun parse-result (input)
   (let* ((outcome (make-keyword (char input 2)))
@@ -52,4 +50,4 @@ In the format: (opponent-move player-move result score)")
 
 (defun part-2 ()
   (let ((games (read-day-input #'parse-result)))
-    (summarize (total-score games))))
+    (total-score games)))
