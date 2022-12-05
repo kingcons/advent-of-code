@@ -1,11 +1,10 @@
-(defpackage aoc
+(mgl-pax:define-package :aoc
   (:use :cl :mgl-pax)
   (:import-from :aoc.util #:extract-date-from-string
                           #:@aoc.util)
   (:import-from :alexandria #:lastcar
                             #:symbolicate)
-  (:import-from :serapeum #:fmt)
-  (:export :@advent))
+  (:import-from :serapeum #:fmt))
 
 (in-package :aoc)
 

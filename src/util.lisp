@@ -86,18 +86,23 @@ If INPUT is supplied, use that instead of loading the DAT file matching the *PAC
                `(funcall ,item-parser)
                `(mapcar ,item-parser)))))
 
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (defun safe-summarize-funcall (string &rest args)
+    (let* ((symbol (find-symbol string))
+           (fdefn (and (fboundp symbol) (fdefinition symbol))))
+      (and fdefn (summarize (apply 'funcall fdefn args))))))
+
 (defmacro defsummary ((&key title) &body body)
   (extract-date-from-string (package-name *package*)
     (let* ((advent-url (fmt "https://adventofcode.com/~d/day/~d" year day))
            (requirements (fmt "**Requirements:** [Day ~2,'0d](~a)~%" day advent-url))
-           (part1-output (summarize (funcall (find-symbol "PART-1"))))
-           (part2-output (summarize (funcall (find-symbol "PART-2"))))
+           (part1-output (safe-summarize-funcall "PART-1"))
+           (part2-output (safe-summarize-funcall "PART-2"))
            (header (fmt "~a~%**Part 1:**~%~a~%**Part 2:**~%~a~%~%"
                         requirements part1-output part2-output)))
       `(defsection ,(symbolicate "@" year "." day) (:title ,title)
          "---"
          ,header
-         "   "
          "---"
          "##### *Reflections*"
          ,@body))))
