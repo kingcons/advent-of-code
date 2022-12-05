@@ -87,6 +87,32 @@ CrZsJsPPZsGzwwsLwLmpwMDw")
   (let ((data (read-day-input #'2022.04::parse-assignment :input *day04-input*)))
     (is (= (count-if #'2022.04::overlap? data) 4))))
 
+;;;; Day 05
+
+(defvar *day05-input*
+  "    [D]    
+[N] [C]    
+[Z] [M] [P]
+ 1   2   3 
+
+move 1 from 2 to 1
+move 3 from 1 to 3
+move 2 from 2 to 1
+move 1 from 1 to 2")
+
+(defvar *day05-hack-input*
+  '((1 . (n z))
+    (2 . (d c m))
+    (3 . (p))))
+
+(deftest day05-part1 ()
+  (let ((data (read-day-input #'2022.05::parse-stacks :input *day05-hack-input* :whole t)))
+    (is t)))
+
+(deftest day05-part1 ()
+  (let ((data (read-day-input #'2022.05::parse-stacks :input *day05-input* :whole t)))
+    (is t)))
+
 ;;;; Summary
 
 (deftest test-2022 ()
