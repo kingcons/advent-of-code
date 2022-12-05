@@ -71,10 +71,10 @@
 
 (defun part-2 ()
   (let ((code (coerce (read-day-input #'parse-instruction) 'vector)))
-    (loop for i = 0 then (1+ i
-                     for patched = (apply-patch code i)
-                     unless (eql patched :skip)
-                       do (multiple-value-bind (acc pc)
-                              (screamer:one-value (final-acc-value patched))
-                            (when (= pc (length code))
-                              (return acc)))))))
+    (loop for i = 0 then (1+ i)
+          for patched = (apply-patch code i)
+          unless (eql patched :skip)
+          do (multiple-value-bind (acc pc)
+                 (screamer:one-value (final-acc-value patched))
+               (when (= pc (length code))
+                 (return acc))))))
