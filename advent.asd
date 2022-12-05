@@ -2,7 +2,14 @@
   :version "0.1.0"
   :author "Brit Butler"
   :license "MIT"
-  :depends-on ("alexandria" "serapeum" "cl-ppcre" "graph" "screamer" "mgl-pax" "drakma")
+  :depends-on ("alexandria"
+               "serapeum"
+               "esrap"
+               "graph"
+               "cl-ppcre"
+               "screamer"
+               "mgl-pax"
+               "drakma")
   :components ((:module "src"
                 :components
                 ((:file "main" :depends-on ("2019" "2020" "2021" "2022" "util"))

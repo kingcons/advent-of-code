@@ -100,18 +100,15 @@ move 3 from 1 to 3
 move 2 from 2 to 1
 move 1 from 1 to 2")
 
-(defvar *day05-hack-input*
-  '((1 . (n z))
-    (2 . (d c m))
-    (3 . (p))))
-
 (deftest day05-part1 ()
-  (let ((data (read-day-input #'2022.05::parse-stacks :input *day05-hack-input* :whole t)))
-    (is t)))
+  (let ((data (read-day-input #'2022.05::parse-stacks :input *day05-input*
+                                                      :separator "\\n\\n" :whole t)))
+    (is (string= "CMZ" (2022.05::interpret data :step-fn #'2022.05::move-crates)))))
 
-(deftest day05-part1 ()
-  (let ((data (read-day-input #'2022.05::parse-stacks :input *day05-input* :whole t)))
-    (is t)))
+(deftest day05-part2 ()
+  (let ((data (read-day-input #'2022.05::parse-stacks :input *day05-input*
+                                                      :separator "\\n\\n" :whole t)))
+    (is (string= "MCD" (2022.05::interpret data :step-fn #'2022.05::move-crates-contiguous)))))
 
 ;;;; Summary
 
@@ -123,7 +120,9 @@ move 1 from 1 to 2")
   (day03-part1)
   (day03-part2)
   (day04-part1)
-  (day04-part2))
+  (day04-part2)
+  (day05-part1)
+  (day05-part2))
 
 #+nil
 (test-2022)
