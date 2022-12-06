@@ -110,6 +110,17 @@ move 1 from 1 to 2")
                                                       :separator "\\n\\n" :whole t)))
     (is (string= "MCD" (2022.05::interpret data :step-fn #'2022.05::move-crates-contiguous)))))
 
+;;;; Day 06
+
+(defvar *day06-input*
+  "mjqjpqmgbljsphdztnvjfqwrcgsmlb")
+
+(deftest day06-part1 ()
+  (is (= (2022.06::parse-signal *day06-input* 4) 7)))
+
+(deftest day06-part2 ()
+  (is (= (2022.06::parse-signal *day06-input* 14) 19)))
+
 ;;;; Summary
 
 (deftest test-2022 ()
@@ -122,7 +133,9 @@ move 1 from 1 to 2")
   (day04-part1)
   (day04-part2)
   (day05-part1)
-  (day05-part2))
+  (day05-part2)
+  (day06-part1)
+  (day06-part2))
 
 #+nil
 (test-2022)
