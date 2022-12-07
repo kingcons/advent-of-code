@@ -13,17 +13,19 @@
   :components ((:module "src"
                 :components
                 ((:file "main" :depends-on ("2019" "2020" "2021" "2022" "util"))
+                 (:file "parsers")
                  (:file "util")
                  (:module "2022"
                   :pathname "2022"
-                  :depends-on ("util")
+                  :depends-on ("parsers" "util")
                   :components
                   ((:file "day01")
                    (:file "day02")
                    (:file "day03")
                    (:file "day04")
                    (:file "day05")
-                   (:file "day06")))
+                   (:file "day06")
+                   (:file "day07")))
                  (:module "2021"
                   :pathname "2021"
                   :depends-on ("util")

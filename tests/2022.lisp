@@ -121,6 +121,41 @@ move 1 from 1 to 2")
 (deftest day06-part2 ()
   (is (= (2022.06::parse-signal *day06-input* 14) 19)))
 
+;;;; Day 07
+
+(defvar *day07-input*
+  "$ cd /
+$ ls
+dir a
+14848514 b.txt
+8504156 c.dat
+dir d
+$ cd a
+$ ls
+dir e
+29116 f
+2557 g
+62596 h.lst
+$ cd e
+$ ls
+584 i
+$ cd ..
+$ cd ..
+$ cd d
+$ ls
+4060174 j
+8033020 d.log
+5626152 d.ext
+7214296 k")
+
+(deftest day07-part1 ()
+  (let* ((data (read-day-input #'2022.07::parse-terminal :compact t :input *day07-input*)))
+    (is (= (2022.07::total-size-matching (serapeum:op (< _ 100000)) data) 95437))))
+
+(deftest day07-part2 ()
+  (let* ((data (read-day-input #'2022.07::parse-terminal :compact t :input *day07-input*)))
+    (is (= (2022.07::smallest-matching (serapeum:op (> _  (2022.07::needed-space data))) data) 24933642))))
+
 ;;;; Summary
 
 (deftest test-2022 ()
@@ -135,7 +170,9 @@ move 1 from 1 to 2")
   (day05-part1)
   (day05-part2)
   (day06-part1)
-  (day06-part2))
+  (day06-part2)
+  (day07-part1)
+  (day07-part2))
 
 #+nil
 (test-2022)
