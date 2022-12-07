@@ -4,14 +4,14 @@
 
 I wouldn't recommend it. Generally though...
 
-##### Yearly
+*** Yearly
 
 0. Log back into advent of code and set the `*aoc-session*` in your lisp image.
 1. Add a new module to the `advent.asd` system for the year. Make `main.lisp` depend on it.
 2. Add the section for the year to the `@ADVENT` section in `main.lisp`.
 3. Start a new test file for the year and wire it into `tests.lisp` and the ASDF system.
 
-##### Daily
+*** Daily
 
 1. Add a new file component to the system definition in `advent.asd`.
 2. At the repl, `(scaffold 2022 02)` or whatever the date is.

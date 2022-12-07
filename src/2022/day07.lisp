@@ -15,7 +15,7 @@
 
 (in-package :2022.07)
 
-(defsummary (:title "")
+(defsummary (:title "No Space Left on Device")
   "**Part 1** - "
 
   "**Part 2** - ")
