@@ -79,15 +79,16 @@ If BATCHES-OF is supplied, divide the separated data into chunks of the desired 
 If WHOLE is non-nil, after splitting pass to ITEM-PARSER directly instead of mapping.
 If INPUT is supplied, use that instead of loading the DAT file matching the *PACKAGE*.
 If COMPACT is non-nil, remove any NIL values after mapping over the data."
-  (let ((data (or input (read-dat-file-for-package))))
-    `(~>> (split ,separator ,data)
-          ,@(when batches-of
-              `((batches _ ,batches-of)))
-          ,(if whole
-               `(funcall ,item-parser)
-               `(mapcar ,item-parser))
-          ,@(when compact
-              `((remove nil))))))
+  (with-unique-names (data)
+    `(let ((,data (or ,input (read-dat-file-for-package))))
+       (~>> (split ,separator ,data)
+            ,@(when batches-of
+                `((batches _ ,batches-of)))
+            ,(if whole
+                 `(funcall ,item-parser)
+                 `(mapcar ,item-parser))
+            ,@(when compact
+                `((remove nil)))))))
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (defun safe-summarize-funcall (string &rest args)

@@ -156,6 +156,21 @@ $ ls
   (let* ((data (read-day-input #'2022.07::parse-terminal :compact t :input *day07-input*)))
     (is (= (2022.07::smallest-matching (serapeum:op (> _  (2022.07::needed-space data))) data) 24933642))))
 
+;;;; Day 08
+
+(defvar *day08-input*
+  "30373
+25512
+65332
+33549
+35390")
+
+(deftest day08-part1 ()
+  (is (= 21 (2022.08::count-visible? (2022.08::build-grid *day08-input*)))))
+
+(deftest day08-part2 ()
+  (is (= 8 (2022.08::max-score (2022.08::build-grid *day08-input*)))))
+
 ;;;; Summary
 
 (deftest test-2022 ()
@@ -172,7 +187,9 @@ $ ls
   (day06-part1)
   (day06-part2)
   (day07-part1)
-  (day07-part2))
+  (day07-part2)
+  (day08-part1)
+  (day08-part2))
 
 #+nil
 (test-2022)
