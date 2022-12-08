@@ -3,6 +3,10 @@
 ** Seems like in most scenarios the separate file gets you out of the eval-when headaches and there isn't sufficient benefit to keeping the helper right next to the macro. Could be wrong.
 * DONE - Redistribute the performance summaries throughout the problems.
 ** Having a big overview block seems like a nice idea but I rarely look at that so why would anyone else? It probably makes more sense to have them in each individual defsection ... somehow. May want to autogenerate summaries with a defsummary macro or something in aoc.util. We'll see...
+* TODO - Refactor 2022 Day 07. At least two things about my solution are less than ideal.
+** First, declaring a variable special to avoid the pain of passing it is gross.
+** Second, needed-space separates reparses the directory sizes. UGH.
+** In my head, it would be nice if each line in the output had an "opcode" it could execute on some data structure. Not sure that actually structuring it as an interpreter helps a ton though.
 * TODO - Currently DEFSUMMARY is a kludge to generate DEFSECTIONs for MGL-PAX.
 ** While being pragmatic, it would probably be preferable to see if there's some way to use the extension API for MGL-PAX to add a new locative type or similar to accomodate the same goals.
 * TODO - Refactor the callsites of READ-DAY-UTIL :WHOLE to use :BATCHES-OF if possible.
