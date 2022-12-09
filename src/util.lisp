@@ -67,8 +67,8 @@ An error will be thrown if a directory matching YEAR does not exist."
        ("(\\d{4}).*(\\d{2})" ,string)
      ,@body))
 
-(defun read-dat-file-for-package ()
-  (extract-date-from-string (package-name *package*)
+(defun read-dat-file-for-package (package)
+  (extract-date-from-string (package-name package)
     (read-file-into-string (day-file year day))))
 
 (defmacro read-day-input (item-parser &key (separator "\\n") (compact nil)
@@ -80,7 +80,7 @@ If WHOLE is non-nil, after splitting pass to ITEM-PARSER directly instead of map
 If INPUT is supplied, use that instead of loading the DAT file matching the *PACKAGE*.
 If COMPACT is non-nil, remove any NIL values after mapping over the data."
   (with-unique-names (data)
-    `(let ((,data (or ,input (read-dat-file-for-package))))
+    `(let ((,data (or ,input (read-dat-file-for-package ,*package*))))
        (~>> (split ,separator ,data)
             ,@(when batches-of
                 `((batches _ ,batches-of)))
