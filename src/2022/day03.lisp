@@ -11,15 +11,15 @@
 
 (defsummary (:title "Rucksack Reorganization")
   "**Part 1** - Misplaced Items"
-  (locate-duplicate function)
-  (locate-duplicate-source
-   (include (:start (locate-duplicate function) :end (*priorities* variable))
+  (search-rucksack function)
+  (part-1-source
+   (include (:start (search-rucksack function) :end (build-data function))
             :header-nl "```common-lisp" :footer-nl "```"))
 
   "**Part 2** - Unauthenticated Badges"
-  (locate-badge function)
-  (locate-badge-source
-   (include (:start (locate-badge function) :end (part-2 function))
+  (solve function)
+  (part-2-source
+   (include (:start (solve function) :end (part-1 function))
             :header-nl "```common-lisp" :footer-nl "```")))
 
 (defvar *priorities*
