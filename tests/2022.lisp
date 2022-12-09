@@ -152,6 +152,24 @@ $ ls
 (deftest day08-part2 ()
   (is (= 8 (2022.08::part-2 *day08-input*))))
 
+;;;; Day 09
+
+(defvar *day09-input*
+  "R 4
+U 4
+L 3
+D 1
+R 4
+D 1
+L 5
+R 2")
+
+(deftest day09-part1 ()
+  (is (= (2022.09::part-1 *day09-input*) 13)))
+
+(deftest day09-part2 ()
+  (is (= (2022.09::part-2 *day09-input*) 36)))
+
 ;;;; Summary
 
 (deftest test-2022 ()
