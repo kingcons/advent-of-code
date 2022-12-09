@@ -1,9 +1,13 @@
 (mgl-pax:define-package :aoc.2022.02
   (:nicknames :2022.02)
   (:use :cl :aoc.util :mgl-pax)
-  (:import-from :alexandria #:lastcar
-                            #:make-keyword)
-  (:import-from :serapeum #:op))
+  (:import-from :alexandria
+                #:compose
+                #:lastcar
+                #:make-keyword)
+  (:import-from :serapeum
+                #:~>>
+                #:op))
 
 (in-package :2022.02)
 
@@ -35,19 +39,19 @@ In the format: (opponent-move player-move result score)")
     (declare (dynamic-extent #'match?))
     (lastcar (find-if #'match? *games*))))
 
-(defun total-score (games)
-  (reduce #'+ games :key #'play))
+(defun total-score (games key-fn)
+  (reduce #'+ games :key key-fn))
 
-(defun part-1 ()
-  (let ((games (read-day-input #'parse-move)))
-    (total-score games)))
+(defun build-data (&optional input)
+  (read-day-input #'parse-move :input input))
 
-(defun parse-result (input)
-  (let* ((outcome (make-keyword (char input 2)))
-         (outcome-map '(:x :lose :y :draw :z :win)))
-    (list (make-keyword (char input 0))
-          (getf outcome-map outcome))))
+(defun part-1 (&optional input)
+  (total-score (build-data input) #'play))
 
-(defun part-2 ()
-  (let ((games (read-day-input #'parse-result)))
-    (total-score games)))
+(defun choose-outcome (game)
+  (let ((outcome-map '(:x :lose :y :draw :z :win)))
+    (setf (second game) (getf outcome-map (second game)))
+    game))
+
+(defun part-2 (&optional input)
+  (total-score (build-data input) (compose #'play #'choose-outcome)))

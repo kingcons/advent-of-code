@@ -39,9 +39,11 @@ This adds a little effort to sort and sum the snacks which is handled by TOTAL-S
        (mapcar #'parse-integer)
        (reduce #'+)))
 
-(defun part-1 ()
-  (let ((snacks (read-day-input #'parse-inventory :separator "\\n\\n")))
-    (apply 'max snacks)))
+(defun build-data (&optional input)
+  (read-day-input #'parse-inventory :separator "\\n\\n" :input input))
+
+(defun part-1 (&optional input)
+  (apply 'max (build-data input)))
 
 (defun total-snacks (snacks)
   "Sort the supplied list of integers, SNACKS, in descending order,
@@ -50,6 +52,5 @@ This adds a little effort to sort and sum the snacks which is handled by TOTAL-S
        (subseq _ 0 3)
        (reduce #'+)))
 
-(defun part-2 ()
-  (let ((snacks (read-day-input #'parse-inventory :separator "\\n\\n")))
-    (total-snacks snacks)))
+(defun part-2 (&optional input)
+  (total-snacks (build-data input)))

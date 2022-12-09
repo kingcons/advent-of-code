@@ -70,9 +70,11 @@
        (remove-if-not match-fn)
        (reduce #'+)))
 
-(defun part-1 ()
-  (let ((data (read-day-input #'parse-terminal :compact t)))
-    (total-size-matching (op (< _ 100000)) data)))
+(defun build-data (&optional input)
+  (read-day-input #'parse-terminal :compact t :input input))
+
+(defun part-1 (&optional input)
+  (total-size-matching (op (< _ 100000)) (build-data input)))
 
 (defun free-space (data)
   (- 70000000 (gethash '("/") data)))
@@ -89,6 +91,6 @@
        (- 70000000)
        (- 30000000)))
 
-(defun part-2 ()
-  (let* ((data (read-day-input #'parse-terminal :compact t)))
+(defun part-2 (&optional input)
+  (let ((data (build-data input)))
     (smallest-matching (op (> _ (needed-space data))) data)))

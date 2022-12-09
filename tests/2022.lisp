@@ -23,18 +23,11 @@
 
 10000")
 
-(defun day01-input ()
-  (read-day-input #'2022.01:parse-inventory
-                  :separator "\\n\\n"
-                  :input *day01-input*))
-
 (deftest day01-part1 ()
-  (is (= (apply 'max (day01-input))
-         24000)))
+  (is (= 24000 (2022.01::part-1 *day01-input*))))
 
 (deftest day01-part2 ()
-  (is (= (2022.01:total-snacks (day01-input))
-         45000)))
+  (is (= 45000 (2022.01::part-2 *day01-input*))))
 
 ;;;; Day 02
 
@@ -44,12 +37,10 @@ B X
 C Z")
 
 (deftest day02-part1 ()
-  (let ((data (read-day-input #'2022.02::parse-move :input *day02-input*)))
-    (is (= (2022.02:total-score data) 15))))
+  (is (= 15 (2022.02::part-1 *day02-input*))))
 
 (deftest day02-part2 ()
-  (let ((data (read-day-input #'2022.02::parse-result :input *day02-input*)))
-    (is (= (2022.02:total-score data) 12))))
+  (is (= 12 (2022.02::part-2 *day02-input*))))
 
 ;;;; Day 03
 
@@ -62,12 +53,10 @@ ttgJtRGJQctTZtZT
 CrZsJsPPZsGzwwsLwLmpwMDw")
 
 (deftest day03-part1 ()
-  (let ((data (read-day-input #'2022.03:locate-duplicate :input *day03-input*)))
-    (is (= (2022.03::total-priority data) 157))))
+  (is (= 157 (2022.03::part-1 *day03-input*))))
 
 (deftest day03-part2 ()
-  (let ((data (read-day-input #'2022.03:locate-badge :input *day03-input* :batches-of 3)))
-    (is (= (2022.03::total-priority data) 70))))
+  (is (= 70 (2022.03::part-2 *day03-input*))))
 
 ;;;; Day 04
 
@@ -80,12 +69,10 @@ CrZsJsPPZsGzwwsLwLmpwMDw")
 2-6,4-8")
 
 (deftest day04-part1 ()
-  (let ((data (read-day-input #'2022.04::parse-assignment :input *day04-input*)))
-    (is (= (count-if #'2022.04::subset? data) 2))))
+  (is (= 2 (2022.04::part-1 *day04-input*))))
 
 (deftest day04-part2 ()
-  (let ((data (read-day-input #'2022.04::parse-assignment :input *day04-input*)))
-    (is (= (count-if #'2022.04::overlap? data) 4))))
+  (is (= 4 (2022.04::part-2 *day04-input*))))
 
 ;;;; Day 05
 
@@ -101,14 +88,10 @@ move 2 from 2 to 1
 move 1 from 1 to 2")
 
 (deftest day05-part1 ()
-  (let ((data (read-day-input #'2022.05::parse-stacks :input *day05-input*
-                                                      :separator "\\n\\n" :whole t)))
-    (is (string= "CMZ" (2022.05::interpret data :step-fn #'2022.05::move-crates)))))
+  (is (string= "CMZ" (2022.05::part-1 *day05-input*))))
 
 (deftest day05-part2 ()
-  (let ((data (read-day-input #'2022.05::parse-stacks :input *day05-input*
-                                                      :separator "\\n\\n" :whole t)))
-    (is (string= "MCD" (2022.05::interpret data :step-fn #'2022.05::move-crates-contiguous)))))
+  (is (string= "MCD" (2022.05::part-2 *day05-input*))))
 
 ;;;; Day 06
 
@@ -116,10 +99,10 @@ move 1 from 1 to 2")
   "mjqjpqmgbljsphdztnvjfqwrcgsmlb")
 
 (deftest day06-part1 ()
-  (is (= (2022.06::parse-signal *day06-input* 4) 7)))
+  (is (= 7 (2022.06::part-1 *day06-input*))))
 
 (deftest day06-part2 ()
-  (is (= (2022.06::parse-signal *day06-input* 14) 19)))
+  (is (= 19 (2022.06::part-2 *day06-input*))))
 
 ;;;; Day 07
 
@@ -149,12 +132,10 @@ $ ls
 7214296 k")
 
 (deftest day07-part1 ()
-  (let* ((data (read-day-input #'2022.07::parse-terminal :compact t :input *day07-input*)))
-    (is (= (2022.07::total-size-matching (serapeum:op (< _ 100000)) data) 95437))))
+  (is (= 95437 (2022.07::part-1 *day07-input*))))
 
 (deftest day07-part2 ()
-  (let* ((data (read-day-input #'2022.07::parse-terminal :compact t :input *day07-input*)))
-    (is (= (2022.07::smallest-matching (serapeum:op (> _  (2022.07::needed-space data))) data) 24933642))))
+  (is (= 24933642 (2022.07::part-2 *day07-input*))))
 
 ;;;; Day 08
 
@@ -166,10 +147,10 @@ $ ls
 35390")
 
 (deftest day08-part1 ()
-  (is (= 21 (2022.08::count-visible? (2022.08::build-grid *day08-input*)))))
+  (is (= 21 (2022.08::part-1 *day08-input*))))
 
 (deftest day08-part2 ()
-  (is (= 8 (2022.08::max-score (2022.08::build-grid *day08-input*)))))
+  (is (= 8 (2022.08::part-2 *day08-input*))))
 
 ;;;; Summary
 

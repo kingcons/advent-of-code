@@ -19,10 +19,11 @@
         until (start-marker? input start width)
         finally (return start)))
 
-(defun part-1 ()
-  (let ((data (first (read-day-input #'identity))))
-    (parse-signal data 4)))
+(defun build-data (&optional input)
+  (first (read-day-input #'identity :input input)))
 
-(defun part-2 ()
-  (let ((data (first (read-day-input #'identity))))
-    (parse-signal data 14)))
+(defun part-1 (&optional input)
+  (parse-signal (build-data input) 4))
+
+(defun part-2 (&optional input)
+  (parse-signal (build-data input) 14))

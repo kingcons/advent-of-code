@@ -72,9 +72,11 @@
           collecting (first (gethash i stacks)) into chars
           finally (return (coerce chars 'string)))))
 
-(defun part-1 ()
-  (let ((data (read-day-input #'parse-stacks :separator "\\n\\n" :whole t)))
-    (interpret data :step-fn #'move-crates)))
+(defun build-data (&optional input)
+  (read-day-input #'parse-stacks :separator "\\n\\n" :whole t :input input))
+
+(defun part-1 (&optional input)
+  (interpret (build-data input) :step-fn #'move-crates))
 
 (defun move-crates-contiguous (count origin destination stacks)
   (let ((to-move (loop for i below count
@@ -82,6 +84,5 @@
     (loop for crate in (reverse to-move)
           do (push crate (gethash destination stacks)))))
 
-(defun part-2 ()
-  (let ((data (read-day-input #'parse-stacks :separator "\\n\\n" :whole t)))
-    (interpret data :step-fn #'move-crates-contiguous)))
+(defun part-2 (&optional input)
+  (interpret (build-data input) :step-fn #'move-crates-contiguous))

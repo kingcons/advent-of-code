@@ -9,10 +9,11 @@
 
   "**Part 2** - ")
 
-(defun part-1 ()
-  (let ((data (read-day-input #'foo)))
-    (bar)))
+(defun build-data (&optional input)
+  (read-day-input #'identity :input input))
 
-(defun part-2 ()
-  (let ((data (read-day-input #'baz)))
-    (quux)))
+(defun part-1 (&optional input)
+  (foo (build-data input)))
+
+(defun part-2 (&optional input)
+  (bar (build-data input)))
