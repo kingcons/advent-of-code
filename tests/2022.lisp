@@ -164,11 +164,35 @@ D 1
 L 5
 R 2")
 
+(defvar *day09-input-2*
+  "R 5
+U 8
+L 8
+D 3
+R 17
+D 10
+L 25
+U 20")
+
 (deftest day09-part1 ()
   (is (= (2022.09::part-1 *day09-input*) 13)))
 
 (deftest day09-part2 ()
-  (is (= (2022.09::part-2 *day09-input*) 36)))
+  (is (= (2022.09::part-2 *day09-input-2*) 36)))
+
+(deftest day09-evil-bug ()
+  (let ((before '((1 -18) (2 -18) (3 -17) (3 -16) (4 -16)
+                  (4 -15) (4 -14) (4 -13) (4 -12) (4 -11)))
+        (after '((1 -20) (1 -19) (2 -18) (2 -17) (3 -17)
+                 (3 -16) (3 -15) (3 -14) (3 -13) (3 -12))))
+    (is (equalp (2022.09::update-rope '("D" 2) before (make-hash-table)) after)))
+  ;; Fundamental issue is we can be off by two on both axis which was impossible before.
+  (let ((head '(1 -19))
+        (tail '(2 -18)))
+    (is (equalp (2022.09::move-tail head tail) '(2 -18))))
+  (let ((head '(1 -20))
+        (tail '(2 -18)))
+    (is (equalp (2022.09::move-tail head tail) '(1 -19)))))
 
 ;;;; Summary
 
@@ -188,7 +212,10 @@ R 2")
   (day07-part1)
   (day07-part2)
   (day08-part1)
-  (day08-part2))
+  (day08-part2)
+  (day09-part1)
+  (day09-part2)
+  (day09-evil-bug))
 
 #+nil
 (test-2022)
