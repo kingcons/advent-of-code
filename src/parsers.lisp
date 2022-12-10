@@ -13,7 +13,7 @@
 
 (defrule digit (character-ranges (#\0 #\9)))
 
-(defrule integer (+ digit)
+(defrule integer (and (? #\-) (+ digit))
   (:text t)
   (:function parse-integer))
 
