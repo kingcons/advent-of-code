@@ -3,8 +3,10 @@
   (:use :cl :mgl-pax :aoc.util :aoc.parsers :esrap)
   (:import-from :alexandria #:make-keyword)
   (:import-from :serapeum
-                #:op
-                #:partial))
+                #:~>>
+                #:batches
+                #:partial
+                #:string-join))
 
 (in-package :2022.10)
 
@@ -38,16 +40,17 @@
 (defmethod execute ((cpu cpu) (opcode (eql :addx)) arg)
   (incf (cpu-x-reg cpu) arg))
 
-(defun special-cycle? (cycles opcode next-sample)
-  (let ((new-cycles (+ cycles (getf *cycle-times* opcode))))
-    (<= cycles next-sample new-cycles)))
+(defun new-cycles (cpu opcode)
+  (+ (cpu-cycles cpu) (getf *cycle-times* opcode)))
+
+(defun special-cycle? (cpu opcode next-sample)
+  (<= (cpu-cycles cpu) next-sample (new-cycles cpu opcode)))
 
 (defun sum-at-cycles (data desired-timings)
   (let ((cpu (make-cpu)))
     (loop with next-sample = (pop desired-timings)
           for (opcode arg) = (pop data) while next-sample
-          for cycles = (cpu-cycles cpu)
-          when (special-cycle? cycles opcode next-sample)
+          when (special-cycle? cpu opcode next-sample)
             sum (* next-sample (cpu-x-reg cpu))
             and do (setf next-sample (pop desired-timings))
           do (execute cpu opcode arg))))
@@ -55,9 +58,26 @@
 (defun part-1 (&optional input)
   (sum-at-cycles (build-data input) '(20 60 100 140 180 220)))
 
+(defmethod render ((cpu cpu) opcode arg)
+  (with-slots (cycles x-reg) cpu
+    (list (with-output-to-string (out)
+            (dotimes (i (getf *cycle-times* opcode))
+              (let ((crt-pixel (mod (+ cycles i) 40)))
+                (flet ((active-pixel? (i)
+                         (<= (1- x-reg) crt-pixel (1+ x-reg))))
+                  (if (active-pixel? i)
+                      (format out "#")
+                      (format out ".")))))))))
+
 (defun render-crt (data)
   (let ((cpu (make-cpu)))
-    ))
+    (loop for (opcode arg) = (pop data) while opcode
+          for cycles = (cpu-cycles cpu)
+          append (render cpu opcode arg) into output
+          do (execute cpu opcode arg)
+          finally (return (~>> (reduce (partial #'concatenate 'string) output)
+                               (batches _ 40)
+                               (string-join _ #\Newline))))))
 
 (defun part-2 (&optional input)
   (render-crt (build-data input)))
