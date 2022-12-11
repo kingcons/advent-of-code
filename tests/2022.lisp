@@ -378,6 +378,45 @@ noop")
   (let ((data (2022.10::build-data *day10-input*)))
     (is (string= (2022.10::part-2 data) *day10-part2*))))
 
+;;;; Day 11
+
+(defvar *day11-input*
+  "Monkey 0:
+  Starting items: 79, 98
+  Operation: new = old * 19
+  Test: divisible by 23
+    If true: throw to monkey 2
+    If false: throw to monkey 3
+
+Monkey 1:
+  Starting items: 54, 65, 75, 74
+  Operation: new = old + 6
+  Test: divisible by 19
+    If true: throw to monkey 2
+    If false: throw to monkey 0
+
+Monkey 2:
+  Starting items: 79, 60, 97
+  Operation: new = old * old
+  Test: divisible by 13
+    If true: throw to monkey 1
+    If false: throw to monkey 3
+
+Monkey 3:
+  Starting items: 74
+  Operation: new = old + 3
+  Test: divisible by 17
+    If true: throw to monkey 0
+    If false: throw to monkey 1")
+
+(deftest day11-part1 ()
+  (let ((data (2022.11::build-data *day11-input*)))
+    (is (= (2022.11::part-1 data) 10605))))
+
+(deftest day11-part2 ()
+  (let ((data (2022.11::build-data *day11-input*)))
+    (is (= (2022.11::part-2 data) 2713310158))))
+
 ;;;; Summary
 
 (deftest test-2022 ()
@@ -401,7 +440,9 @@ noop")
   (day09-part2)
   (day09-evil-bug)
   (day10-part1)
-  (day10-part2))
+  (day10-part2)
+  (day11-part1)
+  (day11-part2))
 
 #+nil
 (test-2022)
