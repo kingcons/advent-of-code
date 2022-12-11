@@ -14,6 +14,9 @@
 (defparameter *required-fields*
   '("byr" "iyr" "eyr" "hgt" "hcl" "ecl" "pid"))
 
+(defun build-data (&optional input)
+  (read-day-input #'parse-identification :separator "\\n\\n" :input input))
+
 (defun has-required-fields? (id)
   (let ((keys (mapcar #'first id)))
     (subsetp *required-fields* keys :test #'string=)))
@@ -21,9 +24,8 @@
 (defun count-non-polar-ids (ids)
   (loop for id in ids counting (has-required-fields? id)))
 
-(defun part-1 ()
-  (let ((data (read-day-input #'parse-identification :separator "\\n\\n")))
-    (count-non-polar-ids data)))
+(defun part-1 (&optional (data (build-data)))
+  (count-non-polar-ids data))
 
 (defun valid-byr? (id)
   (let ((value (cadr (assoc "byr" id :test #'string=))))
@@ -81,6 +83,5 @@
 (defun count-valid-passports (ids)
   (loop for id in ids counting (valid-passport? id)))
 
-(defun part-2 ()
-  (let ((data (read-day-input #'parse-identification :separator "\\n\\n")))
-    (count-valid-passports data)))
+(defun part-2 (&optional (data (build-data)))
+  (count-valid-passports data))

@@ -19,6 +19,12 @@ I wouldn't recommend it. Generally though...
 
 That's it. Get hacking!
 
+*** Tests
+
+Oh, yeah. You might be interested in making sure any changes don't break things.
+
+The usual `(asdf:test-system :advent)` incantation should take care of you.
+
 ** Installation
 
 ** Author

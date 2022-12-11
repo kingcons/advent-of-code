@@ -10,6 +10,9 @@
   "**Part 2** - Count using XOR"
   (count-xor-valid function))
 
+(defun build-data (&optional input)
+  (read-day-input #'parse-password :input input))
+
 (defun parse-password (row)
   (cl-ppcre:register-groups-bind ((#'parse-integer min max) letter password)
       ("(\\d+)-(\\d+) (\\w): (\\w+)" row)
@@ -20,9 +23,8 @@
         counting (let ((count (count letter password :test #'string=)))
                    (<= min count max))))
 
-(defun part-1 ()
-  (let ((items (read-day-input #'parse-password)))
-    (count-valid items)))
+(defun part-1 (&optional (data (build-data)))
+  (count-valid data))
 
 (defun xor-match? (min max letter password)
   (alexandria:xor (string= letter password :start2 (1- min) :end2 min)
@@ -32,6 +34,5 @@
   (loop for (min max letter password) in items
         counting (xor-match? min max letter password)))
 
-(defun part-2 ()
-  (let ((items (read-day-input #'parse-password)))
-    (count-xor-valid items)))
+(defun part-2 (&optional (data (build-data)))
+  (count-xor-valid data))

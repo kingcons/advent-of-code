@@ -10,6 +10,9 @@
   "**Part 2** - Count multiple slopes"
   (count-collisions function))
 
+(defun build-data (&optional input)
+  (read-day-input #'identity :input input))
+
 (defun count-trees (map &key (down 1) (right 3))
   (loop
     for terrain on map by (alexandria:curry #'nthcdr down)
@@ -18,9 +21,8 @@
     counting (collision? (first terrain) column) into total
     finally (return total)))
 
-(defun part-1 ()
-  (let ((map (read-day-input #'identity)))
-    (count-trees map)))
+(defun part-1 (&optional (data (build-data)))
+  (count-trees data))
 
 (defun collision? (terrain column)
   (char= #\# (char terrain (mod column (length terrain)))))
@@ -31,6 +33,5 @@
     collecting (count-trees map :down down :right right) into counts
     finally (return (reduce #'* counts))))
 
-(defun part-2 ()
-  (let ((map (read-day-input #'identity)))
-    (count-collisions map)))
+(defun part-2 (&optional (data (build-data)))
+  (count-collisions data))

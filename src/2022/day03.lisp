@@ -39,14 +39,13 @@
 (defun build-data (&optional input)
   (read-day-input #'identity :input input))
 
-(defun solve (input preprocess-fn)
-  (~>> (build-data input)
-       (funcall preprocess-fn)
+(defun solve (data preprocess-fn)
+  (~>> (funcall preprocess-fn data)
        (mapcar #'search-rucksack)
        (total-priority)))
 
-(defun part-1 (&optional input)
-  (solve input (op (mapcar (lambda (x) (multiple-value-list (halves x))) _))))
+(defun part-1 (&optional (data (build-data)))
+  (solve data (op (mapcar (lambda (x) (multiple-value-list (halves x))) _))))
 
-(defun part-2 (&optional input)
-  (solve input (op (serapeum:batches _ 3))))
+(defun part-2 (&optional (data (build-data)))
+  (solve data (op (serapeum:batches _ 3))))

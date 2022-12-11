@@ -18,6 +18,9 @@
       ("(\\d+),(\\d+)\\s+->\\s+(\\d+),(\\d+)" line)
     (make-segment :x1 x1 :y1 y1 :x2 x2 :y2 y2)))
 
+(defun build-data (&optional input)
+  (read-day-input #'parse-segment :input input))
+
 (defun coordinate-match? (segment)
   (with-slots (x1 y1 x2 y2) segment
     (or (= x1 x2)
@@ -46,10 +49,8 @@
                    (incf overlaps))))
           finally (return (values overlaps grid)))))
 
-(defun part-1 ()
-  (let ((segments (read-day-input #'parse-segment)))
-    (find-overlapping-vents (remove-if-not #'coordinate-match? segments))))
+(defun part-1 (&optional (data (build-data)))
+  (find-overlapping-vents (remove-if-not #'coordinate-match? data)))
 
-(defun part-2 ()
-  (let ((segments (read-day-input #'parse-segment)))
-    (find-overlapping-vents segments)))
+(defun part-2 (&optional (data (build-data)))
+  (find-overlapping-vents data))

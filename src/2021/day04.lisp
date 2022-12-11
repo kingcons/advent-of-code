@@ -1,6 +1,7 @@
 (mgl-pax:define-package :aoc.2021.04
   (:nicknames :2021.04)
-  (:use :cl :aoc.util :mgl-pax))
+  (:use :cl :aoc.util :mgl-pax)
+  (:import-from :cl-ppcre #:split))
 
 (in-package :2021.04)
 
@@ -9,9 +10,6 @@
   (play-bingo function)
   "**Part 2** - Let the Squid Win"
   (play-bingo-final function))
-
-(defun parse-nums-by (regex string)
-   (map 'vector #'parse-integer (remove "" (cl-ppcre:split regex string) :test #'string=)))
 
 (defvar *wins*
   '((0 1 2 3 4)
@@ -26,6 +24,12 @@
     (4 9 14 19 24)
     (0 6 12 18 24)
     (4 8 12 16 20)))
+
+(defun build-data (&optional input)
+  (read-day-input #'identity :separator "\\n\\n" :input input))
+
+(defun parse-nums-by (regex string)
+   (map 'vector #'parse-integer (remove "" (cl-ppcre:split regex string) :test #'string=)))
 
 (defun find-winner (chosen boards)
   (dolist (board boards)
@@ -46,10 +50,9 @@
         do (push number chosen)
         finally (return (score-for chosen winner))))
 
-(defun part-1 ()
-  (let* ((data (read-day-input #'identity :separator "\\n\\n"))
-         (order (parse-nums-by "," (first data)))
-         (boards (mapcar (lambda (board) (parse-nums-by "\\s+" board)) (rest data))))
+(defun part-1 (&optional (data (build-data)))
+  (let ((order (parse-nums-by "," (first data)))
+        (boards (mapcar (lambda (board) (parse-nums-by "\\s+" board)) (rest data))))
     (play-bingo order boards)))
 
 (defun filter-boards (order boards)
@@ -70,8 +73,7 @@
           do (push number chosen)
           finally (return (score-for chosen winner)))))
 
-(defun part-2 ()
-  (let* ((data (read-day-input #'identity :separator "\\n\\n"))
-         (order (parse-nums-by "," (first data)))
-         (boards (mapcar (lambda (board) (parse-nums-by "\\s+" board)) (rest data))))
+(defun part-2 (&optional (data (build-data)))
+  (let ((order (parse-nums-by "," (first data)))
+        (boards (mapcar (lambda (board) (parse-nums-by "\\s+" board)) (rest data))))
     (play-bingo-final order boards)))

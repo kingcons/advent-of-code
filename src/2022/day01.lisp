@@ -42,8 +42,8 @@ This adds a little effort to sort and sum the snacks which is handled by TOTAL-S
 (defun build-data (&optional input)
   (read-day-input #'parse-inventory :separator "\\n\\n" :input input))
 
-(defun part-1 (&optional input)
-  (apply 'max (build-data input)))
+(defun part-1 (&optional (data (build-data)))
+  (apply 'max data))
 
 (defun total-snacks (snacks)
   "Sort the supplied list of integers, SNACKS, in descending order,
@@ -52,5 +52,5 @@ This adds a little effort to sort and sum the snacks which is handled by TOTAL-S
        (subseq _ 0 3)
        (reduce #'+)))
 
-(defun part-2 (&optional input)
-  (total-snacks (build-data input)))
+(defun part-2 (&optional (data (build-data)))
+  (total-snacks data))

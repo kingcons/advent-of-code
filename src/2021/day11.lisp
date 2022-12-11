@@ -21,6 +21,9 @@
                 (ascii-digit-to-int (aref (nth row data) col)))))
       grid)))
 
+(defun build-data (&optional input)
+  (read-day-input #'parse-grid :whole t :input input))
+
 (defun neighbors (position grid)
   (flet ((new-coord (x)
            (cons (+ (first x) (car position))
@@ -49,9 +52,8 @@
       (incf count (tick grid)))
     count))
 
-(defun part-1 ()
-  (let ((data (read-day-input #'parse-grid :whole t)))
-    (count-flashes data 100)))
+(defun part-1 (&optional (data (build-data)))
+  (count-flashes data 100))
 
 (defun step-until-n-flashes (grid n)
   (loop for i = 1 then (1+ i)
@@ -59,6 +61,5 @@
         until (= flashes n)
         finally (return i)))
 
-(defun part-2 ()
-  (let ((data (read-day-input #'parse-grid :whole t)))
-    (step-until-n-flashes data 100)))
+(defun part-2 (&optional (data (build-data)))
+  (step-until-n-flashes data 100))

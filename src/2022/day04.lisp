@@ -23,8 +23,8 @@
 (defun build-data (&optional input)
   (read-day-input #'parse-assignment :input input))
 
-(defun part-1 (&optional input)
-  (count-if #'subset? (build-data input)))
+(defun part-1 (&optional (data (build-data)))
+  (count-if #'subset? data))
 
 (defun overlap? (assignment)
   (destructuring-bind (a1 a2 b1 b2) assignment
@@ -33,5 +33,5 @@
         (<= a1 b1 a2 b2)
         (<= b1 a1 b2 a2))))
 
-(defun part-2 (&optional input)
-  (count-if #'overlap? (build-data input)))
+(defun part-2 (&optional (data (build-data)))
+  (count-if #'overlap? data))

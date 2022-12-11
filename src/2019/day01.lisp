@@ -58,6 +58,9 @@ Two interesting notes:
   (total-fuel-needed-1 function)
   (total-fuel-needed-2 function))
 
+(defun build-data (&optional input)
+  (read-day-input #'parse-integer :input input))
+
 (defun fuel-for (mass)
   (declare (optimize speed)
            (type fixnum mass))
@@ -76,9 +79,8 @@ Two interesting notes:
   (loop for mass in masses
         sum (fuel-for mass)))
 
-(defun part-1 ()
-  (let ((data (read-day-input #'parse-integer)))
-    (fuel-requirements-3 data)))
+(defun part-1 (&optional (data (build-data)))
+  (fuel-requirements-3 data))
 
 (defun total-fuel-needed-1 (masses)
   (labels ((fixed-point (x &optional (acc 0))
@@ -94,6 +96,5 @@ Two interesting notes:
                   while (plusp fuel)
                   sum fuel)))
 
-(defun part-2 ()
-  (let ((data (read-day-input #'parse-integer)))
-    (total-fuel-needed-2 data)))
+(defun part-2 (&optional (data (build-data)))
+  (total-fuel-needed-2 data))

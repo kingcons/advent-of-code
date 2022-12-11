@@ -30,6 +30,9 @@
         (setf (aref grid row col) (- (char-code item) 48))))
     grid))
 
+(defun build-data (&optional input)
+  (read-day-input #'parse-grid :whole t :input input))
+
 (define-constant +neighbors+
     '((0 1) (0 -1) (1 0) (-1 0)) :test #'equal)
 
@@ -62,9 +65,8 @@ If COORDS is non-nil, collect the (ROW COL) position instead of the value."
 (defun sum-risk-levels (grid)
   (reduce #'+ (mapcar #'1+ (find-lowpoints grid))))
 
-(defun part-1 ()
-  (let ((data (read-day-input #'parse-grid :whole t)))
-    (sum-risk-levels data)))
+(defun part-1 (&optional (data (build-data)))
+  (sum-risk-levels data))
 
 (defun find-basin-size (grid row col)
   (let ((visited (make-hash-table :test #'equal))
@@ -89,6 +91,5 @@ If COORDS is non-nil, collect the (ROW COL) position instead of the value."
   (let ((basins (find-basins grid)))
     (reduce #'* (subseq (sort basins #'>) 0 3))))
 
-(defun part-2 ()
-  (let ((data (read-day-input #'parse-grid :whole t)))
-    (find-largest-basins data)))
+(defun part-2 (&optional (data (build-data)))
+  (find-largest-basins data))

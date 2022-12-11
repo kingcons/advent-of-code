@@ -10,6 +10,9 @@
   "**Part 2** - Verify Life Support"
   (get-life-support function))
 
+(defun build-data (&optional input)
+  (read-day-input #'identity :input input))
+
 (defun bits-to-int (bits)
   (parse-integer (coerce bits 'string) :radix 2))
 
@@ -36,9 +39,8 @@
          (epsilon (epsilon-rate gamma)))
     (* (bits-to-int gamma) (bits-to-int epsilon))))
 
-(defun part-1 ()
-  (let ((data (read-day-input #'identity)))
-    (get-power-consumption data)))
+(defun part-1 (&optional (data (build-data)))
+  (get-power-consumption data))
 
 (defun correct-bit? (test ones target)
   (lambda (char)
@@ -58,6 +60,5 @@
         (carbon (find-rating nums #'<)))
     (* (bits-to-int oxygen) (bits-to-int carbon))))
 
-(defun part-2 ()
-  (let ((data (read-day-input #'identity)))
-    (get-life-support data)))
+(defun part-2 (&optional (data (build-data)))
+  (get-life-support data))

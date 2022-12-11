@@ -48,8 +48,8 @@
   (let ((data (read-day-input #'parse-row :input input)))
     (make-array (list (length data) (length data)) :initial-contents data)))
 
-(defun part-1 (&optional input)
-  (count-visible? (build-data input)))
+(defun part-1 (&optional (data (build-data)))
+  (count-visible? data))
 
 (defun scenic-score (row col limit data)
   (let ((value (aref data row col)))
@@ -67,5 +67,5 @@
         maximize (loop for col below width
                        maximize (scenic-score row col width data))))
 
-(defun part-2 (&optional input)
-  (max-score (build-data input)))
+(defun part-2 (&optional (data (build-data)))
+  (max-score data))

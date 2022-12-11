@@ -73,8 +73,8 @@
 (defun build-data (&optional input)
   (read-day-input #'parse-terminal :compact t :input input))
 
-(defun part-1 (&optional input)
-  (total-size-matching (op (< _ 100000)) (build-data input)))
+(defun part-1 (&optional (data (build-data)))
+  (total-size-matching (op (< _ 100000)) data))
 
 (defun free-space (data)
   (- 70000000 (gethash '("/") data)))
@@ -91,6 +91,5 @@
        (- 70000000)
        (- 30000000)))
 
-(defun part-2 (&optional input)
-  (let ((data (build-data input)))
-    (smallest-matching (op (> _ (needed-space data))) data)))
+(defun part-2 (&optional (data (build-data)))
+  (smallest-matching (op (> _ (needed-space data))) data))

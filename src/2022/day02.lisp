@@ -45,13 +45,13 @@ In the format: (opponent-move player-move result score)")
 (defun build-data (&optional input)
   (read-day-input #'parse-move :input input))
 
-(defun part-1 (&optional input)
-  (total-score (build-data input) #'play))
+(defun part-1 (&optional (data (build-data)))
+  (total-score data #'play))
 
 (defun choose-outcome (game)
   (let ((outcome-map '(:x :lose :y :draw :z :win)))
     (setf (second game) (getf outcome-map (second game)))
     game))
 
-(defun part-2 (&optional input)
-  (total-score (build-data input) (compose #'play #'choose-outcome)))
+(defun part-2 (&optional (data (build-data)))
+  (total-score data (compose #'play #'choose-outcome)))

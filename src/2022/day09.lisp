@@ -70,8 +70,8 @@
       (update-rope move rope visited))
     (hash-table-count visited)))
 
-(defun part-1 (&optional input)
-  (count-visited (build-data input)))
+(defun part-1 (&optional (data (build-data)))
+  (count-visited data))
 
-(defun part-2 (&optional input)
-  (count-visited (build-data input) :tail-count 9))
+(defun part-2 (&optional (data (build-data)))
+  (count-visited data :tail-count 9))

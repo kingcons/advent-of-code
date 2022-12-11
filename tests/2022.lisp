@@ -24,10 +24,12 @@
 10000")
 
 (deftest day01-part1 ()
-  (is (= 24000 (2022.01::part-1 *day01-input*))))
+  (let ((data (2022.01::build-data *day01-input*)))
+    (is (= 24000 (2022.01::part-1 data)))))
 
 (deftest day01-part2 ()
-  (is (= 45000 (2022.01::part-2 *day01-input*))))
+  (let ((data (2022.01::build-data *day01-input*)))
+    (is (= 45000 (2022.01::part-2 data)))))
 
 ;;;; Day 02
 
@@ -37,10 +39,12 @@ B X
 C Z")
 
 (deftest day02-part1 ()
-  (is (= 15 (2022.02::part-1 *day02-input*))))
+  (let ((data (2022.02::build-data *day02-input*)))
+    (is (= 15 (2022.02::part-1 data)))))
 
 (deftest day02-part2 ()
-  (is (= 12 (2022.02::part-2 *day02-input*))))
+  (let ((data (2022.02::build-data *day02-input*)))
+    (is (= 12 (2022.02::part-2 data)))))
 
 ;;;; Day 03
 
@@ -53,10 +57,12 @@ ttgJtRGJQctTZtZT
 CrZsJsPPZsGzwwsLwLmpwMDw")
 
 (deftest day03-part1 ()
-  (is (= 157 (2022.03::part-1 *day03-input*))))
+  (let ((data (2022.03::build-data *day03-input*)))
+    (is (= 157 (2022.03::part-1 data)))))
 
 (deftest day03-part2 ()
-  (is (= 70 (2022.03::part-2 *day03-input*))))
+  (let ((data (2022.03::build-data *day03-input*)))
+    (is (= 70 (2022.03::part-2 data)))))
 
 ;;;; Day 04
 
@@ -69,10 +75,12 @@ CrZsJsPPZsGzwwsLwLmpwMDw")
 2-6,4-8")
 
 (deftest day04-part1 ()
-  (is (= 2 (2022.04::part-1 *day04-input*))))
+  (let ((data (2022.04::build-data *day04-input*)))
+    (is (= 2 (2022.04::part-1 data)))))
 
 (deftest day04-part2 ()
-  (is (= 4 (2022.04::part-2 *day04-input*))))
+  (let ((data (2022.04::build-data *day04-input*)))
+    (is (= 4 (2022.04::part-2 data)))))
 
 ;;;; Day 05
 
@@ -88,10 +96,12 @@ move 2 from 2 to 1
 move 1 from 1 to 2")
 
 (deftest day05-part1 ()
-  (is (string= "CMZ" (2022.05::part-1 *day05-input*))))
+  (let ((data (2022.05::build-data *day05-input*)))
+    (is (string= "CMZ" (2022.05::part-1 data)))))
 
 (deftest day05-part2 ()
-  (is (string= "MCD" (2022.05::part-2 *day05-input*))))
+  (let ((data (2022.05::build-data *day05-input*)))
+    (is (string= "MCD" (2022.05::part-2 data)))))
 
 ;;;; Day 06
 
@@ -99,10 +109,12 @@ move 1 from 1 to 2")
   "mjqjpqmgbljsphdztnvjfqwrcgsmlb")
 
 (deftest day06-part1 ()
-  (is (= 7 (2022.06::part-1 *day06-input*))))
+  (let ((data (2022.06::build-data *day06-input*)))
+    (is (= 7 (2022.06::part-1 data)))))
 
 (deftest day06-part2 ()
-  (is (= 19 (2022.06::part-2 *day06-input*))))
+  (let ((data (2022.06::build-data *day06-input*)))
+    (is (= 19 (2022.06::part-2 data)))))
 
 ;;;; Day 07
 
@@ -132,10 +144,12 @@ $ ls
 7214296 k")
 
 (deftest day07-part1 ()
-  (is (= 95437 (2022.07::part-1 *day07-input*))))
+  (let ((data (2022.07::build-data *day07-input*)))
+    (is (= 95437 (2022.07::part-1 data)))))
 
 (deftest day07-part2 ()
-  (is (= 24933642 (2022.07::part-2 *day07-input*))))
+  (let ((data (2022.07::build-data *day07-input*)))
+    (is (= 24933642 (2022.07::part-2 data)))))
 
 ;;;; Day 08
 
@@ -147,10 +161,12 @@ $ ls
 35390")
 
 (deftest day08-part1 ()
-  (is (= 21 (2022.08::part-1 *day08-input*))))
+  (let ((data (2022.08::build-data *day08-input*)))
+    (is (= 21 (2022.08::part-1 data)))))
 
 (deftest day08-part2 ()
-  (is (= 8 (2022.08::part-2 *day08-input*))))
+  (let ((data (2022.08::build-data *day08-input*)))
+    (is (= 8 (2022.08::part-2 data)))))
 
 ;;;; Day 09
 
@@ -175,10 +191,12 @@ L 25
 U 20")
 
 (deftest day09-part1 ()
-  (is (= (2022.09::part-1 *day09-input*) 13)))
+  (let ((data (2022.09::build-data *day09-input*)))
+    (is (= (2022.09::part-1 data) 13))))
 
 (deftest day09-part2 ()
-  (is (= (2022.09::part-2 *day09-input-2*) 36)))
+  (let ((data (2022.09::build-data *day09-input-2*)))
+    (is (= (2022.09::part-2 data) 36))))
 
 (deftest day09-evil-bug ()
   (let ((before '((1 -18) (2 -18) (3 -17) (3 -16) (4 -16)
@@ -345,7 +363,8 @@ noop
 noop")
 
 (deftest day10-part1 ()
-  (is (= (2022.10::part-1 *day10-input*) 13140)))
+  (let ((data (2022.10::build-data *day10-input*)))
+    (is (= (2022.10::part-1 data) 13140))))
 
 (defvar *day10-part2*
   "##..##..##..##..##..##..##..##..##..##..
@@ -356,7 +375,8 @@ noop")
 #######.......#######.......#######.....")
 
 (deftest day10-part2 ()
-  (is (string= (2022.10::part-2 *day10-input*) *day10-part2*)))
+  (let ((data (2022.10::build-data *day10-input*)))
+    (is (string= (2022.10::part-2 data) *day10-part2*))))
 
 ;;;; Summary
 

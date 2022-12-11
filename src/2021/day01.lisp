@@ -48,14 +48,16 @@ specializing makes in this case."
   (count-average-depths function)
   (count-windowed-depths function))
 
+(defun build-data (&optional input)
+  (read-day-input #'parse-integer :input input))
+
 (defun count-depths (sonar-readings)
   (loop for (previous depth) on sonar-readings
         while depth
         counting (> depth previous)))
 
-(defun part-1 ()
-  (let ((data (read-day-input #'parse-integer)))
-    (count-depths data)))
+(defun part-1 (&optional (data (build-data)))
+  (count-depths data))
 
 (defun count-average-depths (sonar-readings)
   (let ((sums (loop for (first second third) on sonar-readings
@@ -107,8 +109,5 @@ specializing makes in this case."
                  (advance (incf offset)))
             finally (return count)))))
 
-(defun part-2 ()
-  (let* ((data (read-day-input #'parse-integer))
-         (nums (coerce data 'vector)))
-    (declare (ignore nums))
-    (count-shifting-depths data)))
+(defun part-2 (&optional (data (build-data)))
+  (count-shifting-depths data))

@@ -12,6 +12,9 @@
   "**Part 2** - How many bags does a shiny gold bag hold?"
   (count-contents function))
 
+(defun build-data (&optional input)
+  (read-day-input #'parse-rule :input input))
+
 (defun parse-rule (rule)
   (flet ((build-node (item)
            (cons (make-keyword (string-upcase (subseq item 2)))
@@ -38,9 +41,8 @@
         until (null to-process)
         finally (return (length (remove-duplicates options)))))
 
-(defun part-1 ()
-  (let ((rules (read-day-input #'parse-rule)))
-    (count-containers :shiny-gold (build-graph rules))))
+(defun part-1 (&optional (data (build-data)))
+  (count-containers :shiny-gold (build-graph data)))
 
 (defgeneric descendents (digraph node)
   (:documentation "Return all nodes succeeding NODE in an edge of DIGRAPH.")
@@ -56,6 +58,5 @@
         (loop for (node weight) in descendents
               summing (+ weight (* weight (count-contents node graph)))))))
 
-(defun part-2 ()
-  (let ((rules (read-day-input #'parse-rule)))
-    (count-contents :shiny-gold (build-graph rules))))
+(defun part-2 (&optional (data (build-data)))
+  (count-contents :shiny-gold (build-graph data)))

@@ -13,6 +13,9 @@
 
 (defvar *width* 25)
 
+(defun build-data (&optional input)
+  (coerce (read-day-input #'parse-integer :input input) 'vector))
+
 (defun a-previous-number (data index)
   (screamer:a-member-ofv (subseq data (- index *width*) index)))
 
@@ -29,9 +32,8 @@
         while (valid? data i)
         finally (return (values (aref data i) i))))
 
-(defun part-1 ()
-  (let ((data (coerce (read-day-input #'parse-integer) 'vector)))
-    (find-invalid-number data)))
+(defun part-1 (&optional (data (build-data)))
+  (find-invalid-number data))
 
 (defun find-weakness (data target index)
   "Find a range of numbers below INDEX in DATA that sum to TARGET.
@@ -50,6 +52,5 @@
   (multiple-value-bind (target index) (find-invalid-number data)
     (find-weakness data target index)))
 
-(defun part-2 ()
-  (let ((data (coerce (read-day-input #'parse-integer) 'vector)))
-    (find-invalid-slice data)))
+(defun part-2 (&optional (data (build-data)))
+  (find-invalid-slice data))

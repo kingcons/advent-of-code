@@ -20,15 +20,17 @@
     (make-entry :signals (subseq strings 0 10)
                 :outputs (subseq strings 11))))
 
+(defun build-data (&optional input)
+  (read-day-input #'parse-segment :input input))
+
 (defun count-unique-digits (entries &aux (unique-lengths '(2 3 4 7)))
   (flet ((is-unique-digit? (string)
            (member (length string) unique-lengths)))
     (loop for entry in entries
           sum (count-if #'is-unique-digit? (entry-outputs entry)))))
 
-(defun part-1 ()
-  (let ((data (read-day-input #'parse-segment)))
-    (count-unique-digits data)))
+(defun part-1 (&optional (data (build-data)))
+  (count-unique-digits data))
 
 (defun compute-mapping (signals)
   (let* ((mapping (make-hash-table :test #'equal))
@@ -68,6 +70,5 @@
 (defun sum-outputs (entries)
   (reduce #'+ (mapcar #'compute-output entries)))
 
-(defun part-2 ()
-  (let ((data (read-day-input #'parse-segment)))
-    (sum-outputs data)))
+(defun part-2 (&optional (data (build-data)))
+  (sum-outputs data))

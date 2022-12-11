@@ -21,6 +21,9 @@
       (#\< #\>))
   :test #'equal)
 
+(defun build-data (&optional input)
+  (read-day-input #'identity :input input))
+
 (defun score-error (line)
   (flet ((lookup (key map)
            (second (assoc key map))))
@@ -37,9 +40,8 @@
 (defun score-syntax (input)
   (reduce #'+ (remove nil (mapcar #'score-error input))))
 
-(defun part-1 ()
-  (let ((data (read-day-input #'identity)))
-    (score-syntax data)))
+(defun part-1 (&optional (data (build-data)))
+  (score-syntax data))
 
 (define-constant +autocomplete-points+
     '((#\) 1)
@@ -74,6 +76,5 @@
          (results (mapcar #'score-incomplete eligible)))
     (nth (floor (length results) 2) (sort results #'>))))
 
-(defun part-2 ()
-  (let ((data (read-day-input #'identity)))
-    (score-corrections data)))
+(defun part-2 (&optional (data (build-data)))
+  (score-corrections data))

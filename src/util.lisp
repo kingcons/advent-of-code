@@ -91,27 +91,28 @@ If COMPACT is non-nil, remove any NIL values after mapping over the data."
                 `((remove nil)))))))
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
-  (defun safe-summarize-funcall (string &rest args)
+  (defun safe-summarize-funcall (string &key arg show-answer)
     (let* ((symbol (find-symbol string))
            (fdefn (and (fboundp symbol) (fdefinition symbol))))
-      (and fdefn (summarize (apply 'funcall fdefn args))))))
+      (and fdefn (summarize (funcall fdefn arg) show-answer)))))
 
 (defmacro defsummary ((&key title) &body body)
   (extract-date-from-string (package-name *package*)
     (let* ((advent-url (fmt "https://adventofcode.com/~d/day/~d" year (parse-integer day)))
-           (requirements (fmt "**Requirements:** [Day ~2,'0d](~a)~%" day advent-url))
-           (part1-output (safe-summarize-funcall "PART-1"))
-           (part2-output (safe-summarize-funcall "PART-2"))
-           (header (fmt "~a~%**Part 1:**~%~a~%**Part 2:**~%~a~%~%"
-                        requirements part1-output part2-output)))
-      `(defsection ,(symbolicate "@" year "." day) (:title ,title)
-         "---"
-         ,header
-         "---"
-         "##### *Reflections*"
-         ,@body))))
+           (requirements (fmt "**Requirements:** [Day ~2,'0d](~a)~%" day advent-url)))
+      (multiple-value-bind (build-summary result) (safe-summarize-funcall "BUILD-DATA")
+        (let* ((part1-summary (safe-summarize-funcall "PART-1" :arg result :show-answer t))
+               (part2-summary (safe-summarize-funcall "PART-2" :arg result :show-answer t))
+               (header (fmt "~a~%**Input Parsing:**~%~a~%**Part 1:**~%~a~%**Part 2:**~%~a~%~%"
+                            requirements build-summary part1-summary part2-summary)))
+          `(defsection ,(symbolicate "@" year "." day) (:title ,title)
+             "---"
+             ,header
+             "---"
+             "##### *Reflections*"
+             ,@body))))))
 
-(defmacro summarize (form)
+(defmacro summarize (form &optional show-answer)
   "Measure the real time to execute FORM and return a formatted string
  showing the result and the wall clock execution time."
   (with-unique-names (old-bytes new-bytes useconds result start end)
@@ -121,5 +122,7 @@ If COMPACT is non-nil, remove any NIL values after mapping over the data."
             (,end (get-internal-real-time))
             (,new-bytes (sb-ext:get-bytes-consed))
             (,useconds (/ (- ,end ,start) internal-time-units-per-second)))
-       (fmt "> Time: ~7,3fms  Memory: ~7:dkb  Answer: ~10T~a~%"
-            (* 1000 ,useconds) (floor (- ,new-bytes ,old-bytes) 1024) ,result))))
+       (values (fmt "> Time: ~7,3fms  Memory: ~7:dkb  ~@[Answer: ~10T~a~]~%"
+                    (* 1000 ,useconds) (floor (- ,new-bytes ,old-bytes) 1024)
+                    (when ,show-answer ,result))
+               ,result))))

@@ -15,9 +15,9 @@
 * DONE - Separate the "build" and "compute" stages of puzzles.
 ** I.e. In 99% of cases, the data parsing between Part 1 and Part 2 is identical and it is valuable not only to know the timing of "Part 1" vs "Part 2" but the timing and memory use of "Parsing the data", "Computing part 1", and "Computing part 2".
 ** This is currently in progress and the unstaged changes in this tree reflect the current state. Using a decomposition of PART-1, PART-2, and BUILD-DATA greatly simplifies the tests as they can pass input directly to PART-1 and PART-2 which forward on to READ-DAY-INPUT and tests don't concern themselves with any internals.
-* TODO - Update the 2019 - 2021 problems to use the BUILD-DATA style and incorporate in DEFSUMMARY.
+* DONE - Update the 2019 - 2021 problems to use the BUILD-DATA style and incorporate in DEFSUMMARY.
 ** Currently our summaries do not take into account the newly separate BUILD-DATA function. In fact, the decomposition is not quite right in that PART-1 and PART-2 call BUILD-DATA internally distorting any efforts to separate the parsing work from the computational work.
 ** First, update _all_ problems to use BUILD-DATA and have PART-1 and PART-2 take a parsed data argument.
 ** Second, update all tests to pass parsed data in to PART-1 and PART-2.
-** Third, have DEFSUMMARY export BUILD-DATA by default.
-** Fourth, have DEFSUMMARY generate summarize output for BUILD-DATA.
+** Third, have DEFSUMMARY generate summarize output for BUILD-DATA.
+** Finally, update the day.tmpl file for the new scheme.

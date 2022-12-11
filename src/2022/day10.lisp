@@ -5,6 +5,7 @@
   (:import-from :serapeum
                 #:~>>
                 #:batches
+                #:concat
                 #:partial
                 #:string-join))
 
@@ -55,8 +56,8 @@
             and do (setf next-sample (pop desired-timings))
           do (execute cpu opcode arg))))
 
-(defun part-1 (&optional input)
-  (sum-at-cycles (build-data input) '(20 60 100 140 180 220)))
+(defun part-1 (&optional (data (build-data)))
+  (sum-at-cycles data '(20 60 100 140 180 220)))
 
 (defmethod render ((cpu cpu) opcode arg)
   (with-slots (cycles x-reg) cpu
@@ -75,9 +76,9 @@
           for cycles = (cpu-cycles cpu)
           append (render cpu opcode arg) into output
           do (execute cpu opcode arg)
-          finally (return (~>> (reduce (partial #'concatenate 'string) output)
+          finally (return (~>> (reduce #'concat output)
                                (batches _ 40)
                                (string-join _ #\Newline))))))
 
-(defun part-2 (&optional input)
-  (render-crt (build-data input)))
+(defun part-2 (&optional (data (build-data)))
+  (render-crt data))

@@ -10,6 +10,9 @@
   "**Part 2** - One Does Not Simply Dive"
   (plot-course-aim function))
 
+(defun build-data (&optional input)
+  (read-day-input #'parse-navigation :input input))
+
 (defun parse-navigation (line)
   (destructuring-bind (direction amount) (cl-ppcre:split " " line)
     (list (intern (string-upcase direction) :keyword)
@@ -24,9 +27,8 @@
              (:down (incf depth amount)))
         finally (return (* depth horizontal))))
 
-(defun part-1 ()
-  (let ((data (read-day-input #'parse-navigation)))
-    (plot-course data)))
+(defun part-1 (&optional (data (build-data)))
+  (plot-course data))
 
 (defun plot-course-aim (plan)
   (loop with depth = 0 and aim = 0 and position = 0
@@ -39,6 +41,5 @@
               (incf depth (* aim amount))))
         finally (return (* depth position))))
 
-(defun part-2 ()
-  (let ((data (read-day-input #'parse-navigation)))
-    (plot-course-aim data)))
+(defun part-2 (&optional (data (build-data)))
+  (plot-course-aim data))

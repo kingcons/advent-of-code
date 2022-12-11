@@ -21,10 +21,11 @@
        (mapcar (lambda (x) (reduce combine-rows x)))
        (reduce #'+ _ :key #'length)))
 
-(defun part-1 ()
-  (let ((groups (read-day-input #'parse-group :separator "\\n\\n")))
-    (count-groups groups #'union)))
+(defun build-data (&optional input)
+  (read-day-input #'parse-group :separator "\\n\\n" :input input))
 
-(defun part-2 ()
-  (let ((groups (read-day-input #'parse-group :separator "\\n\\n")))
-    (count-groups groups #'intersection)))
+(defun part-1 (&optional (data (build-data)))
+  (count-groups data #'union))
+
+(defun part-2 (&optional (data (build-data)))
+  (count-groups data #'intersection))

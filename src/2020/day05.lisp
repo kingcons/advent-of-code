@@ -11,6 +11,9 @@
   "**Part 2** - Find the unoccupied seat"
   (find-open-seat function))
 
+(defun build-data (&optional input)
+  (read-day-input #'identity :input input))
+
 (defun decode-bits (string &key (ones #\B))
   (loop with sum = 0
         for char across string
@@ -31,9 +34,8 @@
 (defun highest-seat-id (passes)
   (loop for pass in passes maximizing (seat-id pass)))
 
-(defun part-1 ()
-  (let ((passes (read-day-input #'identity)))
-    (highest-seat-id passes)))
+(defun part-1 (&optional (data (build-data)))
+  (highest-seat-id data))
 
 (defun find-open-seat (passes)
   (let ((table (make-hash-table)))
@@ -46,6 +48,5 @@
                     (gethash (1+ seat-id) table))
             do (return-from find-open-seat seat-id))))
 
-(defun part-2 ()
-  (let ((passes (read-day-input #'identity)))
-    (find-open-seat passes)))
+(defun part-2 (&optional (data (build-data)))
+  (find-open-seat data))

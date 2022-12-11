@@ -17,6 +17,9 @@
       (incf (aref counts timer)))
     counts))
 
+(defun build-data (&optional input)
+  (first (read-day-input #'parse-counts :input input)))
+
 (defun tick (counts)
   (declare (type (simple-array fixnum) counts))
   (alexandria:rotate counts -1)
@@ -29,10 +32,8 @@
     (tick counts))
   (reduce #'+ counts))
 
-(defun part-1 ()
-  (let ((data (first (read-day-input #'parse-counts))))
-    (estimate-population data 80)))
+(defun part-1 (&optional (data (build-data)))
+  (estimate-population data 80))
 
-(defun part-2 ()
-  (let ((data (first (read-day-input #'parse-counts))))
-    (estimate-population data 256)))
+(defun part-2 (&optional (data (build-data)))
+  (estimate-population data 256))

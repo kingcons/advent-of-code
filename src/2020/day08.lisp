@@ -16,6 +16,9 @@
 (defvar *mutations* (make-variable))
 (defvar *visited* '())
 
+(defun build-data (&optional input)
+  (coerce (read-day-input #'parse-instruction :input input) 'vector))
+
 (defun parse-instruction (instruction)
   (destructuring-bind (opcode arg) (cl-ppcre:split " " instruction)
     (list (make-keyword (string-upcase opcode)) (parse-integer arg))))
@@ -57,9 +60,8 @@
         do (step-cpu cpu opcode arg)
         finally (return (values (cpu-acc cpu) pc))))
 
-(defun part-1 ()
-  (let ((code (coerce (read-day-input #'parse-instruction) 'vector)))
-    (screamer:one-value (final-acc-value code))))
+(defun part-1 (&optional (data (build-data)))
+  (screamer:one-value (final-acc-value data)))
 
 (defun apply-patch (code address)
   (let ((patched (map 'vector #'copy-list code)))
@@ -69,12 +71,11 @@
       (setf patch-point (if (eql patch-point :nop) :jmp :nop)))
     patched))
 
-(defun part-2 ()
-  (let ((code (coerce (read-day-input #'parse-instruction) 'vector)))
-    (loop for i = 0 then (1+ i)
-          for patched = (apply-patch code i)
-          unless (eql patched :skip)
+(defun part-2 (&optional (data (build-data)))
+  (loop for i = 0 then (1+ i)
+        for patched = (apply-patch data i)
+        unless (eql patched :skip)
           do (multiple-value-bind (acc pc)
                  (screamer:one-value (final-acc-value patched))
-               (when (= pc (length code))
-                 (return acc))))))
+               (when (= pc (length data))
+                 (return acc)))))

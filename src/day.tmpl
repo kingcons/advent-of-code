@@ -12,8 +12,8 @@
 (defun build-data (&optional input)
   (read-day-input #'identity :input input))
 
-(defun part-1 (&optional input)
+(defun part-1 (&optional (data (build-data)))
   (foo (build-data input)))
 
-(defun part-2 (&optional input)
+(defun part-2 (&optional (data (build-data)))
   (bar (build-data input)))
