@@ -63,12 +63,11 @@
   (with-slots (cycles x-reg) cpu
     (list (with-output-to-string (out)
             (dotimes (i (getf *cycle-times* opcode))
-              (let ((crt-pixel (mod (+ cycles i) 40)))
-                (flet ((active-pixel? (i)
-                         (<= (1- x-reg) crt-pixel (1+ x-reg))))
-                  (if (active-pixel? i)
-                      (format out "#")
-                      (format out ".")))))))))
+              (let* ((crt-pixel (mod (+ cycles i) 40))
+                     (active-pixel? (<= (1- x-reg) crt-pixel (1+ x-reg))))
+                (if active-pixel?
+                    (format out "#")
+                    (format out "."))))))))
 
 (defun render-crt (data)
   (let ((cpu (make-cpu)))
