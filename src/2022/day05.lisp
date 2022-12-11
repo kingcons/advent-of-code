@@ -4,6 +4,7 @@
   (:import-from :serapeum
                 #:~>>
                 #:batches
+                #:halves
                 #:fmt
                 #:dict
                 #:op))
@@ -79,10 +80,9 @@
   (interpret data :step-fn #'move-crates))
 
 (defun move-crates-contiguous (count origin destination stacks)
-  (let ((to-move (loop for i below count
-                       collecting (pop (gethash origin stacks)))))
-    (loop for crate in (reverse to-move)
-          do (push crate (gethash destination stacks)))))
+  (multiple-value-bind (to-move new-origin) (halves (gethash origin stacks) count)
+    (setf (gethash origin stacks) new-origin
+          (gethash destination stacks) (append to-move (gethash destination stacks)))))
 
 (defun part-2 (&optional (data (build-data)))
   (interpret data :step-fn #'move-crates-contiguous))

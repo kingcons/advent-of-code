@@ -1,6 +1,8 @@
 (mgl-pax:define-package :aoc.2021.06
   (:nicknames :2021.06)
-  (:use :cl :aoc.util :mgl-pax))
+  (:use :cl :aoc.util :mgl-pax)
+  (:import-from :alexandria #:rotate)
+  (:import-from :cl-ppcre #:split))
 
 (in-package :aoc.2021.06)
 
@@ -12,7 +14,7 @@
 
 (defun parse-counts (fishlist)
   (let ((counts (make-array 9 :element-type 'fixnum))
-        (timers (mapcar #'parse-integer (cl-ppcre:split "," fishlist))))
+        (timers (mapcar #'parse-integer (split "," fishlist))))
     (dolist (timer timers)
       (incf (aref counts timer)))
     counts))
@@ -22,7 +24,7 @@
 
 (defun tick (counts)
   (declare (type (simple-array fixnum) counts))
-  (alexandria:rotate counts -1)
+  (rotate counts -1)
   (let ((newborns (aref counts 8))
         (old-gen (aref counts 6)))
     (setf (aref counts 6) (+ old-gen newborns))))
