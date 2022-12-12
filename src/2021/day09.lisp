@@ -2,7 +2,8 @@
   (:nicknames :2021.09)
   (:use :cl :aoc.util :mgl-pax)
   (:import-from :aoc.parsers #:parse-grid)
-  (:import-from :alexandria #:define-constant))
+  (:import-from :alexandria #:define-constant)
+  (:import-from :serapeum #:op))
 
 (in-package :2021.09)
 
@@ -17,7 +18,7 @@
 
 (defun build-data (&optional input)
   (flet ((build-grid (input)
-           (parse-grid input :transform (lambda (x) (- (char-code x) 48)))))
+           (parse-grid input :transform (op (- (char-code _) 48)))))
     (read-day-input #'build-grid :whole t :input input)))
 
 (defun get-neighbors (grid row col &optional coords)

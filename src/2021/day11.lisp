@@ -4,7 +4,8 @@
   (:import-from :aoc.parsers #:parse-grid)
   (:import-from :alexandria
                 #:define-constant
-                #:hash-table-keys))
+                #:hash-table-keys)
+  (:import-from :serapeum #:op))
 
 (in-package :2021.11)
 
@@ -16,7 +17,7 @@
 
 (defun build-data (&optional input)
   (flet ((build-grid (input)
-           (parse-grid input :container :hash :transform (lambda (x) (- (char-code x) 48)))))
+           (parse-grid input :container :hash :transform (op (- (char-code _) 48)))))
     (read-day-input #'build-grid :whole t :input input)))
 
 (defun neighbors (position grid)

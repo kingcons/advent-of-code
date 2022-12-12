@@ -1,6 +1,7 @@
 (mgl-pax:define-package :aoc.parsers
   (:use :cl :mgl-pax :esrap)
-  (:import-from :cl-ppcre #:split))
+  (:import-from :cl-ppcre #:split)
+  (:import-from :serapeum #:op))
 
 (in-package :aoc.parsers)
 
@@ -21,7 +22,7 @@
 
 (defrule whitespace (+ (or #\Space #\Tab #\Newline)))
 
-(defun parse-grid (data &key (container :array) (transform nil))
+(defun parse-grid (data &key (container :array) (transform (op (identity _))))
   (let* ((rows (count #\Newline data))
          (cols (position #\Newline data))
          (grid (ecase container
@@ -30,8 +31,10 @@
     (flet ((import-row (row str)
              (dotimes (col cols)
                (ecase container
-                 (:array (setf (aref grid row col) (funcall transform (char str col))))
-                 (:hash (setf (gethash (cons row col) grid) (funcall transform (char str col))))))))
+                 (:array (setf (aref grid row col)
+                               (funcall transform (char str col) row col)))
+                 (:hash (setf (gethash (cons row col) grid)
+                              (funcall transform (char str col) row col)))))))
       (loop for i = 0 then (1+ i)
             for row in (split "\\n" data)
             do (import-row i row)))
