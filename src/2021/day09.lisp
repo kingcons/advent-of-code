@@ -1,6 +1,7 @@
 (mgl-pax:define-package :aoc.2021.09
   (:nicknames :2021.09)
   (:use :cl :aoc.util :mgl-pax)
+  (:import-from :aoc.parsers #:parse-grid)
   (:import-from :alexandria #:define-constant))
 
 (in-package :2021.09)
@@ -11,30 +12,13 @@
   "**Part 2** - Dodge the Basins"
   (find-largest-basins function))
 
-(defun get-bounds (grid)
-  (etypecase grid
-    (list (list (length grid) (length (first grid))))
-    (array (array-dimensions grid))))
-
-(defun do-grid (grid function)
-  "Iterate over a 2 dimensional GRID calling FUNCTION with row, col, item for each entry."
-  (let ((bounds (get-bounds grid)))
-    (dotimes (row (first bounds))
-      (dotimes (col (second bounds))
-        (funcall function row col (aref grid row col))))))
-
-(defun parse-grid (data)
-  (let ((grid (make-array (get-bounds data) :initial-contents data)))
-    (do-grid grid
-      (lambda (row col item)
-        (setf (aref grid row col) (- (char-code item) 48))))
-    grid))
-
-(defun build-data (&optional input)
-  (read-day-input #'parse-grid :whole t :input input))
-
 (define-constant +neighbors+
     '((0 1) (0 -1) (1 0) (-1 0)) :test #'equal)
+
+(defun build-data (&optional input)
+  (flet ((build-grid (input)
+           (parse-grid input :transform (lambda (x) (- (char-code x) 48)))))
+    (read-day-input #'build-grid :whole t :input input)))
 
 (defun get-neighbors (grid row col &optional coords)
   (flet ((valid-neighbor? (x)

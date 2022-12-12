@@ -1,7 +1,10 @@
 (mgl-pax:define-package :aoc.2021.11
   (:nicknames :2021.11)
   (:use :cl :aoc.util :mgl-pax)
-  (:import-from :alexandria #:define-constant #:hash-table-keys #:hash-table-values))
+  (:import-from :aoc.parsers #:parse-grid)
+  (:import-from :alexandria
+                #:define-constant
+                #:hash-table-keys))
 
 (in-package :2021.11)
 
@@ -11,18 +14,10 @@
   '((0 1) (0 -1) (1 0) (-1 0) (1 1) (-1 -1) (1 -1) (-1 1))
   :test #'equal)
 
-(defun parse-grid (data)
-  (flet ((ascii-digit-to-int (x)
-           (- (char-code x) 48)))
-    (let ((grid (make-hash-table :test #'equal)))
-      (dotimes (row (length data))
-        (dotimes (col (length (first data)))
-          (setf (gethash (cons row col) grid)
-                (ascii-digit-to-int (aref (nth row data) col)))))
-      grid)))
-
 (defun build-data (&optional input)
-  (read-day-input #'parse-grid :whole t :input input))
+  (flet ((build-grid (input)
+           (parse-grid input :container :hash :transform (lambda (x) (- (char-code x) 48)))))
+    (read-day-input #'build-grid :whole t :input input)))
 
 (defun neighbors (position grid)
   (flet ((new-coord (x)

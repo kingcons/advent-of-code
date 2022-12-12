@@ -3,13 +3,7 @@
 ** Seems like in most scenarios the separate file gets you out of the eval-when headaches and there isn't sufficient benefit to keeping the helper right next to the macro. Could be wrong.
 * DONE - Redistribute the performance summaries throughout the problems.
 ** Having a big overview block seems like a nice idea but I rarely look at that so why would anyone else? It probably makes more sense to have them in each individual defsection ... somehow. May want to autogenerate summaries with a defsummary macro or something in aoc.util. We'll see...
-* TODO - Refactor 2022 Day 07. At least two things about my solution are less than ideal.
-** First, declaring a variable special to avoid the pain of passing it is gross.
-** Second, needed-space separates reparses the directory sizes. UGH.
-** In my head, it would be nice if each line in the output had an "opcode" it could execute on some data structure. Not sure that actually structuring it as an interpreter helps a ton though.
-* TODO - Currently DEFSUMMARY is a kludge to generate DEFSECTIONs for MGL-PAX.
-** While being pragmatic, it would probably be preferable to see if there's some way to use the extension API for MGL-PAX to add a new locative type or similar to accomodate the same goals.
-* TODO - Refactor the callsites of READ-DAY-UTIL :WHOLE to use :BATCHES-OF if possible.
+* DONE - Refactor the callsites of READ-DAY-UTIL :WHOLE to receive the entire file before splitting.
 ** It would be nice to rip the WHOLE option out altogether. Aside from simplifying the interface to READ-DAY-UTIL this enables moving off READ-FILE-FROM-STRING.
 ** Seems like the real problem here is two "grid" problems from 2021, days 9 and 11. We really do need the whole input so this would strictly increase the accidental complexity of those problems if we removed the option. :-/
 * DONE - Separate the "build" and "compute" stages of puzzles.
@@ -21,3 +15,10 @@
 ** Second, update all tests to pass parsed data in to PART-1 and PART-2.
 ** Third, have DEFSUMMARY generate summarize output for BUILD-DATA.
 ** Finally, update the day.tmpl file for the new scheme.
+* TODO - Refactor 2022 Day 07. At least two things about my solution are less than ideal.
+** First, declaring a variable special to avoid the pain of passing it is gross.
+** Second, needed-space separates reparses the directory sizes. UGH.
+** In my head, it would be nice if each line in the output had an "opcode" it could execute on some data structure. Not sure that actually structuring it as an interpreter helps a ton though.
+* TODO - Currently DEFSUMMARY is a kludge to generate DEFSECTIONs for MGL-PAX.
+** While being pragmatic, it would probably be preferable to see if there's some way to use the extension API for MGL-PAX to add a new locative type or similar to accomodate the same goals.*
+* TODO - Document PARSE-GRID and DO-GRID helpers more thoroughly.

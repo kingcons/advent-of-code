@@ -1,20 +1,23 @@
 (mgl-pax:define-package :aoc.util
   (:use :cl :mgl-pax)
   (:import-from :asdf #:system-relative-pathname)
-  (:import-from :alexandria #:read-file-into-string
-                            #:symbolicate
-                            #:with-unique-names)
-  (:import-from :cl-ppcre #:split
-                          #:regex-replace-all)
-  (:import-from :serapeum #:~>>
-                          #:batches
-                          #:fmt))
+  (:import-from :alexandria
+                #:read-file-into-string
+                #:symbolicate
+                #:with-unique-names)
+  (:import-from :cl-ppcre
+                #:split
+                #:regex-replace-all)
+  (:import-from :serapeum
+                #:~>>
+                #:fmt))
 
 (in-package :aoc.util)
 
 (defsection @aoc.util (:title "Useful Utilities")
   (*aoc-session* variable)
   (defsummary macro)
+  (do-grid function)
   (extract-date-from-string macro)
   (read-day-input macro)
   (scaffold function)
@@ -60,6 +63,17 @@ An error will be thrown if a directory matching YEAR does not exist."
   (unless (null *aoc-session*)
     (scaffold-input year day)))
 
+(defun do-grid (grid function)
+  "Iterate over a 2 dimensional GRID calling FUNCTION with row, col, item for each entry."
+  (etypecase grid
+    (array (destructuring-bind (rows cols) (array-dimensions grid)
+             (dotimes (row rows)
+               (dotimes (col cols)
+                 (funcall function row col (aref grid row col))))))
+    (hash-table (loop for (row . col) being the hash-keys
+                        in grid using (hash-value val)
+                      do (funcall function row col val)))))
+
 (defmacro extract-date-from-string (string &body body)
   "Bind YEAR and DAY to values extracted from STRING by the regex
 `(\\d{4}).*(\\d{2})` and run BODY in the scope of those bindings."
@@ -71,24 +85,21 @@ An error will be thrown if a directory matching YEAR does not exist."
   (extract-date-from-string (package-name package)
     (read-file-into-string (day-file year day))))
 
-(defmacro read-day-input (item-parser &key (separator "\\n") (compact nil)
-                         (batches-of nil) (whole nil) (input nil))
+(defmacro read-day-input (item-parser &key (separator "\\n") (compact nil) (whole nil) (input nil))
   "Load the input data for the current day based on the name of *PACKAGE*, splitting
 the file based on the value of SEPARATOR and processing each string with ITEM-PARSER.
-If BATCHES-OF is supplied, divide the separated data into chunks of the desired size.
-If WHOLE is non-nil, after splitting pass to ITEM-PARSER directly instead of mapping.
+
+If WHOLE is non-nil, skip splitting and pass to ITEM-PARSER directly instead of mapping.
 If INPUT is supplied, use that instead of loading the DAT file matching the *PACKAGE*.
 If COMPACT is non-nil, remove any NIL values after mapping over the data."
   (with-unique-names (data)
     `(let ((,data (or ,input (read-dat-file-for-package ,*package*))))
-       (~>> (split ,separator ,data)
-            ,@(when batches-of
-                `((batches _ ,batches-of)))
-            ,(if whole
-                 `(funcall ,item-parser)
-                 `(mapcar ,item-parser))
-            ,@(when compact
-                `((remove nil)))))))
+       ,(if whole
+            `(funcall ,item-parser ,data)
+            `(~>> (split ,separator ,data)
+                  (mapcar ,item-parser)
+                  ,@(when compact
+                      `((remove nil))))))))
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (defun safe-summarize-funcall (string &key arg show-answer)

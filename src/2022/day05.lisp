@@ -4,9 +4,9 @@
   (:import-from :serapeum
                 #:~>>
                 #:batches
-                #:halves
-                #:fmt
                 #:dict
+                #:fmt
+                #:halves
                 #:op))
 
 (in-package :2022.05)
@@ -39,11 +39,14 @@
 
 (defrule row (+ (or crate gap)))
 
-(defrule labels (+ (or whitespace digit))
+(defrule labels (+ (or whitespace digit #\Newline))
   (:lambda (list)
     (remove-if-not #'integerp list)))
 
-(defrule header (+ (or row labels)))
+(defrule header (+ row)
+  (:function first))
+
+(defrule stacks (and header labels instructions))
 
 (defun add-row (row table)
   (loop for i = 1 then (1+ i)
@@ -52,13 +55,12 @@
           do (push item (gethash i table))))
 
 (defun parse-stacks (input)
-  (let ((moves (parse 'instructions (second input))))
-    (destructuring-bind (rows labels) (parse 'header (first input))
-      (let* ((stack-count (length labels))
-             (stacks (make-hash-table)))
-        (loop for row in (reverse (batches rows stack-count))
-              do (add-row row stacks))
-        (list moves stacks)))))
+  (destructuring-bind (headers labels moves) (parse 'stacks input)
+    (let* ((stack-count (length labels))
+           (stacks (make-hash-table)))
+      (loop for row in (reverse (batches headers stack-count))
+            do (add-row row stacks))
+      (list moves stacks))))
 
 (defun move-crates (count origin destination stacks)
   (dotimes (i count)
@@ -74,7 +76,7 @@
           finally (return (coerce chars 'string)))))
 
 (defun build-data (&optional input)
-  (read-day-input #'parse-stacks :separator "\\n\\n" :whole t :input input))
+  (read-day-input #'parse-stacks :whole t :input input))
 
 (defun part-1 (&optional (data (build-data)))
   (interpret data :step-fn #'move-crates))
