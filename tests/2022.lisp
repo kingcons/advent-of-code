@@ -430,9 +430,9 @@ abdefghi")
   (let ((data (2022.12::build-data *day12-input*)))
     (is (= (2022.12::part-1 data) 31))))
 
-;; (deftest day12-part2 ()
-;;   (let ((data (2022.12::build-data *day12-input*)))
-;;     (is (= (2022.12::part-2 data) ???))))
+(deftest day12-part2 ()
+  (let ((data (2022.12::build-data *day12-input*)))
+    (is (= (2022.12::part-2 data) 29))))
 
 ;;;; Summary
 

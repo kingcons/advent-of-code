@@ -92,8 +92,19 @@
 
 (defun part-1 (&optional (data (build-data)))
   (destructuring-bind (nodes edges) data
-    (let ((distances (find-shortest-paths nodes edges (gethash :start nodes))))
-      (gethash (gethash :end nodes) distances))))
+    (let ((destination (gethash :end nodes))
+          (distances (find-shortest-paths nodes edges (gethash :start nodes))))
+      (values (gethash destination distances) distances))))
 
 (defun part-2 (&optional (data (build-data)))
-  data)
+  (destructuring-bind (nodes edges) data
+    (let ((destination (gethash :end nodes))
+          (origins (loop for point being the hash-values in nodes
+                         when (= (char-code #\a) (height point)) collect point)))
+      (format t "Origins to test: ~D~%" (length origins))
+      (loop for i = 1 then (1+ i)
+            for origin in origins
+            for distances = (find-shortest-paths nodes edges origin)
+            do (format t "Searched ~d/~d~%" i (length origins))
+            minimizing (or (gethash destination distances) most-positive-fixnum) into min
+            finally (return min)))))
