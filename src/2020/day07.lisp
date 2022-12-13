@@ -1,8 +1,9 @@
 (mgl-pax:define-package :aoc.2020.07
   (:nicknames :2020.07)
   (:use :cl :aoc.util :mgl-pax)
-  (:import-from :alexandria #:make-keyword)
-  (:import-from :graph #:digraph #:add-edge))
+  (:import-from :alexandria
+                #:hash-table-values
+                #:make-keyword))
 
 (in-package :2020.07)
 
@@ -25,37 +26,34 @@
              (mapcar #'build-node (rest items))))))
 
 (defun build-graph (rules)
-  (loop with graph = (make-instance 'digraph)
-        for (container . contains) in rules
-        do (loop for (color . weight) in contains
-                 do (add-edge graph (list container color) weight))
-        finally (return graph)))
+  (let ((graph (make-hash-table)))
+    (loop for (container . edges) in rules
+          do (setf (gethash container graph) edges)
+          finally (return graph))))
 
-(defun count-containers (color graph)
-  (loop with to-process = (graph:precedents graph color)
-        with options = (copy-list to-process)
-        for node = (pop to-process)
-        do (let ((precedents (graph:precedents graph node)))
-             (setf options (append precedents options)
-                   to-process (append precedents to-process)))
-        until (null to-process)
-        finally (return (length (remove-duplicates options)))))
+(defun get-containers-of (graph node)
+  (loop for neighbor being the hash-keys in graph using (hash-value edges)
+        for match = (find node edges :key #'first)
+        when match collect (cons neighbor (cdr match))))
+
+(defun count-containers (graph color)
+  (loop with visited = (make-hash-table)
+        with to-visit = (get-containers-of graph color)
+        for (node . weight) = (pop to-visit)
+        do (let ((neighbors (get-containers-of graph node)))
+             (setf (gethash node visited) t)
+             (setf to-visit (append neighbors to-visit)))
+        until (null to-visit)
+        finally (return (hash-table-count visited))))
 
 (defun part-1 (&optional (data (build-data)))
-  (count-containers :shiny-gold (build-graph data)))
-
-(defgeneric descendents (digraph node)
-  (:documentation "Return all nodes succeeding NODE in an edge of DIGRAPH.")
-  (:method ((digraph digraph) node)
-    (let ((nodes (mapcar (lambda (e) (list (cadr e) (graph:edge-value digraph e)))
-                         (graph:node-edges digraph node))))
-      (remove node nodes :key #'first))))
+  (count-containers (build-graph data) :shiny-gold))
 
 (defun count-contents (color graph)
-  (let ((descendents (descendents graph color)))
-    (if (null descendents)
+  (let ((contents (gethash color graph)))
+    (if (null contents)
         0
-        (loop for (node weight) in descendents
+        (loop for (node . weight) in contents
               summing (+ weight (* weight (count-contents node graph)))))))
 
 (defun part-2 (&optional (data (build-data)))

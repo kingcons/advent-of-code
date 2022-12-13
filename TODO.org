@@ -15,6 +15,8 @@
 ** Second, update all tests to pass parsed data in to PART-1 and PART-2.
 ** Third, have DEFSUMMARY generate summarize output for BUILD-DATA.
 ** Finally, update the day.tmpl file for the new scheme.
+* DONE - Remove usage of GRAPH library from 2020.07
+** Then we can strip from the project / remove from advent.asd
 * TODO - Refactor 2022 Day 07. At least two things about my solution are less than ideal.
 ** First, declaring a variable special to avoid the pain of passing it is gross.
 ** Second, needed-space separates reparses the directory sizes. UGH.

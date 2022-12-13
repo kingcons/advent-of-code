@@ -5,7 +5,6 @@
   :depends-on ("alexandria"
                "serapeum"
                "esrap"
-               "graph"
                "cl-ppcre"
                "screamer"
                "mgl-pax"
