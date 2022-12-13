@@ -102,18 +102,18 @@ If COMPACT is non-nil, remove any NIL values after mapping over the data."
                       `((remove nil))))))))
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
-  (defun safe-summarize-funcall (string &key arg show-answer)
+  (defun safe-summarize-funcall (string &optional arg show-answer)
     (let* ((symbol (find-symbol string))
            (fdefn (and (fboundp symbol) (fdefinition symbol))))
       (and fdefn (summarize (funcall fdefn arg) show-answer)))))
 
-(defmacro defsummary ((&key title) &body body)
+(defmacro defsummary ((&key title (show-answer t)) &body body)
   (extract-date-from-string (package-name *package*)
     (let* ((advent-url (fmt "https://adventofcode.com/~d/day/~d" year (parse-integer day)))
            (requirements (fmt "**Requirements:** [Day ~2,'0d](~a)~%" day advent-url)))
       (multiple-value-bind (build-summary result) (safe-summarize-funcall "BUILD-DATA")
-        (let* ((part1-summary (safe-summarize-funcall "PART-1" :arg result :show-answer t))
-               (part2-summary (safe-summarize-funcall "PART-2" :arg result :show-answer t))
+        (let* ((part1-summary (safe-summarize-funcall "PART-1" result show-answer))
+               (part2-summary (safe-summarize-funcall "PART-2" result show-answer))
                (header (fmt "~a~%**Input Parsing:**~%~a~%**Part 1:**~%~a~%**Part 2:**~%~a~%~%"
                             requirements build-summary part1-summary part2-summary)))
           `(defsection ,(symbolicate "@" year "." day) (:title ,title)

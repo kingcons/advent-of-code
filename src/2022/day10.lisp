@@ -11,7 +11,7 @@
 
 (in-package :2022.10)
 
-(defsummary (:title "Cathode-Ray Tube")
+(defsummary (:title "Cathode-Ray Tube" :show-answer nil)
   "**Part 1** - "
 
   "**Part 2** - ")
