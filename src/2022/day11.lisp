@@ -88,5 +88,5 @@
   (play data 20 (lambda (x) (floor x 3))))
 
 (defun part-2 (&optional (data (build-data)))
-  (let ((divisor (apply 'lcm (mapcar #'monkey-divisor data))))
+  (let ((divisor (reduce #'* (mapcar #'monkey-divisor data))))
     (play data 10000 (lambda (x) (mod x divisor)))))
