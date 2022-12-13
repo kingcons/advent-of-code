@@ -18,7 +18,9 @@
 
 (defun build-data (&optional input)
   (flet ((build-grid (input)
-           (parse-grid input :transform (op (- (char-code _) 48)))))
+           (parse-grid input :transform (lambda (x row col)
+                                          (declare (ignore row col))
+                                          (- (char-code x) 48)))))
     (read-day-input #'build-grid :whole t :input input)))
 
 (defun get-neighbors (grid row col &optional coords)
