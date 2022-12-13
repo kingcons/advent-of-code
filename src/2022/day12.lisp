@@ -5,11 +5,15 @@
                 #:define-constant
                 #:removef)
   (:import-from :cl-ppcre #:split)
-  (:import-from :serapeum #:op))
+  (:import-from :serapeum
+                #:deq
+                #:enq
+                #:op
+                #:queue))
 
 (in-package :2022.12)
 
-(defsummary (:title "")
+(defsummary (:title "Hill Climbing Algorithm")
   "**Part 1** - "
 
   "**Part 2** - ")
@@ -63,48 +67,39 @@
 (defun build-data (&optional input)
   (read-day-input #'parse-graph :whole t :input input))
 
-(defun find-shortest-paths (nodes edges source)
+(defun ye-olde-bfs (edges root goal-fn)
   (let ((distance (make-hash-table :test #'equal))
-        (previous (make-hash-table :test #'equal))
-        (to-visit nil))
-    (loop for node being the hash-values in nodes
-          do (setf (gethash node distance) most-positive-fixnum
-                   (gethash node previous) nil)
-             (push node to-visit))
-    (setf (gethash source distance) 0)
-
-    (flet ((closest-node ()
-             (loop with closest = (first to-visit)
-                   for item in (rest to-visit)
-                   when (< (gethash item distance) (gethash closest distance))
-                     do (setf closest item)
-                   finally (return closest))))
-      (loop for node = (closest-node) while node
-            do (removef to-visit node :test #'equal)
-               (dolist (neighbor (gethash node edges))
-                 (when (member neighbor to-visit :test #'equal)
-                   (let ((alternate (1+ (gethash node distance))))
-                     (when (< alternate (gethash neighbor distance))
-                       (setf (gethash neighbor distance) alternate
-                             (gethash neighbor previous) node)))))))
-
-    (values distance previous)))
+        (to-visit (queue root)))
+    (setf (gethash root distance) 0)
+    (loop for node = (deq to-visit) while node
+          when (funcall goal-fn node)
+            return (gethash node distance)
+          do (dolist (edge (gethash node edges))
+               (unless (gethash edge distance)
+                 (setf (gethash edge distance) (1+ (gethash node distance)))
+                 (enq edge to-visit))))))
 
 (defun part-1 (&optional (data (build-data)))
   (destructuring-bind (nodes edges) data
-    (let ((destination (gethash :end nodes))
-          (distances (find-shortest-paths nodes edges (gethash :start nodes))))
-      (values (gethash destination distances) distances))))
+    (let ((destination (gethash :end nodes)))
+      (ye-olde-bfs edges (gethash :start nodes) (op (eql _ destination))))))
 
 (defun part-2 (&optional (data (build-data)))
   (destructuring-bind (nodes edges) data
     (let ((destination (gethash :end nodes))
           (origins (loop for point being the hash-values in nodes
-                         when (= (char-code #\a) (height point)) collect point)))
-      (format t "Origins to test: ~D~%" (length origins))
+                         when (= (char-code #\a) (height point))
+                           collect point)))
       (loop for i = 1 then (1+ i)
             for origin in origins
-            for distances = (find-shortest-paths nodes edges origin)
-            do (format t "Searched ~d/~d~%" i (length origins))
-            minimizing (or (gethash destination distances) most-positive-fixnum) into min
+            for distances = (ye-olde-bfs edges origin (op (eql _ destination)))
+            minimizing (or distances most-positive-fixnum) into min
             finally (return min)))))
+
+;; (defun part-2 (&optional (data (build-data)))
+;;   (destructuring-bind (nodes edges) data
+;;     (let ((destination (gethash :end nodes))
+;;           (origins (loop for point being the hash-values in nodes
+;;                          when (= (char-code #\a) (height point))
+;;                            collect point)))
+;;       (ye-olde-bfs edges destination (op (member _ origins))))))
