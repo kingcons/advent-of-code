@@ -29,7 +29,8 @@
                    (:file "day08")
                    (:file "day09")
                    (:file "day10")
-                   (:file "day11")))
+                   (:file "day11")
+                   (:file "day12")))
                  (:module "2021"
                   :pathname "2021"
                   :depends-on ("parsers" "util")

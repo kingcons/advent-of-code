@@ -417,6 +417,23 @@ Monkey 3:
   (let ((data (2022.11::build-data *day11-input*)))
     (is (= (2022.11::part-2 data) 2713310158))))
 
+;;;; Day 12
+
+(defvar *day12-input*
+  "Sabqponm
+abcryxxl
+accszExk
+acctuvwj
+abdefghi")
+
+(deftest day12-part1 ()
+  (let ((data (2022.12::build-data *day12-input*)))
+    (is (= (2022.12::part-1 data) 31))))
+
+;; (deftest day12-part2 ()
+;;   (let ((data (2022.12::build-data *day12-input*)))
+;;     (is (= (2022.12::part-2 data) ???))))
+
 ;;;; Summary
 
 (deftest test-2022 ()
@@ -442,7 +459,9 @@ Monkey 3:
   (day10-part1)
   (day10-part2)
   (day11-part1)
-  (day11-part2))
+  (day11-part2)
+  (day12-part1)
+  (day12-part2))
 
 #+nil
 (test-2022)
