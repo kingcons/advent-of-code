@@ -1,10 +1,12 @@
 (mgl-pax:define-package :aoc
-  (:use :cl :mgl-pax)
-  (:import-from :aoc.util #:extract-date-from-string
-                          #:@aoc.util)
-  (:import-from :alexandria #:lastcar
-                            #:symbolicate)
-  (:import-from :serapeum #:fmt))
+  (:use :cl :mgl-pax :aoc.util)
+  (:import-from :alexandria
+                #:lastcar
+                #:symbolicate)
+  (:import-from :serapeum
+                #:assort
+                #:concat
+                #:fmt))
 
 (in-package :aoc)
 
@@ -67,26 +69,26 @@ compassion for myself and you, dear reader.
 ;;; only very rarely be modified. Note the years are still hardcoded in @ADVENT.
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
-  (defun generate-year-section (year-dir)
-    (let ((year (parse-integer (lastcar (pathname-directory year-dir))))
-          (lisp-files (uiop:directory-files year-dir "*.lisp")))
-      (flet ((build-year-section-name (year)
-               (symbolicate "@AOC." (write-to-string year)))
-             (build-section-from-pathname (pathname)
+  (defun generate-year-section (year)
+    (let* ((year-string (parent-dir (first year)))
+           (year-section (symbolicate "@AOC." year-string)))
+      (flet ((build-section-from-pathname (pathname)
                (extract-date-from-string (namestring pathname)
-                 (let ((section-name (fmt "@~d.~d" year day))
-                       (package-name (fmt "~d.~d" year day)))
-                   (list (find-symbol section-name package-name) 'section)))))
-        `(defsection ,(build-year-section-name year) (:title ,(fmt "Advent ~d" year))
-           ,@(loop for file in lisp-files
+                 (let ((package-name (fmt "~d.~d" year day)))
+                   (list (find-symbol (concat "@" package-name) package-name) 'section)))))
+        `(defsection ,year-section (:title ,(fmt "Advent ~a" year-string))
+           ,@(loop for file in year
                    collecting (build-section-from-pathname file)))))))
 
 (defmacro generate-years ()
-  (let* ((src-dir (asdf:system-relative-pathname :advent "src/"))
-         (subdirs (uiop:subdirectories src-dir)))
-    `(progn
-       ,@(loop for subdir in subdirs
-               collecting (generate-year-section subdir)))))
+  (flet ((advent-file? (x)
+           (search "day" (pathname-name x) :test #'string=)))
+    (let* ((components (mapcar #'asdf:component-pathname (asdf:required-components :advent)))
+           (advent-components (remove-if-not #'advent-file? components))
+           (years (assort advent-components :key #'parent-dir :test #'string=)))
+      `(progn
+         ,@ (loop for year in years
+                  collect (generate-year-section year))))))
 
 (generate-years)
 

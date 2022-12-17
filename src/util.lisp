@@ -2,6 +2,7 @@
   (:use :cl :mgl-pax)
   (:import-from :asdf #:system-relative-pathname)
   (:import-from :alexandria
+                #:lastcar
                 #:read-file-into-string
                 #:symbolicate
                 #:with-unique-names)
@@ -19,6 +20,7 @@
   (defsummary macro)
   (do-grid function)
   (extract-date-from-string macro)
+  (parent-dir function)
   (read-day-input macro)
   (scaffold function)
   (summarize macro))
@@ -80,6 +82,10 @@ An error will be thrown if a directory matching YEAR does not exist."
   `(cl-ppcre:register-groups-bind (,(intern "YEAR") ,(intern "DAY"))
        ("(\\d{4}).*(\\d{2})" ,string)
      ,@body))
+
+(defun parent-dir (pathname)
+  "Return a string naming the parent directory of PATHNAME."
+  (lastcar (pathname-directory pathname)))
 
 (defun read-dat-file-for-package (package)
   (extract-date-from-string (package-name package)
