@@ -69,17 +69,14 @@
 
 (defmethod render ((cpu cpu) opcode)
   (with-slots (cycles x-reg) cpu
-    (list (with-output-to-string (out)
-            (dotimes (i (getf *cycle-times* opcode))
-              (let* ((crt-pixel (mod (+ cycles i) 40))
-                     (active-pixel? (<= (1- x-reg) crt-pixel (1+ x-reg))))
-                (if active-pixel?
-                    (format out "#")
-                    (format out "."))))))))
+    (with-output-to-string (out)
+      (dotimes (i (getf *cycle-times* opcode))
+        (let* ((crt-pixel (mod (+ cycles i) 40))
+               (active-pixel? (<= (1- x-reg) crt-pixel (1+ x-reg))))
+          (format out (if active-pixel? "#" ".")))))))
 
 (defun buffer-display (output)
-  (~>> (flatten output)
-       (reduce #'concat)
+  (~>> (reduce #'concat output)
        (batches _ 40)
        (string-join _ #\Newline)))
 
