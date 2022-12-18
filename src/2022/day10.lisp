@@ -1,7 +1,9 @@
 (mgl-pax:define-package :aoc.2022.10
   (:nicknames :2022.10)
   (:use :cl :mgl-pax :aoc.util :aoc.parsers :esrap)
-  (:import-from :alexandria #:make-keyword)
+  (:import-from :alexandria
+                #:flatten
+                #:make-keyword)
   (:import-from :serapeum
                 #:~>>
                 #:batches
@@ -41,25 +43,31 @@
 (defmethod execute ((cpu cpu) (opcode (eql :addx)) arg)
   (incf (cpu-x-reg cpu) arg))
 
+(defun run-program (data &key collect-fn)
+  (let ((cpu (make-cpu)))
+    (loop for (opcode arg) = (pop data) while opcode
+          collect (funcall collect-fn cpu opcode)
+          do (execute cpu opcode arg))))
+
 (defun new-cycles (cpu opcode)
   (+ (cpu-cycles cpu) (getf *cycle-times* opcode)))
 
-(defun special-cycle? (cpu opcode next-sample)
+(defun sampled-cycle? (cpu opcode next-sample)
   (<= (cpu-cycles cpu) next-sample (new-cycles cpu opcode)))
 
-(defun sum-at-cycles (data desired-timings)
-  (let ((cpu (make-cpu)))
-    (loop with next-sample = (pop desired-timings)
-          for (opcode arg) = (pop data) while next-sample
-          when (special-cycle? cpu opcode next-sample)
-            sum (* next-sample (cpu-x-reg cpu))
-            and do (setf next-sample (pop desired-timings))
-          do (execute cpu opcode arg))))
+(defun make-sample-fn ()
+  (let ((timings '(20 60 100 140 180 220)))
+    (lambda (cpu opcode)
+      (when (sampled-cycle? cpu opcode (or (first timings) 0))
+        (* (pop timings) (cpu-x-reg cpu))))))
+
+(defun signal-strength (output)
+  (reduce #'+ (remove nil output)))
 
 (defun part-1 (&optional (data (build-data)))
-  (sum-at-cycles data '(20 60 100 140 180 220)))
+  (signal-strength (run-program data :collect-fn (make-sample-fn))))
 
-(defmethod render ((cpu cpu) opcode arg)
+(defmethod render ((cpu cpu) opcode)
   (with-slots (cycles x-reg) cpu
     (list (with-output-to-string (out)
             (dotimes (i (getf *cycle-times* opcode))
@@ -69,15 +77,11 @@
                     (format out "#")
                     (format out "."))))))))
 
-(defun render-crt (data)
-  (let ((cpu (make-cpu)))
-    (loop for (opcode arg) = (pop data) while opcode
-          for cycles = (cpu-cycles cpu)
-          append (render cpu opcode arg) into output
-          do (execute cpu opcode arg)
-          finally (return (~>> (reduce #'concat output)
-                               (batches _ 40)
-                               (string-join _ #\Newline))))))
+(defun buffer-display (output)
+  (~>> (flatten output)
+       (reduce #'concat)
+       (batches _ 40)
+       (string-join _ #\Newline)))
 
 (defun part-2 (&optional (data (build-data)))
-  (render-crt data))
+  (buffer-display (run-program data :collect-fn #'render)))
