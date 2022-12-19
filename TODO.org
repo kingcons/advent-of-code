@@ -24,3 +24,4 @@
 * TODO - Currently DEFSUMMARY is a kludge to generate DEFSECTIONs for MGL-PAX.
 ** While being pragmatic, it would probably be preferable to see if there's some way to use the extension API for MGL-PAX to add a new locative type or similar to accomodate the same goals.*
 * TODO - Document PARSE-GRID and DO-GRID helpers more thoroughly.
+* TODO - Refactor 2022.13 to use named-readtables instead of regexes to parse.

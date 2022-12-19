@@ -434,6 +434,49 @@ abdefghi")
   (let ((data (2022.12::build-data *day12-input*)))
     (is (= (2022.12::part-2 data) 29))))
 
+;;;; Day 13
+
+(defvar *day13-input*
+  "[1,1,3,1,1]
+[1,1,5,1,1]
+
+[[1],[2,3,4]]
+[[1],4]
+
+[9]
+[[8,7,6]]
+
+[[4,4],4,4]
+[[4,4],4,4,4]
+
+[7,7,7,7]
+[7,7,7]
+
+[]
+[3]
+
+[[[]]]
+[[]]
+
+[1,[2,[3,[4,[5,6,7]]]],8,9]
+[1,[2,[3,[4,[5,6,0]]]],8,9]")
+
+(deftest day13-part1 ()
+  (let* ((data (2022.13::build-data *day13-input*)))
+    (is (eq (2022.13::compare-packets (nth 0 data)) t))
+    (is (eq (2022.13::compare-packets (nth 1 data)) t))
+    (is (eq (2022.13::compare-packets (nth 2 data)) nil))
+    (is (eq (2022.13::compare-packets (nth 3 data)) t))
+    (is (eq (2022.13::compare-packets (nth 4 data)) nil))
+    (is (eq (2022.13::compare-packets (nth 5 data)) t))
+    (is (eq (2022.13::compare-packets (nth 6 data)) nil))
+    (is (eq (2022.13::compare-packets (nth 7 data)) nil))
+    (is (= (2022.13::part-1 data) 13))))
+
+(deftest day13-part2 ()
+  (let ((data (2022.13::build-data *day13-input*)))
+    (is (= (2022.13::part-2 data) 140))))
+
 ;;;; Summary
 
 (deftest test-2022 ()
@@ -461,7 +504,9 @@ abdefghi")
   (day11-part1)
   (day11-part2)
   (day12-part1)
-  (day12-part2))
+  (day12-part2)
+  (day13-part1)
+  (day13-part2))
 
 #+nil
 (test-2022)
