@@ -469,6 +469,20 @@ abdefghi")
   (let ((data (2022.13::build-data *day13-input*)))
     (is (= (2022.13::part-2 data) 140))))
 
+;;;; Day 14
+
+(defvar *day14-input*
+  "498,4 -> 498,6 -> 496,6
+503,4 -> 502,4 -> 502,9 -> 494,9")
+
+(deftest day14-part1 ()
+  (let ((data (2022.14::build-data *day14-input*)))
+    (is (= (2022.14::part-1 data) 24))))
+
+(deftest day14-part2 ()
+  (let ((data (2022.14::build-data *day14-input*)))
+    (is (= (2022.14::part-2 data) 93))))
+
 ;;;; Summary
 
 (deftest test-2022 ()
@@ -498,7 +512,9 @@ abdefghi")
   (day12-part1)
   (day12-part2)
   (day13-part1)
-  (day13-part2))
+  (day13-part2)
+  (day14-part1)
+  (day14-part2))
 
 #+nil
 (test-2022)
