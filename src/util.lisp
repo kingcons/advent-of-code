@@ -22,8 +22,7 @@
   (extract-date-from-string macro)
   (parent-dir function)
   (read-day-input macro)
-  (scaffold function)
-  (summarize macro))
+  (scaffold function))
 
 (defvar *aoc-session* nil
   "A token for the user's Advent of Code session. This must be supplied
@@ -116,16 +115,15 @@ If COMPACT is non-nil, remove any NIL values after mapping over the data."
 (defmacro defsummary ((&key title (show-answer t)) &body body)
   (extract-date-from-string (package-name *package*)
     (let* ((advent-url (fmt "https://adventofcode.com/~d/day/~d" year (parse-integer day)))
-           (requirements (fmt "**Requirements:** [Day ~2,'0d](~a)~%" day advent-url)))
+           (requirements (fmt "##### *Requirements*~%[Day ~2,'0d](~a)~%" day advent-url)))
       (multiple-value-bind (build-summary result) (safe-summarize-funcall "BUILD-DATA")
         (let* ((part1-summary (safe-summarize-funcall "PART-1" result show-answer))
                (part2-summary (safe-summarize-funcall "PART-2" result show-answer))
-               (header (fmt "~a~%**Input Parsing:**~%~a~%**Part 1:**~%~a~%**Part 2:**~%~a~%~%"
-                            requirements build-summary part1-summary part2-summary)))
+               (header (fmt "##### *Results*~%Input Parsing:~%~a~%Part 1:~%~a~%Part 2:~%~a~%~%"
+                            build-summary part1-summary part2-summary)))
           `(defsection ,(symbolicate "@" year "." day) (:title ,title)
-             "---"
+             ,requirements
              ,header
-             "---"
              "##### *Reflections*"
              ,@body))))))
 
