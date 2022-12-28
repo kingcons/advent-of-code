@@ -11,14 +11,23 @@
                 #:regex-replace-all)
   (:import-from :serapeum
                 #:~>>
+                #:concat
                 #:fmt))
 
 (in-package :aoc.util)
 
-(defsection @aoc.util (:title "Useful Utilities")
+(defsection @aoc.util (:title "Utilities")
+  "A collection of helpful utilities for working on Advent of Code problems.
+There are 3 utilities of primary interest:
+
+1. DEFSUMMARY, which is responsible for generating the summary of a day
+2. READ-DAY-INPUT, which is responsible for reading the input file for the day
+3. SCAFFOLD, which fetches the input file and prepares the code file based on a template
+
+SCAFFOLD is really only of interest at the REPL."
   (*aoc-session* variable)
   (defsummary macro)
-  (extract-date-from-string macro)
+  (find-section function)
   (parent-dir function)
   (read-day-input macro)
   (scaffold function))
@@ -57,8 +66,10 @@ for SCAFFOLD to automatically fetch puzzle input for a given day.")
            (format out)))))
 
 (defun scaffold (year day)
-  "Create a new lisp file for YEAR and DAY based on the `day.tmpl` template.
-An error will be thrown if a directory matching YEAR does not exist."
+  "Create a new lisp file for `YEAR` and `DAY` based on the `day.tmpl` template.
+When *AOC-SESSION* is non-nil, download the input file
+for the day to `dayNN.dat` in the directory for the appropriate year. An error will
+be thrown if a directory matching `YEAR` does not exist."
   (scaffold-code year day)
   (unless (null *aoc-session*)
     (scaffold-input year day)))
@@ -70,8 +81,16 @@ An error will be thrown if a directory matching YEAR does not exist."
        ("(\\d{4}).*(\\d{2})" ,string)
      ,@body))
 
+(defun find-section (filename)
+  "Find the section object corresponding with the supplied `FILENAME`.
+Year and day for the file will be determined with a regex of the form:
+`(\\d{4}).*(\\d{2})`. A filename not matching this pattern will error."
+  (extract-date-from-string filename
+    (let ((package-name (fmt "~d.~d" year day)))
+      (symbol-value (find-symbol (concat "@" package-name) package-name)))))
+
 (defun parent-dir (pathname)
-  "Return a string naming the parent directory of PATHNAME."
+  "Return the string naming the parent directory of `PATHNAME`."
   (lastcar (pathname-directory pathname)))
 
 (defun read-dat-file-for-package (package)
@@ -116,16 +135,24 @@ If COMPACT is non-nil, remove any NIL values after mapping over the data."
       (and fdefn (summarize (funcall fdefn arg) show-answer)))))
 
 (defmacro defsummary ((&key title (show-answer t)) &body body)
+  "Create a DEFSECTION for an Advent of Code puzzle that automatically includes a link to the
+requirements for the day as well as performance measurements of the `BUILD-DATA`, `PART-1`, and
+`PART-2` functions. All content within BODY is spliced directly into the body of the DEFSECTION
+after the requirements and results are displayed.
+
+TITLE should be the title of the day's problem. SHOW-ANSWER defaults to T as most problems
+have simple and concise numeric or string answers. For more complicated problems whose output
+might overflow a quote block, feel free to pass NIL instead."
   (extract-date-from-string (package-name *package*)
     (let* ((advent-url (fmt "https://adventofcode.com/~d/day/~d" year (parse-integer day)))
            (requirements (fmt "##### *Requirements*~%[Day ~2,'0d](~a)~%" day advent-url)))
       (multiple-value-bind (build-summary result) (safe-summarize-funcall "BUILD-DATA")
         (let* ((part1-summary (safe-summarize-funcall "PART-1" result show-answer))
                (part2-summary (safe-summarize-funcall "PART-2" result show-answer))
-               (header (fmt "##### *Results*~%Input Parsing:~%~a~%Part 1:~%~a~%Part 2:~%~a~%~%"
-                            build-summary part1-summary part2-summary)))
+               (results (fmt "##### *Results*~%Input Parsing:~%~a~%Part 1:~%~a~%Part 2:~%~a~%~%"
+                             build-summary part1-summary part2-summary)))
           `(defsection ,(symbolicate "@" year "." day) (:title ,title)
              ,requirements
-             ,header
+             ,results
              "##### *Reflections*"
              ,@body))))))

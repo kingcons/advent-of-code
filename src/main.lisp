@@ -5,7 +5,6 @@
                 #:symbolicate)
   (:import-from :serapeum
                 #:assort
-                #:concat
                 #:fmt))
 
 (in-package :aoc)
@@ -60,6 +59,23 @@ compassion for myself and you, dear reader.
 [ll]: https://blog.kingcons.io/posts/For-Posterity.html
 [dp]: https://www.cs.virginia.edu/~evans/cs655/readings/smalltalk.html")
 
+(defsection @structure (:title "Structure")
+  "Readers will note that each day has some common themes:
+
+* A package (or namespace) is defined for each problem.
+* We begin with a [DEFSUMMARY][aoc.util:defsummary] block to capture reflections.
+* Three functions will always be present: `BUILD-DATA`, `PART-1`, and `PART-2`.
+* `BUILD-DATA` will always rely on [READ-DAY-INPUT][aoc.util:read-day-input] and some custom logic.
+
+Each function has a distinct role:
+
+1. `BUILD-DATA`, responsible for parsing the input into a usable representation
+2. `PART-1`, responsible for solving the first part using parsed input
+3. `PART-2`, responsible for solving the second part using parsed input
+
+These three functions have optional inputs to default to the supplied data but simplify
+mocking in tests. Tests are in a separate ASDF system and rely only on these three functions.")
+
 ;;; NOTE: The following code exists to allow autogenerating both an exhaustive
 ;;; performance and results summary for all completed exercises as well as the
 ;;; rollup sections for each individual year of Advent of Code. While the
@@ -73,9 +89,8 @@ compassion for myself and you, dear reader.
     (let* ((year-string (parent-dir (first year)))
            (year-section (symbolicate "@AOC." year-string)))
       (flet ((build-section-from-pathname (pathname)
-               (extract-date-from-string (namestring pathname)
-                 (let ((package-name (fmt "~d.~d" year day)))
-                   (list (find-symbol (concat "@" package-name) package-name) 'section)))))
+               (let ((section (find-section (namestring pathname))))
+                 (list (section-name section) 'section))))
         `(defsection ,year-section (:title ,(fmt "Advent ~a" year-string))
            ,@(loop for file in year
                    collecting (build-section-from-pathname file)))))))
@@ -95,14 +110,15 @@ compassion for myself and you, dear reader.
 (defsection @advent (:title "Advent of Code")
   (@links section)
   (@background section)
+  (@structure section)
+  (@aoc.util section)
   (@aoc.2022 section)
   (@aoc.2021 section)
   (@aoc.2020 section)
-  (@aoc.2019 section)
-  (@aoc.util section))
+  (@aoc.2019 section))
 
 (defun build-site ()
-  (let ((*document-normalize-packages* nil))
+  (let ((*document-normalize-packages* t))
     (update-asdf-system-html-docs
      @advent :advent
      :target-dir (asdf:system-relative-pathname :advent "docs/")
