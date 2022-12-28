@@ -107,6 +107,21 @@ If COMPACT is non-nil, remove any NIL values after mapping over the data."
                       `((remove nil))))))))
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
+  (defmacro summarize (form &optional show-answer)
+    "Measure the real time to execute FORM and return a formatted string
+ showing the result and the wall clock execution time."
+    (with-unique-names (old-bytes new-bytes useconds result start end)
+      `(let* ((,old-bytes (sb-ext:get-bytes-consed))
+              (,start (get-internal-real-time))
+              (,result ,form)
+              (,end (get-internal-real-time))
+              (,new-bytes (sb-ext:get-bytes-consed))
+              (,useconds (/ (- ,end ,start) internal-time-units-per-second)))
+         (values (fmt "> Time: ~7,3fms  Memory: ~7:dkb  ~@[Answer: ~10T~a~]~%"
+                      (* 1000 ,useconds) (floor (- ,new-bytes ,old-bytes) 1024)
+                      (when ,show-answer ,result))
+                 ,result))))
+
   (defun safe-summarize-funcall (string &optional arg show-answer)
     (let* ((symbol (find-symbol string))
            (fdefn (and (fboundp symbol) (fdefinition symbol))))
@@ -126,18 +141,3 @@ If COMPACT is non-nil, remove any NIL values after mapping over the data."
              ,header
              "##### *Reflections*"
              ,@body))))))
-
-(defmacro summarize (form &optional show-answer)
-  "Measure the real time to execute FORM and return a formatted string
- showing the result and the wall clock execution time."
-  (with-unique-names (old-bytes new-bytes useconds result start end)
-    `(let* ((,old-bytes (sb-ext:get-bytes-consed))
-            (,start (get-internal-real-time))
-            (,result ,form)
-            (,end (get-internal-real-time))
-            (,new-bytes (sb-ext:get-bytes-consed))
-            (,useconds (/ (- ,end ,start) internal-time-units-per-second)))
-       (values (fmt "> Time: ~7,3fms  Memory: ~7:dkb  ~@[Answer: ~10T~a~]~%"
-                    (* 1000 ,useconds) (floor (- ,new-bytes ,old-bytes) 1024)
-                    (when ,show-answer ,result))
-               ,result))))
