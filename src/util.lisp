@@ -18,7 +18,6 @@
 (defsection @aoc.util (:title "Useful Utilities")
   (*aoc-session* variable)
   (defsummary macro)
-  (do-grid function)
   (extract-date-from-string macro)
   (parent-dir function)
   (read-day-input macro)
@@ -63,17 +62,6 @@ An error will be thrown if a directory matching YEAR does not exist."
   (scaffold-code year day)
   (unless (null *aoc-session*)
     (scaffold-input year day)))
-
-(defun do-grid (grid function)
-  "Iterate over a 2 dimensional GRID calling FUNCTION with row, col, item for each entry."
-  (etypecase grid
-    (array (destructuring-bind (rows cols) (array-dimensions grid)
-             (dotimes (row rows)
-               (dotimes (col cols)
-                 (funcall function row col (aref grid row col))))))
-    (hash-table (loop for (row . col) being the hash-keys
-                        in grid using (hash-value val)
-                      do (funcall function row col val)))))
 
 (defmacro extract-date-from-string (string &body body)
   "Bind YEAR and DAY to values extracted from STRING by the regex

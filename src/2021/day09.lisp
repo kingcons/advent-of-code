@@ -39,6 +39,17 @@
   (let ((neighbors (get-neighbors grid row col)))
     (< item (apply 'min neighbors))))
 
+(defun do-grid (grid function)
+  "Iterate over a 2 dimensional GRID calling FUNCTION with row, col, item for each entry."
+  (etypecase grid
+    (array (destructuring-bind (rows cols) (array-dimensions grid)
+             (dotimes (row rows)
+               (dotimes (col cols)
+                 (funcall function row col (aref grid row col))))))
+    (hash-table (loop for (row . col) being the hash-keys
+                        in grid using (hash-value val)
+                      do (funcall function row col val)))))
+
 (defun find-lowpoints (grid &optional coords)
   "Iterate over the entries in GRID collecting each lowpoint according to LOWPOINT?.
 If COORDS is non-nil, collect the (ROW COL) position instead of the value."

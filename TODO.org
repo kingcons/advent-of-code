@@ -23,5 +23,4 @@
 ** In my head, it would be nice if each line in the output had an "opcode" it could execute on some data structure. Not sure that actually structuring it as an interpreter helps a ton though.
 * TODO - Currently DEFSUMMARY is a kludge to generate DEFSECTIONs for MGL-PAX.
 ** While being pragmatic, it would probably be preferable to see if there's some way to use the extension API for MGL-PAX to add a new locative type or similar to accomodate the same goals.*
-* TODO - Document PARSE-GRID and DO-GRID helpers more thoroughly.
 * TODO - Refactor 2022.13 to use named-readtables instead of regexes to parse.
