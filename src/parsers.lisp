@@ -8,6 +8,7 @@
 (defsection @aoc.parsers (:title "Parsing Utilities")
   (letter dislocated)
   (digit dislocated)
+  (integer dislocated)
   (whitespace dislocated)
   (parse-grid function))
 

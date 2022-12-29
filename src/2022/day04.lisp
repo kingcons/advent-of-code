@@ -1,7 +1,7 @@
 (mgl-pax:define-package :aoc.2022.04
   (:nicknames :2022.04)
-  (:use :cl :aoc.util :mgl-pax)
-  (:import-from :cl-ppcre #:register-groups-bind))
+  (:use :cl :mgl-pax :aoc.util :aoc.parsers :esrap)
+  (:import-from :serapeum #:partial))
 
 (in-package :2022.04)
 
@@ -13,13 +13,11 @@ is contained by, or a subset of, another range."
 
   "**Parsing**
 
-Parsing is more involved today so we break out the cl-ppcre library, specifically
-[REGISTER-GROUPS-BIND](https://edicl.github.io/cl-ppcre/#register-groups-bind).
-PARSE-ASSIGNMENT leans on it to turn each line into a list of 4 integers. In the
-future, I'd like to rewrite this using PEG parsing from
-[esrap](https://scymtym.github.io/esrap/) instead of regexes."
+Parsing is more involved today so we break out the
+[esrap](https://scymtym.github.io/esrap/) library for PEG parsing tools.
+We define a parser called `RANGES` reusing an integer rule from my `aoc.parsers`."
   (parsing-source
-   (include (:start (parse-assignment function) :end (subset? function))
+   (include (:start (*parser* variable) :end (subset? function))
             :header-nl "```common-lisp" :footer-nl "```"))
 
   "**Part 1**
@@ -41,13 +39,12 @@ The OVERLAP? function handles this and acts as our callback for part 2."
    (include (:start (overlap? function) :end (part-2 function))
             :header-nl "```common-lisp" :footer-nl "```")))
 
-(defun parse-assignment (assignment)
-  (register-groups-bind ((#'parse-integer a1 a2 b1 b2))
-      ("(\\d+)-(\\d+),(\\d+)-(\\d+)" assignment)
-    (list a1 a2 b1 b2)))
+(defvar *parser*
+  (defrule ranges (and integer "-" integer "," integer "-" integer)
+    (:lambda (list) (remove-if-not #'integerp list))))
 
 (defun build-data (&optional input)
-  (read-day-input #'parse-assignment :input input))
+  (read-day-input (partial #'parse *parser*) :input input))
 
 (defun subset? (assignment)
   (destructuring-bind (a1 a2 b1 b2) assignment
