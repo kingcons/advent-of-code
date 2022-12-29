@@ -134,6 +134,8 @@ If COMPACT is non-nil, remove any NIL values after mapping over the data."
            (fdefn (and (fboundp symbol) (fdefinition symbol))))
       (and fdefn (summarize (funcall fdefn arg) show-answer)))))
 
+(defvar *repo-url* "https://github.com/kingcons/advent-of-code")
+
 (defmacro defsummary ((&key title (show-answer t)) &body body)
   "Create a DEFSECTION for an Advent of Code puzzle that automatically includes a link to the
 requirements for the day as well as performance measurements of the `BUILD-DATA`, `PART-1`, and
@@ -145,14 +147,17 @@ have simple and concise numeric or string answers. For more complicated problems
 might overflow a quote block, feel free to pass NIL instead."
   (extract-date-from-string (package-name *package*)
     (let* ((advent-url (fmt "https://adventofcode.com/~d/day/~d" year (parse-integer day)))
-           (requirements (fmt "##### *Requirements*~%[Day ~2,'0d](~a)~%" day advent-url)))
+           (github-url (fmt "~a/blob/master/src/~d/day~d.lisp" *repo-url* year day))
+           (requirements (fmt "Requirements - [Day ~2,'0d](~a)~%" day advent-url))
+           (solution (fmt "Solution - [Source on Github](~a)~%" github-url))
+           (overview (fmt "##### *Overview*~%~a~%~a~%" requirements solution)))
       (multiple-value-bind (build-summary result) (safe-summarize-funcall "BUILD-DATA")
         (let* ((part1-summary (safe-summarize-funcall "PART-1" result show-answer))
                (part2-summary (safe-summarize-funcall "PART-2" result show-answer))
                (results (fmt "##### *Results*~%Input Parsing:~%~a~%Part 1:~%~a~%Part 2:~%~a~%~%"
                              build-summary part1-summary part2-summary)))
           `(defsection ,(symbolicate "@" year "." day) (:title ,title)
-             ,requirements
+             ,overview
              ,results
              "##### *Reflections*"
              ,@body))))))

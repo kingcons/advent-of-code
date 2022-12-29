@@ -8,33 +8,41 @@
 
 (defsummary (:title "Calorie Counting")
   "As usual, the first day is a straightforward warmup problem.
-A lot of the actual work is simply parsing the supplied data.
-I have a few tools that make this task easier:
+We are given a list of lists of integers and asked to find the
+sublist that has the largest sum. Each integer is on a separate
+line and the sublists are separated by a blank line."
 
-* [`~>>`](https://github.com/ruricolist/serapeum/blob/master/REFERENCE.md#-needle-rest-holes)
- is a handy threading macro supplied by the wonderful Serapeum library
-* [READ-DAY-INPUT][aoc.util:read-day-input] is a helper macro I wrote that loads the input file for the current day,
- splits the string based on a separator and maps over the results with a supplied parsing function"
+  "**Parsing**
 
-  "**Part 1** - Who got snacks?
+Parsing is made much easier thanks to my READ-DAY-INPUT macro.
+I can use its `:separator` option to group the input into sublists
+and then map over the sublists with PARSE-INVENTORY.
 
-Part 1 asks us to determine who has the most snacks among the elves.
-Part 1 is easy enough to solve. We simply apply MAX after parsing the input."
-  (parse-inventory function)
-  (part-1-source
+Inside PARSE-INVENTORY I make use of Serapeum's handy threading macro
+[~>>](https://github.com/ruricolist/serapeum/blob/master/REFERENCE.md#-needle-rest-holes)
+to construct a pipeline for parsing and summing the elements in the sublist."
+  (parsing-source
    (include (:start (parse-inventory function) :end (part-1 function))
             :header-nl "```common-lisp" :footer-nl "```"))
-  "**Part 2** - Backup snack strategy
 
-Part 2 asks us to figure out the total snacks among the top 3 snack-holders.
-This adds a little effort to sort and sum the snacks which is handled by TOTAL-SNACKS."
-  (total-snacks function)
+  "**Part 1**
+
+With so much work handled in the parsing step, we can simply use
+Lisp's MAX on the parsed input to arrive at the answer for part 1."
+  (part-1-source
+   (include (:start (part-1 function) :end (total-snacks function))
+            :header-nl "```common-lisp" :footer-nl "```"))
+  
+  "**Part 2**
+
+Part 2 asks us to figure out the total of the 3 largest sublists.
+Easy enough. We'll lean on the `~>>` macro again and simply sort
+the parsed input, then sum the first 3 items."
   (part-2-source
    (include (:start (total-snacks function) :end (part-2 function))
             :header-nl "```common-lisp" :footer-nl "```")))
 
 (defun parse-inventory (inventory)
-  "Given a string, INVENTORY, convert each line to an integer and sum them."
   (~>> (split "\\n" inventory)
        (mapcar #'parse-integer)
        (reduce #'+)))
@@ -46,8 +54,6 @@ This adds a little effort to sort and sum the snacks which is handled by TOTAL-S
   (apply 'max data))
 
 (defun total-snacks (snacks)
-  "Sort the supplied list of integers, SNACKS, in descending order,
-   then sum the 3 largest items."
   (~>> (sort snacks #'>)
        (subseq _ 0 3)
        (reduce #'+)))

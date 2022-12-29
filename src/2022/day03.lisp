@@ -10,17 +10,42 @@
 (in-package :2022.03)
 
 (defsummary (:title "Rucksack Reorganization")
-  "**Part 1** - Misplaced Items"
-  (search-rucksack function)
-  (part-1-source
-   (include (:start (search-rucksack function) :end (build-data function))
+  "Day 3 supplies us with random-seeming strings and asks us to find the
+duplicated character in the first and second half of the string. Then we should
+score and sum those characters. This is easy when modeled as a set intersection
+of two lists of characters."
+
+  "**Parsing**
+
+Parsing is trivial. Just split the input by newlines. This is the default
+behavior of READ-DAY-INPUT so we pass IDENTITY as the callback."
+
+  (parsing-source
+   (include (:start (build-data function) :end (*priorities* variable))
             :header-nl "```common-lisp" :footer-nl "```"))
 
-  "**Part 2** - Unauthenticated Badges"
-  (solve function)
-  (part-2-source
-   (include (:start (solve function) :end (part-1 function))
-            :header-nl "```common-lisp" :footer-nl "```")))
+  "**Part 1**
+
+The most annoying aspect of part 1 was the arbitrary scoring they
+came up with that was related to but did not quite match ASCII values.
+The *PRIORITIES* table deals with this and makes score lookup easy.
+
+The SOLVE function handles the rest of the problem. It runs a preprocess-fn on
+the parsed input, then maps over it with SEARCH-RUCKSACK to find the duplicated
+character. Finally, we run the characters through TOTAL-PRIORITY for scoring.
+In part 1, our preprocess-fn simply splits the input lines into two halves."
+  (part-1-source
+   (include (:start (*priorities* variable) :end (part-2 function))
+            :header-nl "```common-lisp" :footer-nl "```"))
+
+  "**Part 2**
+
+Part 2 doesn't require any special handling at all.
+We simply call solve as we did in part-1 but with a different `preprocess-fn`,
+asking it to group things with `(op (serapeum:batches _ 3))`.")
+
+(defun build-data (&optional input)
+  (read-day-input #'identity :input input))
 
 (defvar *priorities*
   (let ((table (make-hash-table :test #'eq)))
@@ -35,9 +60,6 @@
 
 (defun total-priority (items)
   (reduce #'+ items :key (op (gethash _ *priorities*))))
-
-(defun build-data (&optional input)
-  (read-day-input #'identity :input input))
 
 (defun solve (data preprocess-fn)
   (~>> (funcall preprocess-fn data)
