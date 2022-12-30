@@ -12,25 +12,29 @@
 (in-package :2022.14)
 
 (defsummary (:title "Regolith Reservoir")
-  "**Part 1** - "
+  "**Parsing**"
+  (parsing-source
+   (include (:start (*first-rule* variable) :end (find-range function))
+            :header-nl "```common-lisp" :footer-nl "```"))
 
-  "**Part 2** - ")
+  "**Part 1**"
+  (part-1-source
+   (include (:start (find-range function) :end (render function))
+            :header-nl "```common-lisp" :footer-nl "```"))
 
-(defstruct (point (:type list)) x y)
+  "**Part 2**"
+  (part-2-source
+   (include (:start (render function) :end (part-2 function))
+            :header-nl "```common-lisp" :footer-nl "```")))
 
-(defrule point (and integer #\, integer (? " -> "))
-  (:lambda (point) (list (first point) (third point))))
+(defvar *first-rule*
+  (defrule point (and integer #\, integer (? " -> "))
+    (:lambda (point) (list (first point) (third point)))))
 
 (defrule cave-path (+ point))
 
 (defun build-data (&optional input)
   (read-day-input (partial #'parse 'cave-path) :input input))
-
-(defun find-range (point1 point2)
-  (let ((direction (if (= (point-x point1) (point-x point2)) :vertical :horizontal)))
-    (case direction
-      (:horizontal (values direction (sort (list (point-x point1) (point-x point2)) #'<)))
-      (:vertical (values direction (sort (list (point-y point1) (point-y point2)) #'<))))))
 
 (defun find-bounds (cave floor-mod)
   (loop for point in (hash-table-keys cave)
@@ -39,6 +43,14 @@
         minimizing (point-y point) into min-y
         maximizing (+ (point-y point) floor-mod) into max-y
         finally (return (list min-x max-x min-y max-y))))
+
+(defstruct (point (:type list)) x y)
+
+(defun find-range (point1 point2)
+  (let ((direction (if (= (point-x point1) (point-x point2)) :vertical :horizontal)))
+    (case direction
+      (:horizontal (values direction (sort (list (point-x point1) (point-x point2)) #'<)))
+      (:vertical (values direction (sort (list (point-y point1) (point-y point2)) #'<))))))
 
 (defun build-cave (data &key (floor-mod 0))
   (let ((cave (make-hash-table :test #'equal)))

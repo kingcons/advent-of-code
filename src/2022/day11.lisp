@@ -11,28 +11,21 @@
 (in-package :2022.11)
 
 (defsummary (:title "Monkey in the Middle")
-  "**Part 1** - "
+  "**Parsing**"
+  (parsing-source
+   (include (:start (*first-rule* variable) :end (monkey class))
+            :header-nl "```common-lisp" :footer-nl "```"))
 
-  "**Part 2** - ")
+  "**Part 1**"
+  (part-1-source
+   (include (:start (monkey class) :end (part-2 function))
+            :header-nl "```common-lisp" :footer-nl "```"))
 
-(defstruct monkey
-  number items operation divisor true-recv false-recv inspected)
+  "**Part 2**")
 
-(defmethod pass-item (item (monkey monkey))
-  (with-slots (items) monkey
-    (enq item items)))
-
-(defmethod play-round ((monkey monkey) all-monkeys worry-fn)
-  (with-slots (items operation divisor true-recv false-recv inspected) monkey
-    (loop for item = (deq items) while item
-          do (let ((worry-level (funcall worry-fn (funcall operation item))))
-               (incf inspected)
-               (if (zerop (mod worry-level divisor))
-                   (pass-item worry-level (nth true-recv all-monkeys))
-                   (pass-item worry-level (nth false-recv all-monkeys)))))))
-
-(defrule monkey-number (and "Monkey " integer ":" #\Newline)
-  (:function second))
+(defvar *first-rule*
+  (defrule monkey-number (and "Monkey " integer ":" #\Newline)
+    (:function second)))
 
 (defrule item-list (+ (or integer ", "))
   (:lambda (list) (remove-if-not #'integerp list)))
@@ -70,6 +63,28 @@
 (defun build-data (&optional input)
   (read-day-input (partial #'parse 'monkey) :separator "\\n\\n" :input input))
 
+(defstruct monkey
+  number items operation divisor true-recv false-recv inspected)
+
+(defmethod pass-item (item (monkey monkey))
+  (with-slots (items) monkey
+    (enq item items)))
+
+(defmethod play-round ((monkey monkey) all-monkeys worry-fn)
+  (with-slots (items operation divisor true-recv false-recv inspected) monkey
+    (loop for item = (deq items) while item
+          do (let ((worry-level (funcall worry-fn (funcall operation item))))
+               (incf inspected)
+               (if (zerop (mod worry-level divisor))
+                   (pass-item worry-level (nth true-recv all-monkeys))
+                   (pass-item worry-level (nth false-recv all-monkeys)))))))
+
+(defun compute-monkey-business (monkeys)
+  (~>> (mapcar #'monkey-inspected monkeys)
+       (sort _ #'>)
+       (subseq _ 0 2)
+       (apply '*)))
+
 (defun play (monkeys rounds worry-fn &optional (debug nil))
   (dotimes (i rounds)
     (when debug
@@ -77,12 +92,6 @@
     (dolist (monkey monkeys)
       (play-round monkey monkeys worry-fn)))
   (compute-monkey-business monkeys))
-
-(defun compute-monkey-business (monkeys)
-  (~>> (mapcar #'monkey-inspected monkeys)
-       (sort _ #'>)
-       (subseq _ 0 2)
-       (apply '*)))
 
 (defun part-1 (&optional (data (build-data)))
   (play data 20 (lambda (x) (floor x 3))))

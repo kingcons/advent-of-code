@@ -14,12 +14,24 @@
 (in-package :2022.10)
 
 (defsummary (:title "Cathode-Ray Tube" :show-answer nil)
-  "**Part 1** - "
+  "**Parsing**"
+  (parsing-source
+   (include (:start (*first-rule* variable) :end (cpu class))
+            :header-nl "```common-lisp" :footer-nl "```"))
 
-  "**Part 2** - ")
+  "**Part 1**"
+  (part-1-source
+   (include (:start (cpu class) :end (render (method () (cpu t))))
+            :header-nl "```common-lisp" :footer-nl "```"))
 
-(defrule opcode (or "noop" "addx")
-  (:lambda (string) (make-keyword (string-upcase string))))
+  "**Part 2**"
+  (part-2-source
+   (include (:start (render (method () (cpu t))) :end (part-2 function))
+            :header-nl "```common-lisp" :footer-nl "```")))
+
+(defvar *first-rule*
+  (defrule opcode (or "noop" "addx")
+    (:lambda (string) (make-keyword (string-upcase string)))))
 
 (defrule args (and " " integer)
   (:function second))

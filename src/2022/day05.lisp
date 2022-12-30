@@ -12,13 +12,25 @@
 (in-package :2022.05)
 
 (defsummary (:title "Supply Stacks")
+  "**Parsing**"
+  (parsing-source
+   (include (:start (*first-rule* variable) :end (move-crates function))
+            :header-nl "```common-lisp" :footer-nl "```"))
+
   "**Part 1**"
+  (part-1-source
+   (include (:start (move-crates function) :end (move-crates-contiguous function))
+            :header-nl "```common-lisp" :footer-nl "```"))
 
-  "**Part 2**")
+  "**Part 2**"
+  (part-2-source
+   (include (:start (move-crates-contiguous function) :end (part-2 function))
+            :header-nl "```common-lisp" :footer-nl "```")))
 
-(defrule move (and "move " integer " from " integer " to " integer (? #\Newline))
-  (:lambda (list)
-    (remove-if-not #'integerp list)))
+(defvar *first-rule*
+  (defrule move (and "move " integer " from " integer " to " integer (? #\Newline))
+    (:lambda (list)
+      (remove-if-not #'integerp list))))
 
 (defrule instructions (+ move))
 
@@ -53,6 +65,9 @@
             do (add-row row stacks))
       (list moves stacks))))
 
+(defun build-data (&optional input)
+  (read-day-input #'parse-stacks :whole t :input input))
+
 (defun move-crates (count origin destination stacks)
   (dotimes (i count)
     (let ((item (pop (gethash origin stacks))))
@@ -65,9 +80,6 @@
     (loop for i from 1 upto (hash-table-count stacks)
           collecting (first (gethash i stacks)) into chars
           finally (return (coerce chars 'string)))))
-
-(defun build-data (&optional input)
-  (read-day-input #'parse-stacks :whole t :input input))
 
 (defun part-1 (&optional (data (build-data)))
   (interpret data :step-fn #'move-crates))

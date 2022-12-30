@@ -7,9 +7,27 @@
 (in-package :2022.08)
 
 (defsummary (:title "Treetop Tree House")
-  "**Part 1** - "
+  "**Parsing**"
+  (parsing-source
+   (include (:start (parse-row function) :end (make-cardinal function))
+            :header-nl "```common-lisp" :footer-nl "```"))
 
-  "**Part 2** - ")
+  "**Part 1**"
+  (part-1-source
+   (include (:start (make-cardinal function) :end (scenic-score function))
+            :header-nl "```common-lisp" :footer-nl "```"))
+
+  "**Part 2**"
+  (part-2-source
+   (include (:start (scenic-score function) :end (part-2 function))
+            :header-nl "```common-lisp" :footer-nl "```")))
+
+(defun parse-row (row)
+  (mapcar #'parse-integer (split "" row)))
+
+(defun build-data (&optional input)
+  (let ((data (read-day-input #'parse-row :input input)))
+    (make-array (list (length data) (length data)) :initial-contents data)))
 
 (defun make-cardinal (row col limit direction data)
   (ecase direction
@@ -40,13 +58,6 @@
         for row below width
         sum (loop for col below width
                   count (visible? row col data width))))
-
-(defun parse-row (row)
-  (mapcar #'parse-integer (split "" row)))
-
-(defun build-data (&optional input)
-  (let ((data (read-day-input #'parse-row :input input)))
-    (make-array (list (length data) (length data)) :initial-contents data)))
 
 (defun part-1 (&optional (data (build-data)))
   (count-visible? data))

@@ -16,12 +16,24 @@
 (in-package :2022.07)
 
 (defsummary (:title "No Space Left on Device")
-  "**Part 1** - "
+  "**Parsing**"
+  (parsing-source
+   (include (:start (*first-rule* variable) :end (change-directory function))
+            :header-nl "```common-lisp" :footer-nl "```"))
 
-  "**Part 2** - ")
+  "**Part 1**"
+  (part-1-source
+   (include (:start (change-directory function) :end (smallest-matching function))
+            :header-nl "```common-lisp" :footer-nl "```"))
 
-(defrule filename (+ (or letter #\. #\/))
-  (:text t))
+  "**Part 2**"
+  (part-2-source
+   (include (:start (smallest-matching function) :end (part-2 function))
+            :header-nl "```common-lisp" :footer-nl "```")))
+
+(defvar *first-rule*
+  (defrule filename (+ (or letter #\. #\/))
+    (:text t)))
 
 (defrule filespec (and integer " " filename)
   (:function first))
@@ -35,8 +47,8 @@
 
 (defrule entry (or command filespec dir-entry))
 
-(defun parse-terminal (input)
-  (parse 'entry input))
+(defun build-data (&optional input)
+  (read-day-input (partial #'parse 'entry) :compact t :input input))
 
 (defun change-directory (entry)
   (declare (special *current-directory*))
@@ -70,14 +82,8 @@
        (remove-if-not match-fn)
        (reduce #'+)))
 
-(defun build-data (&optional input)
-  (read-day-input #'parse-terminal :compact t :input input))
-
 (defun part-1 (&optional (data (build-data)))
   (total-size-matching (op (< _ 100000)) data))
-
-(defun free-space (data)
-  (- 70000000 (gethash '("/") data)))
 
 (defun smallest-matching (match-fn data)
   (~>> (compute-directory-sizes data)

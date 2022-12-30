@@ -14,9 +14,17 @@
 (in-package :2022.12)
 
 (defsummary (:title "Hill Climbing Algorithm")
-  "**Part 1** - "
+  "**Parsing**"
+  (parsing-source
+   (include (:start (+neighbors+ constant) :end (ye-olde-bfs function))
+            :header-nl "```common-lisp" :footer-nl "```"))
+  
+  "**Part 1**"
+  (part-1-source
+   (include (:start (ye-olde-bfs function) :end (part-2 function))
+            :header-nl "```common-lisp" :footer-nl "```"))
 
-  "**Part 2** - ")
+  "**Part 2**")
 
 (define-constant +neighbors+
     '((0 1) (0 -1) (1 0) (-1 0)) :test #'equal)

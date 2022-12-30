@@ -24,3 +24,11 @@
 * TODO - Currently DEFSUMMARY is a kludge to generate DEFSECTIONs for MGL-PAX.
 ** While being pragmatic, it would probably be preferable to see if there's some way to use the extension API for MGL-PAX to add a new locative type or similar to accomodate the same goals.*
 * TODO - Refactor 2022.13 to use named-readtables instead of regexes to parse.
+* TODO - Weird limitations of MGL-PAX that need to be fixed.
+** It can locate regular structures, e.g. `(defstruct point ..) via `(point class)` locative.
+But it cannot locate structures with constructor options (type, conc-name, etc).
+** An end argument cannot be omitted from include locatives.
+As a result, I cannot include any part-2 function bodies in the output.
+** It cannot locate esrap rules since they macroexpand to toplevel function calls.
+A crude workaround is to define a `*parser*` variable for the rule that is used in
+`read-day-input` and write the rules in "top-down" order. No variable should be needed.

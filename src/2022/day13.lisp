@@ -10,9 +10,17 @@
 (in-package :2022.13)
 
 (defsummary (:title "Distress Signal")
-  "**Part 1** - "
+  "**Parsing**"
+  (parsing-source
+   (include (:start (sanitize-packet function) :end (compare generic-function))
+            :header-nl "```common-lisp" :footer-nl "```"))
 
-  "**Part 2** - ")
+  "**Part 1**"
+  (part-1-source
+   (include (:start (compare generic-function) :end (part-2 function))
+            :header-nl "```common-lisp" :footer-nl "```"))
+
+  "**Part 2**")
 
 (defun sanitize-packet (packet)
   (let ((replacements '(("[" "(")
