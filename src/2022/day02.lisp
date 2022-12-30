@@ -18,7 +18,7 @@ input consists of two moves, one for the opponent and the player. There's a
 heuristic for scoring the games and we are asked to find the total score for the
 games played. Even though the ask is simple and I found an brute force solution
 quickly, I went through three iterations before arriving at something I really
-liked. The insight that satisfied me was that there are only 8 possible games of
+liked. The insight that satisfied me was that there are only 9 possible games of
 single-round RPS, so we can model the scoring as a search problem."
 
   "**Parsing**
