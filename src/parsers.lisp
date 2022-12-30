@@ -10,6 +10,7 @@
   (digit dislocated)
   (integer dislocated)
   (whitespace dislocated)
+  (spaces dislocated)
   (parse-grid function))
 
 (defrule letter (or (character-ranges (#\a #\z))
@@ -21,7 +22,9 @@
   (:text t)
   (:function parse-integer))
 
-(defrule whitespace (+ (or #\Space #\Tab #\Newline)))
+(defrule whitespace (or #\Space #\Tab #\Newline))
+
+(defrule spaces (+ whitespace))
 
 (defun parse-grid (data &key (container :array) (transform (op (identity _))))
   (let* ((rows (count #\Newline data))

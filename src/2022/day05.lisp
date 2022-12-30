@@ -1,6 +1,6 @@
 (mgl-pax:define-package :aoc.2022.05
   (:nicknames :2022.05)
-  (:use :cl :aoc.util :mgl-pax :esrap)
+  (:use :cl :mgl-pax :aoc.util :aoc.parsers :esrap)
   (:import-from :serapeum
                 #:~>>
                 #:batches
@@ -12,20 +12,11 @@
 (in-package :2022.05)
 
 (defsummary (:title "Supply Stacks")
-  "**Part 1** - "
+  "**Part 1**"
 
-  "**Part 2** - ")
+  "**Part 2**")
 
-(defrule whitespace (or #\Space #\Tab #\Newline))
-
-(defrule letter (or (character-ranges (#\A #\Z))
-                    (character-ranges (#\a #\z))))
-
-(defrule digit (+ (character-ranges (#\0 #\9)))
-  (:text t)
-  (:function parse-integer))
-
-(defrule move (and "move " digit " from " digit " to " digit (? #\Newline))
+(defrule move (and "move " integer " from " integer " to " integer (? #\Newline))
   (:lambda (list)
     (remove-if-not #'integerp list)))
 
@@ -39,7 +30,7 @@
 
 (defrule row (+ (or crate gap)))
 
-(defrule labels (+ (or whitespace digit #\Newline))
+(defrule labels (+ (or whitespace integer #\Newline))
   (:lambda (list)
     (remove-if-not #'integerp list)))
 

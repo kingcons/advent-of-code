@@ -37,27 +37,27 @@
 (defrule item-list (+ (or integer ", "))
   (:lambda (list) (remove-if-not #'integerp list)))
 
-(defrule starting-items (and whitespace "Starting items: " item-list #\Newline)
+(defrule starting-items (and spaces "Starting items: " item-list #\Newline)
   (:lambda (list) (apply 'queue (third list))))
 
 (defrule operator (or "+" "*")
   (:function find-symbol))
 
-(defrule inspect-op (and whitespace "Operation: new = old "
+(defrule inspect-op (and spaces "Operation: new = old "
                          operator " " (or integer "old") #\Newline)
-  (:destructure (whitespace title operator space operand newline)
-    (declare (ignore whitespace title space newline))
+  (:destructure (spaces title operator space operand newline)
+    (declare (ignore spaces title space newline))
     (if (equal operand "old")
         (lambda (x) (funcall operator x x))
         (lambda (x) (funcall operator operand x)))))
 
-(defrule test-op (and whitespace "Test: divisible by " integer #\Newline)
+(defrule test-op (and spaces "Test: divisible by " integer #\Newline)
   (:function third))
 
-(defrule true-op (and whitespace "If true: throw to monkey " integer #\Newline)
+(defrule true-op (and spaces "If true: throw to monkey " integer #\Newline)
   (:function third))
 
-(defrule false-op (and whitespace "If false: throw to monkey " integer (? #\Newline))
+(defrule false-op (and spaces "If false: throw to monkey " integer (? #\Newline))
   (:function third))
 
 (defrule monkey (and monkey-number starting-items inspect-op
