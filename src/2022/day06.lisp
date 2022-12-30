@@ -6,29 +6,42 @@
 (in-package :2022.06)
 
 (defsummary (:title "Tuning Trouble")
-  "**Parsing**"
+  "Day 6 is straightforward both in terms of parsing and logic.
+The input data is a single long string and we are asked to find a run
+of distinct characters of a certain size."
 
-  "**Part 1**"
+  "**Parsing**
+
+We lean on the default READ-DAY-INPUT and IDENTITY behavior again."
+
+  "**Part 1**
+
+Part 1 is pretty straightforward thanks to the combination of SETP and LOOP.
+We loop until we find a distinct run of characters, checked for by
+PACKET-MARKER?, always looking back to avoid running off the end of the input."
   (part-1-source
-   (include (:start (start-marker? function) :end (part-2 function))
+   (include (:start (packet-marker? function) :end (part-2 function))
             :header-nl "```common-lisp" :footer-nl "```"))
 
-  "**Part 2**")
+  "**Part 2**
+
+Part 2 only asks for a different marker width which was easy to parameterize
+out of the original code. Pass 14 instead of 4 and we're all done.")
 
 (defun build-data (&optional input)
   (first (read-day-input #'identity :input input)))
 
-(defun start-marker? (input start width)
-  (let ((buffer (coerce (subseq input (- start width) start) 'list)))
+(defun packet-marker? (input end width)
+  (let ((buffer (coerce (subseq input (- end width) end) 'list)))
     (setp buffer)))
 
-(defun parse-signal (input width)
-  (loop for start = width then (1+ start)
-        until (start-marker? input start width)
-        finally (return start)))
+(defun find-signal-marker (input width)
+  (loop for end = width then (1+ end)
+        until (packet-marker? input end width)
+        finally (return end)))
 
 (defun part-1 (&optional (data (build-data)))
-  (parse-signal data 4))
+  (find-signal-marker data 4))
 
 (defun part-2 (&optional (data (build-data)))
-  (parse-signal data 14))
+  (find-signal-marker data 14))

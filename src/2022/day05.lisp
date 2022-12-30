@@ -12,17 +12,37 @@
 (in-package :2022.05)
 
 (defsummary (:title "Supply Stacks")
-  "**Parsing**"
+  "Day 5 asks us what message is shown after performing a series of crane moves
+on stacks of labeled shipping containers. This is pretty simple to model with
+a map of integers to stacks or an array of stacks. Unfortunately, parsing the
+representation for the day is not so simple."
+
+  "**Parsing**
+
+We break out [esrap](https://scymtym.github.io/esrap/) again to build a
+robust parser for this format. We separate it into rules for the header
+consisting of several rows of crates, the labels for those rows, and the
+instructions for how to move the crane. PARSE-STACKS takes the extracted
+values from esrap's parse step and constructs a hash table with stacks
+matching the ASCII depiction in the header."
   (parsing-source
    (include (:start (*first-rule* variable) :end (move-crates function))
             :header-nl "```common-lisp" :footer-nl "```"))
 
-  "**Part 1**"
+  "**Part 1**
+
+The actual work of this problem is simple. We have a list of moves to perform.
+We want to move a certain number of crates from stack A to stack B which is
+handled by MOVE-CRATES. Running all the instructions and reading the labels
+of the top crates on each stack is performed by INTERPRET."
   (part-1-source
    (include (:start (move-crates function) :end (move-crates-contiguous function))
             :header-nl "```common-lisp" :footer-nl "```"))
 
-  "**Part 2**"
+  "**Part 2**
+
+Part 2 complicates matters very slightly by asking that we move the crates all
+at once rather than one at a time. This is handled by MOVE-CRATES-CONTIGUOUS."
   (part-2-source
    (include (:start (move-crates-contiguous function) :end (part-2 function))
             :header-nl "```common-lisp" :footer-nl "```")))
@@ -73,7 +93,7 @@
     (let ((item (pop (gethash origin stacks))))
       (push item (gethash destination stacks)))))
 
-(defun interpret (data &key step-fn)
+(defun interpret (data step-fn)
   (destructuring-bind (moves stacks) data
     (loop for (count origin destination) in moves
           do (funcall step-fn count origin destination stacks))
@@ -82,7 +102,7 @@
           finally (return (coerce chars 'string)))))
 
 (defun part-1 (&optional (data (build-data)))
-  (interpret data :step-fn #'move-crates))
+  (interpret data #'move-crates))
 
 (defun move-crates-contiguous (count origin destination stacks)
   (multiple-value-bind (to-move new-origin) (halves (gethash origin stacks) count)
@@ -90,4 +110,4 @@
           (gethash destination stacks) (append to-move (gethash destination stacks)))))
 
 (defun part-2 (&optional (data (build-data)))
-  (interpret data :step-fn #'move-crates-contiguous))
+  (interpret data #'move-crates-contiguous))

@@ -10,10 +10,10 @@
 (in-package :2022.03)
 
 (defsummary (:title "Rucksack Reorganization")
-  "Day 3 supplies us with random-seeming strings and asks us to find the
-duplicated character in the first and second half of the string. Then we should
-score and sum those characters. This is easy when modeled as a set intersection
-of two lists of characters."
+  "Day 3 supplies us with random-seeming alphabetic strings and asks us to find
+the duplicated character in the first and second half of the string. Then we
+should score and sum those characters. This is easy when modeled as a set
+intersection of two lists of characters."
 
   "**Parsing**
 

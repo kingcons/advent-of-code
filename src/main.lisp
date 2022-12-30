@@ -63,7 +63,8 @@ compassion for myself and you, dear reader.
   "Readers will note that each day has some common themes:
 
 * A package (or namespace) is defined for each problem.
-* We begin with a [DEFSUMMARY][aoc.util:defsummary] block to capture reflections.
+* Immediately after the package is a [DEFSUMMARY][aoc.util:defsummary] block
+ to generate the day's entry on this site.
 * Three functions will always be present: `BUILD-DATA`, `PART-1`, and `PART-2`.
 * `BUILD-DATA` will always rely on [READ-DAY-INPUT][aoc.util:read-day-input] and some custom logic.
 
@@ -73,8 +74,9 @@ Each function has a distinct role:
 2. `PART-1`, responsible for solving the first part using parsed input
 3. `PART-2`, responsible for solving the second part using parsed input
 
-These three functions have optional inputs to default to the supplied data but simplify
-mocking in tests. Tests are in a separate ASDF system and rely only on these three functions.")
+These three functions have optional inputs which default to the data file from AOC.
+They are optional to allow mocking in tests. Tests are in a separate ASDF system
+and rely only on these three functions.")
 
 ;;; NOTE: The following code exists to allow autogenerating both an exhaustive
 ;;; performance and results summary for all completed exercises as well as the
