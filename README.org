@@ -6,7 +6,7 @@ I wouldn't recommend it. Generally though...
 
 *** Yearly
 
-0. Log back into advent of code and set the `*aoc-session*` in your lisp image.
+0. Log back into advent of code and copy the session value into `aoc.util:*aoc-session*` in your lisp image.
 1. Add a new module to the `advent.asd` system for the year. Make `main.lisp` depend on it.
 2. Add the section for the year to the `@ADVENT` section in `main.lisp`.
 3. Start a new test file for the year and wire it into `tests.lisp` and the ASDF system.
@@ -33,7 +33,7 @@ The usual `(asdf:test-system :advent)` incantation should take care of you.
 
 ** Copyright
 
-Copyright (c) 2022 Brit Butler (brit@kingcons.io)
+Copyright (c) 2023 Brit Butler (brit@kingcons.io)
 
 ** License
 

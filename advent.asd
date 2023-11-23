@@ -12,9 +12,15 @@
                "swank")
   :components ((:module "src"
                 :components
-                ((:file "main" :depends-on ("2019" "2020" "2021" "2022" "util"))
+                ((:file "main"
+                  :depends-on ("2019" "2020" "2021" "2022" "2023" "util"))
                  (:file "parsers")
                  (:file "util")
+                 (:module "2023"
+                  :pathname "2023"
+                  :depends-on ("parsers" "util")
+                  :components
+                  ())
                  (:module "2022"
                   :pathname "2022"
                   :depends-on ("parsers" "util")
@@ -77,7 +83,8 @@
   :components ((:module "tests"
                 :serial t
                 :components
-                ((:file "2022")
+                ((:file "2023")
+                 (:file "2022")
                  (:file "2021")
                  (:file "2020")
                  (:file "2019")
