@@ -1,6 +1,7 @@
 (defpackage :advent.tests
   (:use :cl :try)
-  (:export #:test-all))
+  (:export #:test-all
+           #:test-ci))
 
 (in-package :advent.tests)
 
@@ -13,6 +14,10 @@
 (defun test (&key (debug nil) (print 'unexpected) (describe 'unexpected))
   (warn-on-tests-not-run ((find-package :advent.tests))
     (print (try 'test-all :debug debug :print print :describe describe))))
+
+(defun test-ci ()
+  (unless (try:passep (try:try 'test-all))
+    (uiop:quit 1)))
 
 #+nil
 (test)

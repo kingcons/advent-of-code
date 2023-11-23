@@ -8,7 +8,8 @@
                "cl-ppcre"
                "screamer"
                "mgl-pax"
-               "drakma")
+               "drakma"
+               "swank")
   :components ((:module "src"
                 :components
                 ((:file "main" :depends-on ("2019" "2020" "2021" "2022" "util"))

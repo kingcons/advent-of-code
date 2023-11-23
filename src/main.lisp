@@ -124,6 +124,11 @@ and rely only on these three functions.")
     (update-asdf-system-html-docs
      @advent :advent
      :target-dir (asdf:system-relative-pathname :advent "docs/")
-     :pages `((:objects (,aoc:@advent)
+     :pages `((:objects (,aoc::@advent)
                :source-uri-fn ,(make-github-source-uri-fn
                                 :advent "https://github.com/kingcons/advent-of-code"))))))
+
+(defun repl ()
+  (eval-when (:compile-toplevel :load-toplevel :execute)
+    (ql:quickload :swank))
+  (swank:start-server ".swank-port"))
