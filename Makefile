@@ -18,6 +18,6 @@ site:
 
 test:
 	sbcl --non-interactive \
-	     --eval "(ql:quickload :advent/test)" \
-	     --eval "(funcall #'advent.test:test-ci)" \
+	     --eval "(ql:quickload :advent/tests)" \
+	     --eval "(funcall #'advent.tests:test-ci)" \
 	     --quit
