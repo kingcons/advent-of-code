@@ -8,7 +8,7 @@ clean:
 repl:
 	rm -f .swank-port
 	sbcl --eval "(ql:quickload :advent)" \
-	     --eval "(aoc:repl)"
+	     --eval "(aoc::repl)"
 
 site:
 	sbcl --non-interactive \
