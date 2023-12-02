@@ -43,13 +43,17 @@ Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green")
   (let ((data (2023.02::build-data *day02-input*)))
     (is (= 8 (2023.02::part-1 data)))))
 
+(deftest day02-part2 ()
+  (let ((data (2023.02::build-data *day02-input*)))
+    (is (= 2286 (2023.02::part-2 data)))))
 
 ;;;; Summary
 
 (deftest test-2023 ()
   (day01-part1)
   (day01-part2)
-  (day02-part1))
+  (day02-part1)
+  (day02-part2))
 
 #+nil
 (test-2023)

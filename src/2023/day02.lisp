@@ -2,7 +2,8 @@
   (:nicknames :2023.02)
   (:use :cl :mgl-pax :aoc.util :esrap)
   (:import-from :serapeum :op
-                          :~>>))
+                          :~>>
+                          :plist-values))
 
 (in-package :2023.02)
 
@@ -23,14 +24,16 @@
 (defrule cubeset (and (+ color) (? "; "))
   (:function first))
 
+(defun build-counts (game)
+  (let ((counts '()))
+    (dolist (set (fourth game))
+      (loop for (color count) in set
+            for current = (getf counts color 0)
+            do (setf (getf counts color 0) (max current count))))
+    (list (second game) counts)))
+
 (defrule game (and "Game " integer ": " (+ cubeset) (? #\Newline))
-  (:lambda (result)
-    (let ((counts '()))
-      (dolist (set (fourth result))
-        (loop for (color count) in set
-              for current = (getf counts color 0)
-              do (setf (getf counts color 0) (max current count))))
-      (list (second result) counts))))
+  (:function build-counts))
 
 (defun build-data (&optional input)
   (read-day-input (op (parse 'game _)) :input input))
@@ -46,4 +49,6 @@
          (reduce #'+ _ :key #'first))))
 
 (defun part-2 (&optional (data (build-data)))
-  (bar data))
+  (flet ((power (game)
+           (reduce #'* (plist-values (second game)))))
+    (reduce #'+ data :key #'power)))
