@@ -47,13 +47,57 @@ Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green")
   (let ((data (2023.02::build-data *day02-input*)))
     (is (= 2286 (2023.02::part-2 data)))))
 
+;;;; Day 03
+
+(defvar *day03-input*
+  "467..114..
+   ...*......
+   ..35..633.
+   ......#...
+   617*......
+   .....+.58.
+   ..592.....
+   ......755.
+   ...$.*....
+   .664.598..")
+
+(deftest day03-locations ()
+  (destructuring-bind (parts markers) (2023.03::build-data *day03-input*)
+    (is (equalp (sort (alexandria:hash-table-keys markers) #'<)
+                '(13 36 43 55 83 85)))
+    (is (equal (gethash 55 markers) "+"))
+    (is (equalp (sort (alexandria:hash-table-keys parts) #'< :key #'first)
+                '((0 2) (5 7) (22 23) (26 28) (40 42)
+                  (57 58) (62 64) (76 78) (91 93) (95 97))))
+    (is (equal (gethash '(62 64) parts) 592))))
+
+(deftest day03-neighbors ()
+  (is (equalp (sort (2023.03::neighbors 22 23) #'<)
+              '(11 12 13 14 21 22 23 24 31 32 33 34)))
+  (is (equalp (sort (2023.03::neighbors 62 64) #'<)
+              '(51 52 53 54 55 61 62 63 64 65 71 72 73 74 75))))
+
+(deftest day03-connected ()
+  (destructuring-bind (parts markers) (2023.03::build-data *day03-input*)
+    (is (2023.03::connected? markers 62 64))
+    (is (equalp (sort (2023.03::find-connected parts markers) #'<)
+                '(35 467 592 598 617 633 664 755)))))
+
+(deftest day03-part1 ()
+  (let ((data (2023.03::build-data *day03-input*)))
+    (is (= 4361 (2023.03::part-1 data)))))
+
 ;;;; Summary
 
 (deftest test-2023 ()
   (day01-part1)
   (day01-part2)
   (day02-part1)
-  (day02-part2))
+  (day02-part2)
+  (day03-locations)
+  (day03-neighbors)
+  (day03-connected)
+  (day03-part1))
 
 #+nil
 (test-2023)
