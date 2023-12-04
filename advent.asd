@@ -21,7 +21,9 @@
                   :depends-on ("parsers" "util")
                   :components
                   ((:file "day01")
-                   (:file "day02")))
+                   (:file "day02")
+                   (:file "day03")
+                   (:file "day04")))
                  (:module "2022"
                   :pathname "2022"
                   :depends-on ("parsers" "util")
