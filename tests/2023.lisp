@@ -87,6 +87,28 @@ Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green")
   (let ((data (2023.03::build-data *day03-input*)))
     (is (= 4361 (2023.03::part-1 data)))))
 
+;;;; Day 04
+
+(defvar *day04-input*
+  "Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53
+Card 2: 13 32 20 16 61 | 61 30 68 82 17 32 24 19
+Card 3:  1 21 53 59 44 | 69 82 63 72 16 21 14  1
+Card 4: 41 92 73 84 69 | 59 84 76 51 58  5 54 83
+Card 5: 87 83 26 28 32 | 88 30 70 12 93 22 82 36
+Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11")
+
+(deftest day04-score-row ()
+  (let ((data (2023.04::build-data *day04-input*)))
+    (is (= 8 (2023.04::score-row (first data) #'+)))))
+
+(deftest day04-part1 ()
+  (let ((data (2023.04::build-data *day04-input*)))
+    (is (= 13 (2023.04::part-1 data)))))
+
+(deftest day04-part2 ()
+  (let ((data (2023.04::build-data *day04-input*)))
+    (is (= 30 (2023.04::part-2 data)))))
+
 ;;;; Summary
 
 (deftest test-2023 ()
@@ -97,7 +119,10 @@ Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green")
   (day03-locations)
   (day03-neighbors)
   (day03-connected)
-  (day03-part1))
+  (day03-part1)
+  (day04-score-row)
+  (day04-part1)
+  (day04-part2))
 
 #+nil
 (test-2023)
