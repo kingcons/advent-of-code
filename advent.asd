@@ -74,7 +74,8 @@
                   :pathname "2019"
                   :depends-on ("util")
                   :components
-                  ((:file "day01"))))))
+                  ((:file "day01")
+                   (:file "day02"))))))
   :description "Advent of Code solutions"
   :in-order-to ((test-op (test-op "advent/tests"))))
 
